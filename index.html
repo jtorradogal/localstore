@@ -1,9 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Localstore</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f7f7f7;
+    }
+    h1 {
+      color: #333;
+    }
+    #search {
+      padding: 10px;
+      width: 300px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    #results p {
+      background: #fff;
+      padding: 10px;
+      margin-bottom: 5px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
 <body>
-  <h1>Hola desde localstore.es!</h1>
+  <h1>Hola desde Localstore.es!</h1>
+
+  <input id="search" placeholder="Buscar tienda...">
+  <div id="results"></div>
+
+  <script>
+    const searchInput = document.getElementById('search');
+    const resultsDiv = document.getElementById('results');
+
+    searchInput.addEventListener('input', async (e) => {
+      const q = e.target.value;
+
+      if (!q) {
+        resultsDiv.innerHTML = '';
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/shops?search=${encodeURIComponent(q)}`);
+        const json = await res.json();
+
+        if (json.data && json.data.length > 0) {
+          resultsDiv.innerHTML = json.data
+            .map(s => `<p><strong>${s.name}</strong> - ${s.city}</p>`)
+            .join('');
+        } else {
+          resultsDiv.innerHTML = '<p>No se encontraron resultados.</p>';
+        }
+      } catch (error) {
+        console.error('Error fetching shops:', error);
+        resultsDiv.innerHTML = '<p>Error al buscar tiendas.</p>';
+      }
+    });
+  </script>
 </body>
 </html>
