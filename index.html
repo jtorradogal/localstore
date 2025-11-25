@@ -52,7 +52,7 @@
 
         if (json.data && json.data.length > 0) {
           resultsDiv.innerHTML = json.data
-            .map(s => `<p><strong>${s.name}</strong> - ${s.city}</p>`)
+            .map(s => `<p><strong>${s.name}</strong> - ${s.category}</p>`)
             .join('');
         } else {
           resultsDiv.innerHTML = '<p>No se encontraron resultados.</p>';
