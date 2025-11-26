@@ -1,21 +1,19 @@
 // api/shops.js
 import { createClient } from '@supabase/supabase-js'
 
-// Conecta con Supabase usando variables de entorno
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY // usa la anon key para lectura
+  process.env.SUPABASE_ANON_KEY
 )
 
 export default async function handler(req, res) {
-  const search = req.query.search || ''
+  const search = req.query.search?.trim() || ''
 
   try {
-    // Consulta la tabla 'shops', filtrando por nombre
     const { data, error } = await supabase
       .from('shops')
       .select('*')
-      .ilike('name', `%${search}%`)
+      .or(`name.ilike.%${search}%,category.ilike.%${search}%`)
 
     if (error) {
       console.error('Supabase error:', error)
@@ -27,25 +25,14 @@ export default async function handler(req, res) {
       })
     }
 
-    if (!data || data.length === 0) {
-      return res.status(200).json({
-        status: 'success',
-        message: 'No se encontraron tiendas que coincidan con la búsqueda',
-        searchQuery: search,
-        data: []
-      })
-    }
-
-    // Todo bien, devuelve los datos encontrados
-    res.status(200).json({
+    return res.status(200).json({
       status: 'success',
-      message: `${data.length} tienda(s) encontrada(s)`,
       searchQuery: search,
-      data
+      data: data || []
     })
   } catch (err) {
     console.error('Unexpected error:', err)
-    res.status(500).json({
+    return res.status(500).json({
       status: 'error',
       message: 'Error inesperado al procesar la solicitud',
       searchQuery: search,
