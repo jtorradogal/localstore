@@ -26,6 +26,11 @@
       border-radius: 5px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
+    #results a {
+      text-decoration: none;
+      color: #0070f3;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -39,7 +44,7 @@
     const resultsDiv = document.getElementById('results');
 
     searchInput.addEventListener('input', async (e) => {
-      const q = e.target.value;
+      const q = e.target.value.trim();
 
       if (!q) {
         resultsDiv.innerHTML = '';
@@ -52,7 +57,15 @@
 
         if (json.data && json.data.length > 0) {
           resultsDiv.innerHTML = json.data
-            .map(s => `<p><strong>${s.name}</strong> - ${s.category}</p>`)
+            .map(s => `
+              <p>
+                <a href="/shop.html?id=${s.id}">
+                  ${s.name}
+                </a>
+                <br>
+                <span>${s.category || ''}</span>
+              </p>
+            `)
             .join('');
         } else {
           resultsDiv.innerHTML = '<p>No se encontraron resultados.</p>';
