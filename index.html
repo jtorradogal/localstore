@@ -7,6 +7,7 @@
   <meta name="author" content="colorlib.com" />
   <title>Localstore</title>
 
+  <!-- GOOGLE ADSENSE -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3707563990872003"
     crossorigin="anonymous"></script>
 
@@ -14,6 +15,7 @@
   <link href="css/main.css" rel="stylesheet" />
 
   <style>
+    /* Caja de resultados */
     #results {
       max-width: 600px;
       margin: 30px auto;
@@ -39,6 +41,29 @@
       color: #555;
       font-size: 14px;
     }
+
+    /* AUTOCOMPLETADO */
+    #autocomplete-categories {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+      max-width: 320px;
+      position: absolute;
+      top: 48px;
+      left: 0;
+      z-index: 9999;
+      font-family: Poppins, Arial, sans-serif;
+    }
+
+    #autocomplete-categories div {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    #autocomplete-categories div:hover {
+      background: #f0f0f0;
+    }
   </style>
 </head>
 
@@ -51,12 +76,16 @@
       </fieldset>
 
       <div class="inner-form">
-        <div class="input-field first-wrap">
-          <input id="search" type="text" placeholder="¿Qué estás buscando?" />
+
+        <!-- Campo de categoría con autocompletado -->
+        <div class="input-field first-wrap" style="position: relative;">
+          <input id="search" type="text" placeholder="¿Qué estás buscando?" autocomplete="off" />
+          <div id="autocomplete-categories"></div>
         </div>
 
+        <!-- Campo de ubicación -->
         <div class="input-field second-wrap">
-          <input id="location" type="text" placeholder="¿Dónde lo estás buscando?" />
+          <input id="location" type="text" placeholder="¿Dónde lo estás buscando?" autocomplete="off" />
         </div>
 
         <div class="input-field third-wrap">
@@ -75,7 +104,51 @@
     const locationInput = document.getElementById('location');
     const btnSearch = document.getElementById('btnSearch');
     const resultsDiv = document.getElementById('results');
+    const autocompleteBox = document.getElementById('autocomplete-categories');
 
+    /* AUTOCOMPLETADO */
+    searchInput.addEventListener('input', async () => {
+      const q = searchInput.value.trim();
+
+      if (!q) {
+        autocompleteBox.innerHTML = '';
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/categories?q=${encodeURIComponent(q)}`);
+        const json = await res.json();
+
+        if (!json.data || json.data.length === 0) {
+          autocompleteBox.innerHTML = '';
+          return;
+        }
+
+        autocompleteBox.innerHTML = json.data
+          .map(cat => `<div data-value="${cat.category}">${cat.category}</div>`)
+          .join('');
+
+        document
+          .querySelectorAll('#autocomplete-categories div')
+          .forEach(el => {
+            el.addEventListener('click', () => {
+              searchInput.value = el.dataset.value;
+              autocompleteBox.innerHTML = '';
+            });
+          });
+
+      } catch (err) {
+        console.error('Error cargando autocompletado:', err);
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!autocompleteBox.contains(e.target) && e.target !== searchInput) {
+        autocompleteBox.innerHTML = '';
+      }
+    });
+
+    /* BÚSQUEDA PRINCIPAL */
     async function doSearch() {
       const category = searchInput.value.trim();
       const place = locationInput.value.trim();
@@ -88,6 +161,8 @@
       const params = new URLSearchParams();
       if (category) params.append('category', category);
       if (place) params.append('place', place);
+
+      resultsDiv.innerHTML = '<p>Cargando resultados...</p>';
 
       try {
         const res = await fetch(`/api/shops?` + params.toString());
