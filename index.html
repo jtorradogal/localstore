@@ -7,16 +7,13 @@
   <meta name="author" content="colorlib.com" />
   <title>Localstore</title>
 
-  <!-- Google Adsense (si lo quieres también en el index) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3707563990872003"
     crossorigin="anonymous"></script>
 
-  <!-- Google Fonts y CSS de la plantilla -->
   <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
   <link href="css/main.css" rel="stylesheet" />
 
   <style>
-    /* Contenedor de resultados */
     #results {
       max-width: 600px;
       margin: 30px auto;
@@ -71,23 +68,29 @@
     </form>
   </div>
 
-  <!-- Contenedor para mostrar resultados -->
   <div id="results"></div>
 
   <script>
     const searchInput = document.getElementById('search');
+    const locationInput = document.getElementById('location');
     const btnSearch = document.getElementById('btnSearch');
     const resultsDiv = document.getElementById('results');
 
     async function doSearch() {
-      const q = searchInput.value.trim();
-      if (!q) {
+      const category = searchInput.value.trim();
+      const place = locationInput.value.trim();
+
+      if (!category && !place) {
         resultsDiv.innerHTML = '';
         return;
       }
 
+      const params = new URLSearchParams();
+      if (category) params.append('category', category);
+      if (place) params.append('place', place);
+
       try {
-        const res = await fetch(`/api/shops?search=${encodeURIComponent(q)}`);
+        const res = await fetch(`/api/shops?` + params.toString());
         const json = await res.json();
 
         if (json.data && json.data.length > 0) {
@@ -98,7 +101,7 @@
                   ${s.name}
                 </a>
                 <br>
-                <span>${s.category || ''}</span>
+                <span>${s.category_name || ''} en ${s.place_name || ''}</span>
               </p>
             `)
             .join('');
@@ -111,10 +114,6 @@
       }
     }
 
-    // buscar conforme se escribe
-    searchInput.addEventListener('input', doSearch);
-
-    // buscar al pulsar el botón
     btnSearch.addEventListener('click', doSearch);
   </script>
 
