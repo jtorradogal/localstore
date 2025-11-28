@@ -7,30 +7,22 @@ const supabase = createClient(
 )
 
 export default async function handler(req, res) {
-  const category_id = req.query.category_id?.trim() || ''
+  const category = req.query.category?.trim() || ''
   const place = req.query.place?.trim() || ''
 
   try {
-    // Base query con joins para obtener el nombre de categoría y lugar
     let query = supabase
       .from('shops')
-      .select(`
-        id,
-        name,
-        category_id,
-        place_id,
-        categories:categories(category),
-        places:places(placename)
-      `)
+      .select('*')
 
-    // Filtro por categoría exacta (ID numérico)
-    if (category_id) {
-      query = query.eq('category_id', category_id)
+    // Filtro por categoría (campo text)
+    if (category) {
+      query = query.ilike('category', `%${category}%`)
     }
 
-    // Filtro por lugar mediante texto parcial
+    // Filtro por address (campo text para localizar por ciudad/barrio)
     if (place) {
-      query = query.ilike('places.placename', `%${place}%`)
+      query = query.ilike('address', `%${place}%`)
     }
 
     const { data, error } = await query
@@ -44,19 +36,11 @@ export default async function handler(req, res) {
       })
     }
 
-    // Formateo final para el front-end
-    const formatted = (data || []).map(s => ({
-      id: s.id,
-      name: s.name,
-      category_name: s.categories?.category || '',
-      place_name: s.places?.placename || ''
-    }))
-
     return res.status(200).json({
       status: 'success',
-      categoryIdQuery: category_id,
+      categoryQuery: category,
       placeQuery: place,
-      data: formatted
+      data: data || []
     })
   } catch (err) {
     console.error('Unexpected error:', err)
