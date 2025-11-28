@@ -125,17 +125,19 @@
         }
 
         autocompleteBox.innerHTML = json.data
-          .map(cat => `<div data-value="${cat.category}">${cat.category}</div>`)
-          .join('');
+  .map(cat => `<div data-id="${cat.id}" data-name="${cat.category}">${cat.category}</div>`)
+  .join('');
 
-        document
-          .querySelectorAll('#autocomplete-categories div')
-          .forEach(el => {
-            el.addEventListener('click', () => {
-              searchInput.value = el.dataset.value;
-              autocompleteBox.innerHTML = '';
-            });
-          });
+document
+  .querySelectorAll('#autocomplete-categories div')
+  .forEach(el => {
+    el.addEventListener('click', () => {
+      searchInput.value = el.dataset.name;
+      searchInput.dataset.categoryId = el.dataset.id;   // guardamos el ID oculto
+      autocompleteBox.innerHTML = '';
+    });
+  });
+
 
       } catch (err) {
         console.error('Error cargando autocompletado:', err);
