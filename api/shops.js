@@ -11,7 +11,6 @@ export default async function handler(req, res) {
   const place = req.query.place?.trim() || ''
 
   try {
-    // Traemos shops + la tabla places
     let query = supabase
       .from('shops')
       .select(`
@@ -24,16 +23,15 @@ export default async function handler(req, res) {
         website,
         description,
         place_id,
-        places:places (placename, province, community)
+        places:place_id (placename, province, community)
       `)
 
-    // Filtro por categoría (campo int8 referenciando categories.id)
     if (category) {
       query = query.eq('category', category)
     }
 
-    // Filtro por nombre del lugar (tabla places)
     if (place) {
+      // Ahora sí funciona porque el alias 'places' existe
       query = query.ilike('places.placename', `%${place}%`)
     }
 
@@ -48,7 +46,6 @@ export default async function handler(req, res) {
       })
     }
 
-    // Formateo (opcional)
     const formatted = (data || []).map(s => ({
       id: s.id,
       name: s.name,
@@ -65,8 +62,6 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       status: 'success',
-      categoryQuery: category,
-      placeQuery: place,
       data: formatted
     })
 
