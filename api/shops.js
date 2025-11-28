@@ -7,28 +7,28 @@ const supabase = createClient(
 )
 
 export default async function handler(req, res) {
-  const category = req.query.category?.trim() || ''
+  const category_id = req.query.category_id?.trim() || ''
   const place = req.query.place?.trim() || ''
 
   try {
-    // Base query con joins
+    // Base query con joins para obtener el nombre de categoría y lugar
     let query = supabase
       .from('shops')
       .select(`
         id,
         name,
-        category,
+        category_id,
         place_id,
-        categories!inner(category) ,
-        places!inner(placename)
+        categories:categories(category),
+        places:places(placename)
       `)
 
-    // Filtro por categoría
-    if (category) {
-      query = query.ilike('categories.category', `%${category}%`)
+    // Filtro por categoría exacta (ID numérico)
+    if (category_id) {
+      query = query.eq('category_id', category_id)
     }
 
-    // Filtro por lugar
+    // Filtro por lugar mediante texto parcial
     if (place) {
       query = query.ilike('places.placename', `%${place}%`)
     }
@@ -54,7 +54,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       status: 'success',
-      categoryQuery: category,
+      categoryIdQuery: category_id,
       placeQuery: place,
       data: formatted
     })
