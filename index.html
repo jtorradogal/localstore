@@ -117,16 +117,17 @@
 
       try {
         const res = await fetch(`/api/categories?q=${encodeURIComponent(q)}`);
-        const json = await res.json();
+const json = await res.json();
 
-        if (!json.data || json.data.length === 0) {
-          autocompleteBox.innerHTML = '';
-          return;
-        }
+if (!json.categories || json.categories.length === 0) {
+  autocompleteBox.innerHTML = '';
+  return;
+}
 
-        autocompleteBox.innerHTML = json.data
+autocompleteBox.innerHTML = json.categories
   .map(cat => `<div data-id="${cat.id}" data-name="${cat.category}">${cat.category}</div>`)
   .join('');
+
 
 document
   .querySelectorAll('#autocomplete-categories div')
