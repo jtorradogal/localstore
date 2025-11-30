@@ -7,7 +7,6 @@ const supabase = createClient(
 )
 
 export default async function handler(req, res) {
-  // leer query param
   const q = req.query.q?.trim() || ''
 
   try {
@@ -17,7 +16,6 @@ export default async function handler(req, res) {
       .order('category', { ascending: true })
 
     if (q) {
-      // búsqueda tipo autocompletado
       query = query.ilike('category', `%${q}%`)
     }
 
@@ -28,8 +26,7 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: error.message })
     }
 
-    return res.status(200).json({ data })
-
+    return res.status(200).json({ data })   // <--- FIX IMPORTANTE
   } catch (err) {
     console.error('Server error:', err)
     return res.status(500).json({ error: err.message })
