@@ -14,18 +14,18 @@ export default async function handler(req, res) {
     .select(`
       id,
       name,
-      category_id,
+      category,
       place_id,
       categories ( category ),
       places ( placename )
     `);
 
-  // Filtro por categoría
+  // Filtrar por categoría real en tu DB: shops.category
   if (category_id) {
-    query = query.eq('category_id', Number(category_id));
+    query = query.eq('category', Number(category_id));
   }
 
-  // Filtro por lugar (por nombre, no ID)
+  // Filtrar por lugar (por nombre)
   if (place) {
     query = query.ilike('places.placename', `%${place}%`);
   }
@@ -37,7 +37,6 @@ export default async function handler(req, res) {
     return res.status(500).json({ status: 'error', message: error.message });
   }
 
-  // Normalizamos resultado
   const formatted = data.map(s => ({
     id: s.id,
     name: s.name,
