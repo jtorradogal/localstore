@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultados</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #fafafa;
+    }
+    .shop {
+      padding: 12px;
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      border: 1px solid #ddd;
+    }
+    .shop h3 {
+      margin: 0 0 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Resultados</h1>
+  <div id="results">Loading...</div>
+
+  <script>
+    // Leer parámetros de la URL
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get("category");
+    const place = params.get("place");
+
+    const resultsDiv = document.getElementById("results");
+
+    // Construir la URL de la API
+    const url = `/api/shops?category=${encodeURIComponent(category || '')}&place=${encodeURIComponent(place || '')}`;
+
+    // Llamar a la API
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        if (!data || !data.data || data.data.length === 0) {
+          resultsDiv.innerHTML = "<p>No results found.</p>";
+          return;
+        }
+
+        resultsDiv.innerHTML = ""; // limpiar
+
+        data.data.forEach(shop => {
+          const div = document.createElement("div");
+          div.className = "shop";
+          div.innerHTML = `
+            <h3>${shop.name}</h3>
+            <p>${shop.description || "No description available."}</p>
+            <p><strong>Place:</strong> ${shop.place}</p>
+            <p><strong>Category:</strong> ${shop.category}</p>
+          `;
+          resultsDiv.appendChild(div);
+        });
+      })
+      .catch(err => {
+        resultsDiv.innerHTML = "<p>Error loading results.</p>";
+        console.error(err);
+      });
+  </script>
+
+</body>
+</html>
