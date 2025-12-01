@@ -14,7 +14,6 @@ export default async function handler(req, res) {
       .from('places')
       .select('id, placename')
 
-    // Autocompletado por texto
     if (q.length > 0) {
       query = query.ilike('placename', `%${q}%`)
     }
