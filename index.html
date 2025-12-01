@@ -152,6 +152,53 @@ document
       }
     });
 
+    /* AUTOCOMPLETADO DE LUGARES (places) */
+
+const autocompletePlaces = document.getElementById('autocomplete-places');
+
+locationInput.addEventListener('input', async () => {
+  const q = locationInput.value.trim();
+
+  if (!q) {
+    autocompletePlaces.innerHTML = '';
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/places?q=${encodeURIComponent(q)}`);
+    const json = await res.json();
+
+    if (!json.places || json.places.length === 0) {
+      autocompletePlaces.innerHTML = '';
+      return;
+    }
+
+    autocompletePlaces.innerHTML = json.places
+      .map(p => `<div data-id="${p.id}" data-name="${p.placename}">${p.placename}</div>`)
+      .join('');
+
+    document
+      .querySelectorAll('#autocomplete-places div')
+      .forEach(el => {
+        el.addEventListener('click', () => {
+          locationInput.value = el.dataset.name;
+          locationInput.dataset.placeId = el.dataset.id;
+          autocompletePlaces.innerHTML = '';
+        });
+      });
+
+  } catch (error) {
+    console.error('Error cargando lugares:', error);
+  }
+});
+
+document.addEventListener('click', (e) => {
+  if (!autocompletePlaces.contains(e.target) && e.target !== locationInput) {
+    autocompletePlaces.innerHTML = '';
+  }
+});
+
+
     /* BÚSQUEDA PRINCIPAL */
 async function doSearch() {
   const categoryId = searchInput.dataset.categoryId || '';
