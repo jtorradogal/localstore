@@ -47,6 +47,17 @@
       text-decoration: none;
       color: #0070f3;
     }
+
+    #mapContainer {
+      margin-top: 30px;
+    }
+
+    #map {
+      width: 100%;
+      height: 300px;
+      border: 0;
+      border-radius: 8px;
+    }
   </style>
 </head>
 
@@ -57,8 +68,17 @@
 
   <div id="shopData">Cargando datos...</div>
 
+  <div id="mapContainer" style="display:none;">
+    <h3>Ubicación</h3>
+    <iframe
+      id="map"
+      loading="lazy"
+      allowfullscreen
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+
   <script>
-    // Leer ID de la URL
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
 
@@ -92,11 +112,26 @@
           ${renderField("Descripción", s.description)}
           ${renderField("Lugar", s.place_name)}
         `;
+
+        loadMap(s);
+
       } catch (err) {
         console.error(err);
         document.getElementById("shopData").innerHTML =
           "<p>Error cargando la tienda.</p>";
       }
+    }
+
+    function loadMap(shop) {
+      if (!shop.address) return;
+
+      const fullAddress = `${shop.address}, ${shop.place_name || ""}`;
+      const encoded = encodeURIComponent(fullAddress);
+
+      document.getElementById("map").src =
+        `https://www.google.com/maps/embed/v1/place?key=AIzaSyD4J5HvD1OoxxrYZ0REOVdDpLCfoT8QUkM&q=${encoded}`;
+
+      document.getElementById("mapContainer").style.display = "block";
     }
 
     function renderField(label, value) {
@@ -111,10 +146,11 @@
 
     function renderFieldLink(label, value, href) {
       if (!value) return "";
+      const safeHref = href.startsWith("http") ? href : "https://" + href;
       return `
         <div class="field">
           <div class="label">${label}</div>
-          <a class="value" href="${href}" target="_blank">${value}</a>
+          <a class="value" href="${safeHref}" target="_blank">${value}</a>
         </div>
       `;
     }
