@@ -2,102 +2,125 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LocalStore | Tienda</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ficha de tienda</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+  <style>
+    body {
+      font-family: Poppins, Arial, sans-serif;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 15px;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    .label {
+      font-size: 14px;
+      color: #777;
+      text-transform: uppercase;
+    }
+
+    .value {
+      font-size: 18px;
+      color: #222;
+      margin-top: 2px;
+    }
+
+    a.value {
+      color: #0070f3;
+      text-decoration: none;
+    }
+
+    .back {
+      display: inline-block;
+      margin-bottom: 25px;
+      font-size: 15px;
+      text-decoration: none;
+      color: #0070f3;
+    }
+  </style>
 </head>
 
 <body>
-  <div class="container">
 
-    <!-- Breadcrumbs -->
-    <nav id="breadcrumbs" class="breadcrumbs"></nav>
+  <a href="javascript:history.back()" class="back">Volver</a>
+  <h1 id="shopName">Cargando...</h1>
 
-    <!-- Contenido de la tienda -->
-    <h1 id="shop-name"></h1>
-    <p id="shop-description"></p>
+  <div id="shopData">Cargando datos...</div>
 
-    <div class="details">
-      <p><strong>Dirección:</strong> <span id="shop-address"></span></p>
-      <p><strong>Teléfono:</strong> <span id="shop-phone"></span></p>
-      <p><strong>Email:</strong> <span id="shop-email"></span></p>
-      <p><strong>Web:</strong> <a id="shop-website" href="#" target="_blank"></a></p>
-    </div>
-
-  </div>
-
-  <script type="module">
-    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
-    const supabase = createClient(
-      'https://xxxx.supabase.co',
-      'public-anon-key-aqui'
-    );
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
+  <script>
+    // Leer ID de la URL
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
 
     if (!id) {
-      document.body.innerHTML = "<h2>Error: falta ID de tienda.</h2>";
+      document.getElementById("shopData").innerHTML =
+        "<p>No se ha proporcionado un ID de tienda.</p>";
       throw new Error("Missing shop ID");
     }
 
     async function loadShop() {
-      // 1. Shop
-      const { data: shop, error } = await supabase
-        .from('shops')
-        .select('*')
-        .eq('id', id)
-        .single();
+      try {
+        const res = await fetch(`/api/shop?id=${id}`);
+        const json = await res.json();
 
-      if (error || !shop) {
-        document.body.innerHTML = "<h2>Error cargando tienda.</h2>";
-        return;
+        if (!json.data) {
+          document.getElementById("shopData").innerHTML =
+            "<p>No se encontró la tienda.</p>";
+          return;
+        }
+
+        const s = json.data;
+
+        document.getElementById("shopName").textContent = s.name || "Sin nombre";
+
+        document.getElementById("shopData").innerHTML = `
+          ${renderField("Categoría", s.category_name)}
+          ${renderField("Dirección", s.address)}
+          ${renderField("Teléfono", s.phone)}
+          ${renderFieldLink("Email", s.email, "mailto:" + s.email)}
+          ${renderFieldLink("Web", s.website, s.website)}
+          ${renderField("Descripción", s.description)}
+          ${renderField("Lugar", s.place_name)}
+        `;
+      } catch (err) {
+        console.error(err);
+        document.getElementById("shopData").innerHTML =
+          "<p>Error cargando la tienda.</p>";
       }
+    }
 
-      document.getElementById('shop-name').textContent = shop.name;
-      document.getElementById('shop-description').textContent =
-        shop.description || 'Sin descripción disponible.';
-      document.getElementById('shop-address').textContent = shop.address || 'No disponible';
-      document.getElementById('shop-phone').textContent = shop.phone || 'No disponible';
-      document.getElementById('shop-email').textContent = shop.email || 'No disponible';
-      document.getElementById('shop-website').textContent = shop.website || 'No disponible';
+    function renderField(label, value) {
+      if (!value) return "";
+      return `
+        <div class="field">
+          <div class="label">${label}</div>
+          <div class="value">${value}</div>
+        </div>
+      `;
+    }
 
-      if (shop.website) {
-        document.getElementById('shop-website').href = shop.website;
-      }
-
-      // 2. Category name
-      const { data: category } = await supabase
-        .from('categories')
-        .select('name')
-        .eq('id', shop.category)
-        .maybeSingle();
-
-      const categoryName = category?.name || 'Sin categoría';
-
-      // 3. Place info
-      const { data: place } = await supabase
-        .from('places')
-        .select('country, community, placename')
-        .eq('id', shop.place_id)
-        .maybeSingle();
-
-      const country = place?.country || 'Desconocido';
-      const community = place?.community || 'Desconocido';
-      const placename = place?.placename || 'Desconocido';
-
-      // 4. Render breadcrumbs
-      document.getElementById('breadcrumbs').innerHTML = `
-        <a href="index.html">${country}</a> >
-        <span>${community}</span> >
-        <span>${placename}</span> >
-        <span>${categoryName}</span> >
-        <strong>${shop.name}</strong>
+    function renderFieldLink(label, value, href) {
+      if (!value) return "";
+      return `
+        <div class="field">
+          <div class="label">${label}</div>
+          <a class="value" href="${href}" target="_blank">${value}</a>
+        </div>
       `;
     }
 
     loadShop();
   </script>
+
 </body>
 </html>
