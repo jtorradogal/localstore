@@ -1,4 +1,3 @@
-// api/shop.js
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -7,40 +6,35 @@ const supabase = createClient(
 );
 
 export default async function handler(req, res) {
-  const id = req.query.id;
-
-  if (!id) {
-    return res.status(400).json({ error: "Missing id" });
-  }
-
   try {
+    const id = Number(req.query.id);
+
+    if (!id) {
+      return res.status(400).json({ status: 'error', message: 'Missing shop id' });
+    }
+
     const { data, error } = await supabase
-      .from("shops")
+      .from('shops')
       .select(`
-        *,
-        categories:category ( category ),
-        places:place_id ( placename )
+        id,
+        name,
+        address,
+        phone,
+        email,
+        website,
+        description,
+        category:category (category),
+        place:place_id (placename)
       `)
-      .eq("id", id)
+      .eq('id', id)
       .single();
 
-    if (error) throw error;
+    if (error) {
+      return res.status(500).json({ status: 'error', message: error.message });
+    }
 
-    res.status(200).json({
-      data: {
-        id: data.id,
-        name: data.name,
-        address: data.address,
-        phone: data.phone,
-        email: data.email,
-        website: data.website,
-        description: data.description,
-        category_name: data.categories?.category || null,
-        place_name: data.places?.placename || null
-      }
-    });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: e.message });
+    return res.status(200).json({ status: 'success', data });
+  } catch (err) {
+    return res.status(500).json({ status: 'error', message: err.message });
   }
 }
