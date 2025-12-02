@@ -7,7 +7,6 @@
   <meta name="author" content="colorlib.com" />
   <title>Localstore</title>
 
-  <!-- GOOGLE ADSENSE -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3707563990872003"
     crossorigin="anonymous"></script>
 
@@ -15,35 +14,10 @@
   <link href="css/main.css" rel="stylesheet" />
 
   <style>
-    /* Caja de resultados */
-    #results {
-      max-width: 600px;
-      margin: 30px auto;
-      font-family: Poppins, Arial, sans-serif;
-    }
+    #results { display: none; } /* ya no se usa */
 
-    #results p {
-      background: #fff;
-      padding: 15px;
-      margin-bottom: 8px;
-      border-radius: 6px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-
-    #results a {
-      font-weight: 600;
-      color: #0070f3;
-      text-decoration: none;
-      font-size: 18px;
-    }
-
-    #results span {
-      color: #555;
-      font-size: 14px;
-    }
-
-    /* AUTOCOMPLETADO */
-    #autocomplete-categories {
+    #autocomplete-categories,
+    #autocomplete-places {
       background: white;
       border: 1px solid #ccc;
       border-radius: 5px;
@@ -56,38 +30,16 @@
       font-family: Poppins, Arial, sans-serif;
     }
 
-    #autocomplete-categories div {
+    #autocomplete-categories div,
+    #autocomplete-places div {
       padding: 8px 12px;
       cursor: pointer;
     }
 
-    #autocomplete-categories div:hover {
+    #autocomplete-categories div:hover,
+    #autocomplete-places div:hover {
       background: #f0f0f0;
     }
-/* AUTOCOMPLETADO DE LUGARES */
-#autocomplete-places {
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 100%;
-  max-width: 320px;
-  position: absolute;
-  top: 48px;
-  left: 0;
-  z-index: 9999;
-  font-family: Poppins, Arial, sans-serif;
-}
-
-#autocomplete-places div {
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-#autocomplete-places div:hover {
-  background: #f0f0f0;
-}
-
-    
   </style>
 </head>
 
@@ -101,17 +53,17 @@
 
       <div class="inner-form">
 
-        <!-- Campo de categoría con autocompletado -->
+        <!-- Categoría -->
         <div class="input-field first-wrap" style="position: relative;">
           <input id="search" type="text" placeholder="¿Qué estás buscando?" autocomplete="off" />
           <div id="autocomplete-categories"></div>
         </div>
 
-       <div class="input-field second-wrap" style="position: relative;">
-  <input id="location" type="text" placeholder="¿Dónde lo estás buscando?" autocomplete="off" />
-  <div id="autocomplete-places"></div>
-</div>
-
+        <!-- Lugar -->
+        <div class="input-field second-wrap" style="position: relative;">
+          <input id="location" type="text" placeholder="¿Dónde lo estás buscando?" autocomplete="off" />
+          <div id="autocomplete-places"></div>
+        </div>
 
         <div class="input-field third-wrap">
           <button class="btn-search" type="button" id="btnSearch">
@@ -122,151 +74,104 @@
     </form>
   </div>
 
-  <div id="results"></div>
-
   <script>
     const searchInput = document.getElementById('search');
     const locationInput = document.getElementById('location');
     const btnSearch = document.getElementById('btnSearch');
-    const resultsDiv = document.getElementById('results');
-    const autocompleteBox = document.getElementById('autocomplete-categories');
 
-    /* AUTOCOMPLETADO */
+    const autocompleteCategories = document.getElementById('autocomplete-categories');
+    const autocompletePlaces = document.getElementById('autocomplete-places');
+
+    /* AUTOCOMPLETADO DE CATEGORÍAS */
     searchInput.addEventListener('input', async () => {
       const q = searchInput.value.trim();
-
-      if (!q) {
-        autocompleteBox.innerHTML = '';
-        return;
-      }
+      if (!q) { autocompleteCategories.innerHTML = ''; return; }
 
       try {
         const res = await fetch(`/api/categories?q=${encodeURIComponent(q)}`);
-const json = await res.json();
+        const json = await res.json();
 
-if (!json.categories || json.categories.length === 0) {
-  autocompleteBox.innerHTML = '';
-  return;
-}
+        if (!json.categories?.length) {
+          autocompleteCategories.innerHTML = '';
+          return;
+        }
 
-autocompleteBox.innerHTML = json.categories
-  .map(cat => `<div data-id="${cat.id}" data-name="${cat.category}">${cat.category}</div>`)
-  .join('');
+        autocompleteCategories.innerHTML = json.categories
+          .map(cat => `<div data-id="${cat.id}" data-name="${cat.category}">${cat.category}</div>`)
+          .join('');
 
-
-document
-  .querySelectorAll('#autocomplete-categories div')
-  .forEach(el => {
-    el.addEventListener('click', () => {
-      searchInput.value = el.dataset.name;
-      searchInput.dataset.categoryId = el.dataset.id;   // guardamos el ID oculto
-      autocompleteBox.innerHTML = '';
-    });
-  });
-
+        document.querySelectorAll('#autocomplete-categories div').forEach(el => {
+          el.addEventListener('click', () => {
+            searchInput.value = el.dataset.name;
+            searchInput.dataset.categoryId = el.dataset.id;
+            autocompleteCategories.innerHTML = '';
+          });
+        });
 
       } catch (err) {
-        console.error('Error cargando autocompletado:', err);
+        console.error(err);
       }
     });
 
-    document.addEventListener('click', (e) => {
-      if (!autocompleteBox.contains(e.target) && e.target !== searchInput) {
-        autocompleteBox.innerHTML = '';
+    document.addEventListener('click', e => {
+      if (!autocompleteCategories.contains(e.target) && e.target !== searchInput) {
+        autocompleteCategories.innerHTML = '';
       }
     });
 
-    /* AUTOCOMPLETADO DE LUGARES (places) */
+    /* AUTOCOMPLETADO DE PLACES */
+    locationInput.addEventListener('input', async () => {
+      const q = locationInput.value.trim();
+      if (!q) { autocompletePlaces.innerHTML = ''; return; }
 
-const autocompletePlaces = document.getElementById('autocomplete-places');
+      try {
+        const res = await fetch(`/api/places?q=${encodeURIComponent(q)}`);
+        const json = await res.json();
 
-locationInput.addEventListener('input', async () => {
-  const q = locationInput.value.trim();
-
-  if (!q) {
-    autocompletePlaces.innerHTML = '';
-    return;
-  }
-
-  try {
-    const res = await fetch(`/api/places?q=${encodeURIComponent(q)}`);
-    const json = await res.json();
-
-    if (!json.places || json.places.length === 0) {
-      autocompletePlaces.innerHTML = '';
-      return;
-    }
-
-    autocompletePlaces.innerHTML = json.places
-      .map(p => `<div data-id="${p.id}" data-name="${p.placename}">${p.placename}</div>`)
-      .join('');
-
-    document
-      .querySelectorAll('#autocomplete-places div')
-      .forEach(el => {
-        el.addEventListener('click', () => {
-          locationInput.value = el.dataset.name;
-          locationInput.dataset.placeId = el.dataset.id;
+        if (!json.places?.length) {
           autocompletePlaces.innerHTML = '';
+          return;
+        }
+
+        autocompletePlaces.innerHTML = json.places
+          .map(p => `<div data-id="${p.id}" data-name="${p.placename}">${p.placename}</div>`)
+          .join('');
+
+        document.querySelectorAll('#autocomplete-places div').forEach(el => {
+          el.addEventListener('click', () => {
+            locationInput.value = el.dataset.name;
+            locationInput.dataset.placeId = el.dataset.id;
+            autocompletePlaces.innerHTML = '';
+          });
         });
-      });
 
-  } catch (error) {
-    console.error('Error cargando lugares:', error);
-  }
-});
+      } catch (err) {
+        console.error(err);
+      }
+    });
 
-document.addEventListener('click', (e) => {
-  if (!autocompletePlaces.contains(e.target) && e.target !== locationInput) {
-    autocompletePlaces.innerHTML = '';
-  }
-});
+    document.addEventListener('click', e => {
+      if (!autocompletePlaces.contains(e.target) && e.target !== locationInput) {
+        autocompletePlaces.innerHTML = '';
+      }
+    });
 
+    /* REDIRECCIÓN A results.html */
+    btnSearch.addEventListener('click', () => {
+      const categoryId = searchInput.dataset.categoryId || '';
+      const place = locationInput.value.trim() || '';
 
-    /* BÚSQUEDA PRINCIPAL */
-async function doSearch() {
-  const categoryId = searchInput.dataset.categoryId || '';
-  const place = locationInput.value.trim();
+      if (!categoryId && !place) {
+        alert('Introduce al menos una categoría o ubicación.');
+        return;
+      }
 
-  const params = new URLSearchParams();
+      const params = new URLSearchParams();
+      if (categoryId) params.append('category_id', categoryId);
+      if (place) params.append('place', place);
 
-  if (categoryId) params.append('category_id', categoryId);
-  if (place) params.append('place', place);
-
-  if (!categoryId && !place) {
-    resultsDiv.innerHTML = '<p>Introduce al menos una categoría o ubicación.</p>';
-    return;
-  }
-
-  resultsDiv.innerHTML = '<p>Cargando resultados...</p>';
-
-  try {
-    const res = await fetch(`/api/shops?` + params.toString());
-    const json = await res.json();
-
-    if (json.data && json.data.length > 0) {
-      resultsDiv.innerHTML = json.data
-        .map(s => `
-          <p>
-            <a href="/shop.html?id=${s.id}">
-              ${s.name}
-            </a>
-            <br>
-            <span>${s.category_name || ''} en ${s.place_name || ''}</span>
-          </p>
-        `)
-        .join('');
-    } else {
-      resultsDiv.innerHTML = '<p>No se encontraron resultados.</p>';
-    }
-  } catch (error) {
-    console.error('Error fetching shops:', error);
-    resultsDiv.innerHTML = '<p>Error al buscar tiendas.</p>';
-  }
-}
-
-btnSearch.addEventListener('click', doSearch);
-
+      window.location.href = `results.html?${params.toString()}`;
+    });
   </script>
 
 </body>
