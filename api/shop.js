@@ -23,6 +23,7 @@ export default async function handler(req, res) {
         email,
         website,
         description,
+        image_url,
         category:category (category),
         place:place_id (placename)
       `)
