@@ -125,10 +125,7 @@
           ${renderFieldLink("Web", s.website, s.website)}
           ${renderField("Descripción", s.description)}
           ${renderField("Lugar", s.place_name)}
-          </div>
-
-    ${s.image_url ? `<img class="full-image" src="${s.image_url}" alt="Foto del negocio">` : ""}
-  </div>
+          `;
         loadMap(s);
 
       } catch (err) {
