@@ -71,16 +71,18 @@
         }
 
         resultsDiv.innerHTML = json.data
-          .map(s => `
-            <div class="shop">
-              <a href="/shop.html?id=${s.id}">${s.name}</a>
-              <p class="meta">
-                Categoría: ${s.category_name || "Sin categoría"}<br>
-                Lugar: ${s.place_name || "Sin lugar"}
-              </p>
-            </div>
-          `)
-          .join("");
+  .map(s => `
+    <div class="shop">
+      ${s.image_url ? `<img src="${s.image_url}" class="thumb">` : ''}
+      <a href="/shop.html?id=${s.id}">${s.name}</a>
+      <p class="meta">
+        Categoría: ${s.category_name || "Sin categoría"}<br>
+        Lugar: ${s.place_name || "Sin lugar"}
+      </p>
+    </div>
+  `)
+  .join("");
+
 
       } catch (err) {
         console.error(err);
