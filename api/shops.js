@@ -12,18 +12,13 @@ export default async function handler(req, res) {
     const place_id_param = req.query.place_id ?? '';
     const place_text = req.query.place ?? '';
 
-    // Preprocesar place_text: si viene texto, resolver ids en places
-    let placeIds = null; // null = no filtro por places aún; [] = filtro vacío (forzar 0 resultados)
+    // Procesar place (texto o id)
+    let placeIds = null;
 
     if (place_id_param) {
       const pNum = Number(place_id_param);
-      if (!Number.isNaN(pNum)) {
-        placeIds = [pNum];
-      } else {
-        placeIds = []; // inválido -> nada
-      }
+      placeIds = Number.isNaN(pNum) ? [] : [pNum];
     } else if (place_text) {
-      // buscar ids coincidentes en places
       const { data: pRows, error: pErr } = await supabase
         .from('places')
         .select('id')
@@ -35,41 +30,35 @@ export default async function handler(req, res) {
       }
 
       if (!pRows || pRows.length === 0) {
-        // No hay lugares que coincidan -> devolver vacio (cumplir AND)
         return res.status(200).json({ status: 'success', data: [] });
       }
 
       placeIds = pRows.map(r => r.id);
     }
 
-    // Construir query principal sobre shops
+    // Query principal
     let query = supabase
       .from('shops')
       .select(`
         id,
         name,
-        category,
-        place_id,
         address,
         phone,
         email,
         website,
         description,
+        image_url,
         categories:category ( category ),
         places:place_id ( placename )
       `);
 
-    // Aplicar filtro categoría si viene
     if (category_id) {
       const cNum = Number(category_id);
       if (!Number.isNaN(cNum)) query = query.eq('category', cNum);
     }
 
-    // Aplicar filtro por placeIds si se resolvieron
     if (placeIds !== null) {
-      // placeIds es array (no null)
       if (placeIds.length === 0) {
-        // seguridad adicional: si array vacío devolvemos vacío
         return res.status(200).json({ status: 'success', data: [] });
       }
       query = query.in('place_id', placeIds);
@@ -81,11 +70,12 @@ export default async function handler(req, res) {
       console.error('Supabase error (shops):', error);
       return res.status(500).json({
         status: 'error',
-        message: 'Error al consultar la base de datos Supabase',
+        message: 'Error al consultar Supabase',
         details: error.message
       });
     }
 
+    // Formato final
     const formatted = (data || []).map(s => ({
       id: s.id,
       name: s.name,
@@ -95,18 +85,16 @@ export default async function handler(req, res) {
       website: s.website,
       description: s.description,
       category_name: s.categories?.category || '',
-      place_name: s.places?.placename || ''
+      place_name: s.places?.placename || '',
+      image_url: s.image_url || ''   // <- NUEVO
     }));
 
-    return res.status(200).json({
-      status: 'success',
-      data: formatted
-    });
+    return res.status(200).json({ status: 'success', data: formatted });
   } catch (err) {
     console.error('Unexpected error:', err);
     return res.status(500).json({
       status: 'error',
-      message: 'Error inesperado al procesar la solicitud',
+      message: 'Error inesperado',
       details: err.message
     });
   }
