@@ -58,6 +58,20 @@
       border: 0;
       border-radius: 8px;
     }
+    .full-image {
+      width: 100%;
+      max-width: 300px; /* o 400 si quieres */
+      border-radius: 8px;
+      margin-left: 20px;
+      object-fit: cover; /* mantenemos formato */
+  }
+    #detailsWrapper {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    
   </style>
 </head>
 
@@ -94,7 +108,7 @@
         const json = await res.json();
 
         if (!json.data) {
-          document.getElementById("shopData").innerHTML =
+          do").innerHTML =
             "<p>No se encontró la tienda.</p>";
           return;
         }
@@ -103,7 +117,7 @@
 
         document.getElementById("shopName").textContent = s.name || "Sin nombre";
 
-        document.getElementById("shopData").innerHTML = `
+        do").innerHTML = `
           ${renderField("Categoría", s.category_name)}
           ${renderField("Dirección", s.address)}
           ${renderField("Teléfono", s.phone)}
@@ -111,8 +125,7 @@
           ${renderFieldLink("Web", s.website, s.website)}
           ${renderField("Descripción", s.description)}
           ${renderField("Lugar", s.place_name)}
-        `;
-
+          ${s.image_url ? `<img class="full-image" src="${s.image_url}" alt="Foto del negocio">` : ""}
         loadMap(s);
 
       } catch (err) {
