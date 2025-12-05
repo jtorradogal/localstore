@@ -108,24 +108,26 @@
         const json = await res.json();
 
         if (!json.data) {
-          do").innerHTML =
-            "<p>No se encontró la tienda.</p>";
-          return;
-        }
+  document.getElementById("shopData").innerHTML =
+    "<p>No se encontró la tienda.</p>";
+  return;
+}
+
 
         const s = json.data;
 
         document.getElementById("shopName").textContent = s.name || "Sin nombre";
 
-        do").innerHTML = `
-          ${renderField("Categoría", s.category_name)}
-          ${renderField("Dirección", s.address)}
-          ${renderField("Teléfono", s.phone)}
-          ${renderFieldLink("Email", s.email, "mailto:" + s.email)}
-          ${renderFieldLink("Web", s.website, s.website)}
-          ${renderField("Descripción", s.description)}
-          ${renderField("Lugar", s.place_name)}
-          `;
+        document.getElementById("shopData").innerHTML = `
+  ${renderField("Categoría", s.category_name)}
+  ${renderField("Dirección", s.address)}
+  ${renderField("Teléfono", s.phone)}
+  ${renderFieldLink("Email", s.email, "mailto:" + s.email)}
+  ${renderFieldLink("Web", s.website, s.website)}
+  ${renderField("Descripción", s.description)}
+  ${renderField("Lugar", s.place_name)}
+`;
+
         loadMap(s);
 
       } catch (err) {
