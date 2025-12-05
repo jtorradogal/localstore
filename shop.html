@@ -59,12 +59,14 @@
       border-radius: 8px;
     }
     .full-image {
-      width: 100%;
-      max-width: 300px; /* o 400 si quieres */
-      border-radius: 8px;
-      margin-left: 20px;
-      object-fit: cover; /* mantenemos formato */
-  }
+  width: 100%;
+  max-width: 300px;
+  border-radius: 8px;
+  margin: 10px 0 20px 0;
+  object-fit: cover;
+  display: block;
+}
+
     #detailsWrapper {
       display: flex;
       align-items: flex-start;
@@ -79,6 +81,8 @@
 
   <a href="javascript:history.back()" class="back">Volver</a>
   <h1 id="shopName">Cargando...</h1>
+ 
+  <div id="imageWrapper"></div>
 
   <div id="shopData">Cargando datos...</div>
 
@@ -117,6 +121,13 @@
         const s = json.data;
 
         document.getElementById("shopName").textContent = s.name || "Sin nombre";
+        // Mostrar imagen si existe
+if (s.image_url) {
+  document.getElementById("imageWrapper").innerHTML = `
+    <img src="${s.image_url}" class="full-image" alt="Imagen del negocio">
+  `;
+}
+
 
         document.getElementById("shopData").innerHTML = `
   ${renderField("Categoría", s.category_name)}
