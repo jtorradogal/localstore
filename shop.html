@@ -161,8 +161,8 @@
 
 
         document.getElementById("shopData").innerHTML = `
-  ${renderField("Categoría", s.category_name)}
-  ${renderField("Dirección", s.address)}
+  ${renderField("Categoría", s.category?.category)}
+  ${renderField("Lugar", s.place?.placename)}
   ${renderField("Teléfono", s.phone)}
   ${renderFieldLink("Email", s.email, "mailto:" + s.email)}
   ${renderFieldLink("Web", s.website, s.website)}
