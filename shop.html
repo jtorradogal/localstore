@@ -127,7 +127,9 @@
 </table>
 
 <!-- Ubicación debajo -->
-<div id="locationWrapper"></div>
+<div id="locationWrapper">
+  <iframe id="map" width="100%" height="300" style="border:0;border-radius:8px;" loading="lazy"></iframe>
+</div>
 
 
   <script>
@@ -155,12 +157,7 @@
         const s = json.data;
 
         document.getElementById("shopName").textContent = s.name || "Sin nombre";
-        // Mostrar imagen si existe
-if (s.image_url) {
-  document.getElementById("imageWrapper").innerHTML = `
-    <img src="${s.image_url}" class="full-image" alt="Imagen del negocio">
-  `;
-}
+        
 
 
         document.getElementById("shopData").innerHTML = `
@@ -201,7 +198,7 @@ if (s.image_url) {
       document.getElementById("map").src =
         `https://www.google.com/maps/embed/v1/place?key=AIzaSyD4J5HvD1OoxxrYZ0REOVdDpLCfoT8QUkM&q=${encoded}`;
 
-      document.getElementById("mapContainer").style.display = "block";
+      document.getElementById("locationWrapper").style.display = "block";
     }
 
     function renderField(label, value) {
