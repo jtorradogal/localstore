@@ -24,8 +24,15 @@ export default async function handler(req, res) {
         website,
         description,
         image_url,
-        category:category (category),
-        place:place_id (placename)
+        schedule,        
+        category:category (
+          id,
+          category
+        ),
+        place:place_id (
+          id,
+          placename
+        )
       `)
       .eq('id', id)
       .single();
