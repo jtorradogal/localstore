@@ -466,6 +466,7 @@ legend {
   background-size: cover;
   background-position: center center;
   padding: 15px;
+  flex-direction: column;
 }
 
 .s01 form {
