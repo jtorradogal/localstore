@@ -671,3 +671,9 @@ legend {
     margin-right: 10px;
   }
 }
+.s01 .header-block {
+  width: 100%;
+  display: block;
+  text-align: center;
+  margin-bottom: 40px;
+}
