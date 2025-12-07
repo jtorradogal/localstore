@@ -498,11 +498,7 @@ legend {
   height: 68px;
 }
 
-.s01 form .inner-form .input-field input {
-  border: none;
-  border-radius: 6px;
-  outline: none;
-}
+.s01 form .inner-form .input-field input { height: 100%; background: #fff; border-radius: .5px; border: 0; display: block; width: 100%; padding: 10px 32px; font-size: 20px; }
 
 
 .s01 form .inner-form .input-field input.placeholder {
