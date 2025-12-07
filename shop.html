@@ -172,6 +172,16 @@ if (s.image_url) {
   ${renderField("Descripción", s.description)}
   ${renderField("Lugar", s.place_name)}
 `;
+// Mostrar la imagen si existe
+if (s.image_url) {
+  document.getElementById("imageWrapper").innerHTML = `
+    <img src="${s.image_url}" class="full-image" alt="Imagen del negocio">
+  `;
+} else {
+  document.getElementById("imageWrapper").innerHTML = `
+    <div style="color:#999;">Sin imagen disponible</div>
+  `;
+}
 
         loadMap(s);
 
