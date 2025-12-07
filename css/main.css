@@ -619,3 +619,55 @@ legend {
 .breadcrumbs a:hover {
   text-decoration: underline;
 }
+#main-footer {
+  background: #4272d7;
+  color: white;
+  padding: 40px 0 20px 0;
+  font-family: Poppins, Arial, sans-serif;
+}
+
+.footer-container {
+  max-width: 1200px; /* MISMA ALINEACIÓN QUE EL GLASS BOX */
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-left .footer-contact a {
+  color: white;
+  text-decoration: underline;
+}
+
+.footer-right a {
+  margin-left: 20px;
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footer-right a:hover {
+  text-decoration: underline;
+}
+
+.footer-disclaimer {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .footer-right a {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
