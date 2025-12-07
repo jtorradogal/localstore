@@ -112,6 +112,97 @@
     width: 100%;
   }
 }
+/* Secciones generales */
+.feature-section {
+  width: 100%;
+  padding: 80px 20px;
+}
+
+.feature-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+/* SECCIÓN 1 */
+.blue-section {
+  background: #4272d7;
+  color: white;
+}
+
+.feature-image {
+  width: 50%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.img-fill {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.feature-text h2 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.feature-text p {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.feature-button {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #000;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* SECCIÓN 2 CON FONDO COMPLETO */
+.second-bg {
+  background-image: url("images/section2.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 120px 20px; /* un poco más grande para destacar el cristal */
+  position: relative;
+}
+
+/* EFECTO CRISTAL / GLASSMORPHISM */
+.glass-box {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 40px;
+  border-radius: 12px;
+  color: #000;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .feature-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .feature-image {
+    width: 100%;
+  }
+
+  .glass-box {
+    align-items: center;
+  }
+}
 
   </style>
 </head>
@@ -147,30 +238,33 @@
     </form>
   </div>
 
-  <!-- SECCIÓN 1: Buscador gratuito de negocios locales -->
+<!-- SECCIÓN 1: Buscador gratuito de negocios locales -->
 <section class="feature-section blue-section">
   <div class="feature-content">
-    <div class="feature-image placeholder-left"></div>
+
+    <div class="feature-image">
+      <img src="images/section1.jpg" alt="Imagen sección 1" class="img-fill">
+    </div>
 
     <div class="feature-text">
       <h2>Buscador gratuito de negocios locales</h2>
       <p>¡Fomenta el negocio local de tu localidad con este buscador totalmente gratis!</p>
     </div>
+
   </div>
 </section>
 
 <!-- SECCIÓN 2: Promociona tu negocio -->
-<section class="feature-section gold-section">
-  <div class="feature-content">
+<section class="feature-section second-bg">
+  <div class="feature-content glass-box">
     <div class="feature-text">
       <h2>¡Promociona tu negocio gratis!</h2>
       <p>Mejora el posicionamiento de tu negocio publicitándolo con un sencillo formulario.</p>
       <a class="feature-button" href="">Ir al formulario</a>
     </div>
-
-    <div class="feature-image placeholder-right"></div>
   </div>
 </section>
+
 
 
   
