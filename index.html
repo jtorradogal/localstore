@@ -398,6 +398,17 @@
     observer.observe(section);
   });
 </script>
+<div id="footer-placeholder"></div>
+
+<script>
+  // Cargar footer.html dinámicamente
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(err => console.error("No se pudo cargar el footer:", err));
+</script>
 
 </body>
 </html>
