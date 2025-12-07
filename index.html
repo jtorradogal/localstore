@@ -40,6 +40,79 @@
     #autocomplete-places div:hover {
       background: #f0f0f0;
     }
+
+    /* Secciones informativas debajo del buscador */
+.feature-section {
+  width: 100%;
+  padding: 80px 20px;
+}
+
+.blue-section {
+  background: #4272d7;
+  color: white;
+}
+
+.gold-section {
+  background: #bd8d28;
+  color: white;
+}
+
+.feature-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.feature-text h2 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.feature-text p {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.feature-button {
+  display: inline-block;
+  padding: 12px 20px;
+  background: white;
+  color: #333;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.feature-image {
+  width: 50%;
+  height: 220px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 8px;
+}
+
+.placeholder-left {
+  /* solo para distinguir */
+}
+
+.placeholder-right {
+  /* igual, puedes cambiar después */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .feature-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .feature-image {
+    width: 100%;
+  }
+}
+
   </style>
 </head>
 
@@ -74,6 +147,33 @@
     </form>
   </div>
 
+  <!-- SECCIÓN 1: Buscador gratuito de negocios locales -->
+<section class="feature-section blue-section">
+  <div class="feature-content">
+    <div class="feature-image placeholder-left"></div>
+
+    <div class="feature-text">
+      <h2>Buscador gratuito de negocios locales</h2>
+      <p>¡Fomenta el negocio local de tu localidad con este buscador totalmente gratis!</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 2: Promociona tu negocio -->
+<section class="feature-section gold-section">
+  <div class="feature-content">
+    <div class="feature-text">
+      <h2>¡Promociona tu negocio gratis!</h2>
+      <p>Mejora el posicionamiento de tu negocio publicitándolo con un sencillo formulario.</p>
+      <a class="feature-button" href="">Ir al formulario</a>
+    </div>
+
+    <div class="feature-image placeholder-right"></div>
+  </div>
+</section>
+
+
+  
   <script>
     const searchInput = document.getElementById('search');
     const locationInput = document.getElementById('location');
