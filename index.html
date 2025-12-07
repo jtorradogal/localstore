@@ -227,11 +227,35 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+/* Contenedor para centrar el logo */
+.logo-wrapper {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px; /* separación respecto al formulario */
+}
+
+/* Ajuste del logo grande: reducimos la imagen original (1448x1072) */
+.main-logo {
+  width: 220px;          /* tamaño equilibrado */
+  max-width: 40vw;       /* adaptable a pantallas pequeñas */
+  height: auto;          /* mantiene proporción */
+  display: inline-block;
+}
+
+/* Centrar el texto del legend */
+.s01 fieldset legend {
+  text-align: center;
+  width: 100%;
+  display: block;
+}
 
   </style>
 </head>
 
 <body>
+  <div class="logo-wrapper">
+  <img src="images/full_logo_white.jpg" alt="Logo LocalStore" class="main-logo">
+  </div>
 
   <div class="s01">
     <form>
