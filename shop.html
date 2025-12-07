@@ -72,6 +72,36 @@
       align-items: flex-start;
       gap: 20px;
     }
+    #shopLayout {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+#shopLayout td {
+  vertical-align: top;
+  padding: 10px;
+}
+
+#leftCol {
+  width: 60%;
+}
+
+#rightCol {
+  width: 40%;
+  text-align: right;
+}
+
+.full-image {
+  width: 100%;
+  max-width: 250px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+#locationWrapper {
+  margin-top: 30px;
+}
 
     
   </style>
@@ -81,20 +111,24 @@
 
   <a href="javascript:history.back()" class="back">Volver</a>
   <h1 id="shopName">Cargando...</h1>
- 
-  <div id="imageWrapper"></div>
 
-  <div id="shopData">Cargando datos...</div>
+<table id="shopLayout">
+  <tr>
+    <!-- Columna izquierda: datos -->
+    <td id="leftCol">
+      <div id="shopData">Cargando datos...</div>
+    </td>
 
-  <div id="mapContainer" style="display:none;">
-    <h3>Ubicación</h3>
-    <iframe
-      id="map"
-      loading="lazy"
-      allowfullscreen
-      referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-  </div>
+    <!-- Columna derecha: imagen -->
+    <td id="rightCol">
+      <div id="imageWrapper"></div>
+    </td>
+  </tr>
+</table>
+
+<!-- Ubicación debajo -->
+<div id="locationWrapper"></div>
+
 
   <script>
     const params = new URLSearchParams(window.location.search);
