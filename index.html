@@ -126,6 +126,30 @@
   align-items: center;
 }
 
+/* CONTENEDOR GENERAL PARA ALINEACIÓN */
+.feature-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  padding: 0 20px;
+}
+
+/* SECCIONES */
+.feature-section {
+  width: 100%;
+  padding: 80px 0;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity .8s ease, transform .8s ease;
+}
+
+.feature-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* SECCIÓN 1 */
 .blue-section {
   background: #4272d7;
@@ -151,10 +175,10 @@
 
 .feature-text p {
   font-size: 18px;
-  line-height: 1.5;
   margin-bottom: 20px;
 }
 
+/* Botón */
 .feature-button {
   display: inline-block;
   padding: 12px 20px;
@@ -165,17 +189,15 @@
   font-weight: bold;
 }
 
-/* SECCIÓN 2 CON FONDO COMPLETO */
+/* SECCIÓN 2 */
 .second-bg {
   background-image: url("images/section2.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding: 120px 20px; /* un poco más grande para destacar el cristal */
-  position: relative;
+  padding: 120px 0;
 }
 
-/* EFECTO CRISTAL / GLASSMORPHISM */
 .glass-box {
   background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(6px);
@@ -183,24 +205,19 @@
   padding: 40px;
   border-radius: 12px;
   color: #000;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
+  width: 50%; /* EXACTA alineación con el ancho de la imagen */
 }
 
-/* Responsive */
+/* RESPONSIVE */
 @media (max-width: 768px) {
-  .feature-content {
+  .feature-container {
     flex-direction: column;
     text-align: center;
   }
 
-  .feature-image {
-    width: 100%;
-  }
-
+  .feature-image,
   .glass-box {
-    align-items: center;
+    width: 100%;
   }
 }
 
@@ -238,9 +255,9 @@
     </form>
   </div>
 
-<!-- SECCIÓN 1: Buscador gratuito de negocios locales -->
-<section class="feature-section blue-section">
-  <div class="feature-content">
+<!-- SECCIÓN 1 -->
+<section class="feature-section blue-section observe">
+  <div class="feature-container">
 
     <div class="feature-image">
       <img src="images/section1.jpg" alt="Imagen sección 1" class="img-fill">
@@ -254,16 +271,17 @@
   </div>
 </section>
 
-<!-- SECCIÓN 2: Promociona tu negocio -->
-<section class="feature-section second-bg">
-  <div class="feature-content glass-box">
-    <div class="feature-text">
+<!-- SECCIÓN 2 -->
+<section class="feature-section second-bg observe">
+  <div class="feature-container">
+    <div class="glass-box">
       <h2>¡Promociona tu negocio gratis!</h2>
       <p>Mejora el posicionamiento de tu negocio publicitándolo con un sencillo formulario.</p>
       <a class="feature-button" href="">Ir al formulario</a>
     </div>
   </div>
 </section>
+
 
 
 
@@ -367,6 +385,19 @@
       window.location.href = `results.html?${params.toString()}`;
     });
   </script>
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('.observe').forEach(section => {
+    observer.observe(section);
+  });
+</script>
 
 </body>
 </html>
