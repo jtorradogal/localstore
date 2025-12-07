@@ -169,6 +169,10 @@
   ${renderField("Descripción", s.description)}
   ${renderField("Lugar", s.place_name)}
 `;
+
+        if (s.schedule) {
+  document.getElementById("shopData").innerHTML += renderSchedule(s.schedule);
+}
 // Mostrar la imagen si existe
 if (s.image_url) {
   document.getElementById("imageWrapper").innerHTML = `
@@ -223,6 +227,45 @@ if (s.image_url) {
     }
 
     loadShop();
+
+    
+function renderSchedule(schedule) {
+  const days = {
+    monday: "Lunes",
+    tuesday: "Martes",
+    wednesday: "Miércoles",
+    thursday: "Jueves",
+    friday: "Viernes",
+    saturday: "Sábado",
+    sunday: "Domingo"
+  };
+
+  let html = `
+    <div class="field">
+      <div class="label">Horario</div>
+      <div class="value">
+  `;
+
+  for (const key in days) {
+    const slots = schedule[key] || [];
+    if (slots.length === 0) {
+      html += `<div>${days[key]}: Cerrado</div>`;
+    } else {
+      const line = slots
+        .map(s => `${s.open} a ${s.close}`)
+        .join(" y ");
+      html += `<div>${days[key]}: ${line}</div>`;
+    }
+  }
+
+  html += `
+      </div>
+    </div>
+  `;
+
+  return html;
+}
+
   </script>
 
 </body>
