@@ -626,8 +626,8 @@ document.addEventListener("scroll", () => {
 <script>
   // Obtener elementos
   const btn = document.getElementById('btnSearch');
-  const inputCategory = document.getElementById('search');
-  const inputPlace = document.getElementById('location');
+  const inputCategory = document.getElementById('category');
+  const inputPlace = document.getElementById('place');
   const hint = document.getElementById('searchHint');
 
   // Evento del botón Buscar
@@ -654,40 +654,6 @@ document.addEventListener("scroll", () => {
       hint.classList.remove('show');
     }, 2300);
   }
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  const btn = document.getElementById('btnSearch');
-  const inputCategory = document.getElementById('search');     // ID real
-  const inputPlace = document.getElementById('location');       // ID real
-  const hint = document.getElementById('searchHint');
-
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    const category = inputCategory.value.trim();
-    const place = inputPlace.value.trim();
-
-    // Validación obligatoria
-    if (category === "" || place === "") {
-      showHint();
-      return;
-    }
-
-    // Redirección real
-    window.location.href = `shops.html?category=${encodeURIComponent(category)}&place=${encodeURIComponent(place)}`;
-  });
-
-  function showHint() {
-    hint.classList.add('show');
-
-    setTimeout(() => {
-      hint.classList.remove('show');
-    }, 2200);
-  }
-
-});
 </script>
 
 
