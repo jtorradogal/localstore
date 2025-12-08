@@ -624,37 +624,37 @@ document.addEventListener("scroll", () => {
 });
 </script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-
+  // Obtener elementos
   const btn = document.getElementById('btnSearch');
-  const inputCategory = document.getElementById('search');   // ID REAL
-  const inputPlace = document.getElementById('location');    // ID REAL
+  const inputCategory = document.getElementById('category');
+  const inputPlace = document.getElementById('place');
   const hint = document.getElementById('searchHint');
 
+  // Evento del botón Buscar
   btn.addEventListener('click', () => {
     const category = inputCategory.value.trim();
     const place = inputPlace.value.trim();
 
+    // Validación: ambos obligatorios
     if (category === "" || place === "") {
       showHint();
       return;
     }
 
-    // LÓGICA REAL DE BÚSQUEDA (no tocamos nada)
-    window.location.href = `shops.html?category=${encodeURIComponent(category)}&place=${encodeURIComponent(place)}`;
+    // Aquí tu lógica de búsqueda real
+    console.log("Buscando...", category, place);
   });
 
+  // Mostrar bocadillo
   function showHint() {
     hint.classList.add('show');
 
+    // Se oculta solo
     setTimeout(() => {
       hint.classList.remove('show');
     }, 2300);
   }
-
-});
 </script>
-
 
 
 </body>
