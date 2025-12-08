@@ -248,6 +248,21 @@
   width: 100%;
   display: block;
 }
+/* Animación de hover para inputs del buscador */
+.s01 form input {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.s01 form input:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 10px rgba(0,0,0,0.15);
+}
+
+.s01 form input:focus {
+  transform: scale(1.04);
+  box-shadow: 0 0 12px rgba(0,0,0,0.2);
+  outline: none;
+}
 
 /* CSS del HEADER */
 
