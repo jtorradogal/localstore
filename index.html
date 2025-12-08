@@ -367,6 +367,43 @@
   filter: brightness(0) invert(1); /* convierte logo blanco en negro si lo necesitas */
 }
 
+/* CSS del bocadillo de error en el botón Buscar */
+
+    /* Bocadillo tipo comic */
+.search-hint {
+  position: absolute;
+  top: -60px;
+  right: 0;
+  background: #fff;
+  color: #333;
+  padding: 10px 14px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  opacity: 0;
+  pointer-events: none;
+  font-size: 14px;
+  width: 210px;
+  transform: scale(0.8);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 20;
+}
+
+/* Triangulito del bocadillo */
+.search-hint::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  right: 20px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: #fff transparent transparent transparent;
+}
+
+/* Estado visible (lo activa JS) */
+.search-hint.show {
+  opacity: 1;
+  transform: scale(1);
+}
 
 
     
@@ -413,6 +450,9 @@
           <button class="btn-search" type="button" id="btnSearch">
             Buscar
           </button>
+          <!-- Bocadillo de aviso -->
+          <div id="searchHint" class="search-hint">¡Dime primero qué estás buscando y dónde!</div>
+          </div>
         </div>
       </div>
     </form>
