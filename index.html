@@ -624,15 +624,11 @@ document.addEventListener("scroll", () => {
 });
 </script>
 <script>
-  // Obtener elementos (IDs ACTUALES reales)
+  // Obtener elementos
   const btn = document.getElementById('btnSearch');
-  const inputCategory = document.getElementById('search');
-  const inputPlace = document.getElementById('location');
+  const inputCategory = document.getElementById('category');
+  const inputPlace = document.getElementById('place');
   const hint = document.getElementById('searchHint');
-
-  if (!btn || !inputCategory || !inputPlace || !hint) {
-    console.error("Error: faltan elementos del buscador en el HTML.");
-  }
 
   // Evento del botón Buscar
   btn.addEventListener('click', () => {
@@ -645,15 +641,15 @@ document.addEventListener("scroll", () => {
       return;
     }
 
-    // Redirección real a shop.html
-    const url = `shop.html?category=${encodeURIComponent(category)}&place=${encodeURIComponent(place)}`;
-    window.location.href = url;
+    // Aquí tu lógica de búsqueda real
+    console.log("Buscando...", category, place);
   });
 
   // Mostrar bocadillo
   function showHint() {
     hint.classList.add('show');
 
+    // Se oculta solo
     setTimeout(() => {
       hint.classList.remove('show');
     }, 2300);
