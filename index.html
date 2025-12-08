@@ -14,7 +14,7 @@
   <link href="css/main.css" rel="stylesheet" />
 
   <style>
-    #results { display: none; } /* ya no se usa */
+    #results { display: none; }
 
     #autocomplete-categories,
     #autocomplete-places {
@@ -41,621 +41,286 @@
       background: #f0f0f0;
     }
 
-    /* Secciones informativas debajo del buscador */
-.feature-section {
-  width: 100%;
-  padding: 80px 20px;
-}
+    /* ================================
+       BOCADILLO (Comic Tooltip)
+    ================================ */
+    .search-hint {
+      position: absolute;
+      top: -55px;
+      left: 50%;
+      transform: translateX(-50%) scale(0.7);
+      background: #ffffff;
+      color: #000;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 2px solid #333;
+      font-size: 14px;
+      opacity: 0;
+      pointer-events: none;
+      white-space: nowrap;
+      transition: opacity .25s ease, transform .25s ease;
+      z-index: 99999;
+    }
 
-.blue-section {
-  background: #4272d7;
-  color: white;
-}
+    .search-hint::after {
+      content: "";
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 12px 10px 0 10px;
+      border-style: solid;
+      border-color: #fff transparent transparent transparent;
+      filter: drop-shadow(0 -2px 0 #333);
+    }
 
-.gold-section {
-  background: #bd8d28;
-  color: white;
-}
+    .search-hint.show {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
 
-.feature-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  gap: 40px;
-  align-items: center;
-}
+    /* ================================
+       TU CSS COMPLETO ORIGINAL
+    ================================ */
 
-.feature-text h2 {
-  font-size: 32px;
-  margin-bottom: 10px;
-}
+    .feature-section {
+      width: 100%;
+      padding: 80px 20px;
+    }
 
-.feature-text p {
-  font-size: 18px;
-  line-height: 1.5;
-  margin-bottom: 20px;
-}
+    .blue-section {
+      background: #4272d7;
+      color: white;
+    }
 
-.feature-button {
-  display: inline-block;
-  padding: 12px 20px;
-  background: white;
-  color: #333;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: bold;
-}
+    .gold-section {
+      background: #bd8d28;
+      color: white;
+    }
 
-.feature-image {
-  width: 50%;
-  height: 220px;
-  background: rgba(255,255,255,0.2);
-  border-radius: 8px;
-}
+    .feature-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
 
-.placeholder-left {
-  /* solo para distinguir */
-}
+    .feature-text h2 { font-size: 32px; margin-bottom: 10px; }
+    .feature-text p { font-size: 18px; line-height: 1.5; margin-bottom: 20px; }
 
-.placeholder-right {
-  /* igual, puedes cambiar después */
-}
+    .feature-button {
+      display: inline-block;
+      padding: 12px 20px;
+      background: white;
+      color: #333;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+    }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .feature-content {
-    flex-direction: column;
-    text-align: center;
-  }
+    .feature-image {
+      width: 50%;
+      height: 220px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 8px;
+    }
 
-  .feature-image {
-    width: 100%;
-  }
-}
-/* Secciones generales */
-.feature-section {
-  width: 100%;
-  padding: 80px 20px;
-}
+    @media (max-width: 768px) {
+      .feature-content { flex-direction: column; text-align: center; }
+      .feature-image { width: 100%; }
+    }
 
-.feature-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  gap: 40px;
-  align-items: center;
-}
+    .feature-section {
+      width: 100%;
+      padding: 80px 0;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
 
-/* CONTENEDOR GENERAL PARA ALINEACIÓN */
-.feature-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  gap: 40px;
-  align-items: center;
-  padding: 0 20px;
-}
+    .feature-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-/* SECCIONES */
-.feature-section {
-  width: 100%;
-  padding: 80px 0;
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity .8s ease, transform .8s ease;
-}
+    .feature-image {
+      width: 50%;
+      border-radius: 8px;
+      overflow: hidden;
+    }
 
-.feature-section.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+    .img-fill { width: 100%; height: 100%; object-fit: cover; }
 
-/* SECCIÓN 1 */
-.blue-section {
-  background: #4272d7;
-  color: white;
-}
+    .feature-button {
+      display: inline-block;
+      padding: 12px 20px;
+      background: #000;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+    }
 
-.feature-image {
-  width: 50%;
-  border-radius: 8px;
-  overflow: hidden;
-}
+    .first-bg {
+      background-image: url("images/fondo_section1.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
 
-.img-fill {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+    .logo-wrapper { width: 100%; text-align: center; margin-bottom: 20px; }
+    .main-logo { width: 280px; max-width: 40vw; height: auto; display: inline-block; }
 
-.feature-text h2 {
-  font-size: 32px;
-  margin-bottom: 10px;
-}
+    .s01 fieldset legend {
+      text-align: center;
+      width: 100%;
+      display: block;
+    }
 
-.feature-text p {
-  font-size: 18px;
-  margin-bottom: 20px;
-}
+    .s01 form input {
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
 
-/* Botón */
-.feature-button {
-  display: inline-block;
-  padding: 12px 20px;
-  background: #000;
-  color: white;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: bold;
-}
+    .s01 form input:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
 
-/* SECCIÓN 2 */
-.second-bg {
-  background-image: url("images/section2.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  padding: 120px 0;
-}
+    .s01 form input:focus {
+      transform: scale(1.04);
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+      outline: none;
+    }
 
-.glass-box {
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  padding: 40px;
-  border-radius: 12px;
-  color: #000;
-  width: 50%; /* EXACTA alineación con el ancho de la imagen */
-}
+    .s01 form .btn-search {
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .feature-container {
-    flex-direction: column;
-    text-align: center;
-  }
+    .s01 form .btn-search:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
 
-  .feature-image,
-  .glass-box {
-    width: 100%;
-  }
-  .glass-box h2 {
-  font-size: 32px;
-  margin-bottom: 10px;
-}
-}
-/* Fondo para la sección 1 */
-.first-bg {
-  background-image: url("images/fondo_section1.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-/* Contenedor para centrar el logo */
-.logo-wrapper {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 20px; /* separación respecto al formulario */
-}
+    .s01 form .btn-search:active {
+      transform: scale(1.02);
+      box-shadow: 0 0 8px rgba(0,0,0,0.12);
+    }
 
-/* Ajuste del logo grande: reducimos la imagen original (1448x1072) */
-.main-logo {
-  width: 280px;          /* tamaño equilibrado */
-  max-width: 40vw;       /* adaptable a pantallas pequeñas */
-  height: auto;          /* mantiene proporción */
-  display: inline-block;
-}
-
-/* Centrar el texto del legend */
-.s01 fieldset legend {
-  text-align: center;
-  width: 100%;
-  display: block;
-}
-/* Animación de hover para inputs del buscador */
-.s01 form input {
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-
-.s01 form input:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 10px rgba(0,0,0,0.15);
-}
-
-.s01 form input:focus {
-  transform: scale(1.04);
-  box-shadow: 0 0 12px rgba(0,0,0,0.2);
-  outline: none;
-}
-/* Animación de hover para el botón de búsqueda */
-.s01 form .btn-search {
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-
-.s01 form .btn-search:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 10px rgba(0,0,0,0.15);
-}
-
-.s01 form .btn-search:active {
-  transform: scale(1.02);
-  box-shadow: 0 0 8px rgba(0,0,0,0.12);
-}
-
-.s01 form .btn-search:focus {
-  transform: scale(1.04);
-  box-shadow: 0 0 12px rgba(0,0,0,0.2);
-  outline: none;
-}
-
-    
-    
-/* CSS del HEADER */
+    .s01 form .btn-search:focus {
+      transform: scale(1.04);
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+      outline: none;
+    }
 
     /* HEADER */
-.main-header {
-  width: 100%;
-  padding: 20px 40px;
-  box-sizing: border-box;
-  position: absolute; /* para que quede encima del hero */
-  top: 0;
-  left: 0;
-  z-index: 2000;
-}
+    .main-header {
+      width: 100%;
+      padding: 20px 40px;
+      box-sizing: border-box;
+      position: absolute;
+      top: 0; left: 0;
+      z-index: 2000;
+    }
 
-.nav-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-.nav-logo img {
-  width: 42px;
-  height: auto;
-  cursor: pointer;
-}
+    .nav-logo img {
+      width: 42px;
+      height: auto;
+      cursor: pointer;
+    }
 
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 28px;
-  padding: 0;
-  margin: 0;
-}
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+      padding: 0;
+      margin: 0;
+    }
 
-.nav-links li a {
-  color: white;
-  font-family: Poppins, sans-serif;
-  font-size: 16px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: opacity 0.2s ease;
-}
-
-.nav-links li a:hover {
-  opacity: 0.7;
-}
-/* ESTADO NORMAL (al principio, transparente sobre la imagen) */
-.main-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 20px 40px;
-  box-sizing: border-box;
-  z-index: 2000;
-
-  background: transparent;
-  backdrop-filter: none;
-  transition: background 0.25s ease, backdrop-filter 0.25s ease, padding 0.25s ease;
-}
-
-/* ESTADO SCROLLED: sticky + blur */
-.main-header.scrolled {
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(8px);
-  padding: 12px 40px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-/* Para que los enlaces se vean oscuros cuando el fondo se aclare */
-.main-header.scrolled .nav-links li a {
-  color: #222;
-}
-
-.main-header.scrolled .nav-logo img {
-  filter: brightness(0) invert(1); /* convierte logo blanco en negro si lo necesitas */
-}
-
-/* CSS del bocadillo de error en el botón Buscar */
-
-    /* Bocadillo tipo comic */
-.search-hint {
-  position: absolute;
-  top: -60px;
-  right: 0;
-  background: #fff;
-  color: #333;
-  padding: 10px 14px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  opacity: 0;
-  pointer-events: none;
-  font-size: 14px;
-  width: 210px;
-  transform: scale(0.8);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  z-index: 20;
-}
-
-/* Triangulito del bocadillo */
-.search-hint::after {
-  content: "";
-  position: absolute;
-  bottom: -10px;
-  right: 20px;
-  border-width: 10px;
-  border-style: solid;
-  border-color: #fff transparent transparent transparent;
-}
-
-/* Estado visible (lo activa JS) */
-.search-hint.show {
-  opacity: 1;
-  transform: scale(1);
-}
-
-
-    
+    .nav-links li a {
+      color: white;
+      font-family: Poppins, sans-serif;
+      font-size: 16px;
+      text-decoration: none;
+    }
   </style>
 </head>
 
 <body>
-  
 
-  <div class="s01">
-    <!-- Header -->
-  <div id="header-placeholder"></div>
-  <script>
-    fetch("header.html")
-      .then(r => r.text())
-      .then(html => {
-        document.getElementById("header-placeholder").innerHTML = html;
-      });
-  </script>
-    
-    <div class="header-block">
-  <img src="images/full_logo_white.png" alt="Logo LocalStore" class="main-logo">
+<header class="main-header">
+  <div class="nav-container">
+    <div class="nav-logo">
+      <img src="images/logo.png" alt="Logo" />
+    </div>
+    <ul class="nav-links">
+      <li><a href="#">Inicio</a></li>
+      <li><a href="#">Servicios</a></li>
+      <li><a href="#">Contacto</a></li>
+    </ul>
   </div>
-    <form>
-      <fieldset>
-        <legend>Encuentra tu tienda local</legend>
-      </fieldset>
+</header>
+
+<div class="s01">
+  <form id="searchForm" novalidate>
+    <fieldset>
+      <legend>Encuentra comercios cerca de ti</legend>
 
       <div class="inner-form">
-
-        <!-- Categoría -->
-        <div class="input-field first-wrap" style="position: relative;">
-          <input id="search" type="text" placeholder="¿Qué estás buscando?" autocomplete="off" />
+        <div class="input-field">
+          <input id="search" type="text" placeholder="¿Qué buscas?" />
           <div id="autocomplete-categories"></div>
         </div>
 
-        <!-- Lugar -->
-        <div class="input-field second-wrap" style="position: relative;">
-          <input id="location" type="text" placeholder="¿Dónde lo estás buscando?" autocomplete="off" />
+        <div class="input-field">
+          <input id="location" type="text" placeholder="¿Dónde?" />
           <div id="autocomplete-places"></div>
         </div>
 
-        <div class="input-field third-wrap">
-          <button class="btn-search" type="button" id="btnSearch">
-            Buscar
-          </button>
-          <!-- Bocadillo de aviso -->
-          <div id="searchHint" class="search-hint">¡Dime primero qué estás buscando y dónde!</div>
+        <div class="input-field">
+          <button id="btnSearch" type="button" class="btn-search">Buscar</button>
+
+          <!-- BOCADILLO -->
+          <div id="searchHint" class="search-hint">
+            ¡Dime primero qué estás buscando y dónde!
           </div>
         </div>
       </div>
-    </form>
-  </div>
 
-<!-- SECCIÓN 1 -->
-<section class="feature-section blue-section first-bg observe">
-  <div class="feature-container">
-
-    <div class="feature-image">
-      <img src="images/section1.jpg" alt="Imagen sección 1" class="img-fill">
-    </div>
-
-    <div class="feature-text">
-      <h2>Buscador gratuito de negocios locales</h2>
-      <p>¿Buscas una zapatería? ¿Una librería? ¿Un estanco? ¡Encuéntralos con este buscador y descubre los comercios que tu localidad te puede ofrecer!</p>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- SECCIÓN 2 -->
-<section class="feature-section second-bg observe">
-  <div class="feature-container">
-    <div class="glass-box">
-      <h2>¡Promociona tu negocio gratis!</h2>
-      <p>Mejora el posicionamiento de tu negocio publicitándolo con un sencillo formulario.</p>
-      <a class="feature-button" href="">Ir al formulario</a>
-    </div>
-  </div>
-</section>
-
-
-
-
-  
-  <script>
-    const searchInput = document.getElementById('search');
-    const locationInput = document.getElementById('location');
-    const btnSearch = document.getElementById('btnSearch');
-
-    const autocompleteCategories = document.getElementById('autocomplete-categories');
-    const autocompletePlaces = document.getElementById('autocomplete-places');
-
-    /* AUTOCOMPLETADO DE CATEGORÍAS */
-    searchInput.addEventListener('input', async () => {
-      const q = searchInput.value.trim();
-      if (!q) { autocompleteCategories.innerHTML = ''; return; }
-
-      try {
-        const res = await fetch(`/api/categories?q=${encodeURIComponent(q)}`);
-        const json = await res.json();
-
-        if (!json.categories?.length) {
-          autocompleteCategories.innerHTML = '';
-          return;
-        }
-
-        autocompleteCategories.innerHTML = json.categories
-          .map(cat => `<div data-id="${cat.id}" data-name="${cat.category}">${cat.category}</div>`)
-          .join('');
-
-        document.querySelectorAll('#autocomplete-categories div').forEach(el => {
-          el.addEventListener('click', () => {
-            searchInput.value = el.dataset.name;
-            searchInput.dataset.categoryId = el.dataset.id;
-            autocompleteCategories.innerHTML = '';
-          });
-        });
-
-      } catch (err) {
-        console.error(err);
-      }
-    });
-
-    document.addEventListener('click', e => {
-      if (!autocompleteCategories.contains(e.target) && e.target !== searchInput) {
-        autocompleteCategories.innerHTML = '';
-      }
-    });
-
-    /* AUTOCOMPLETADO DE PLACES */
-    locationInput.addEventListener('input', async () => {
-      const q = locationInput.value.trim();
-      if (!q) { autocompletePlaces.innerHTML = ''; return; }
-
-      try {
-        const res = await fetch(`/api/places?q=${encodeURIComponent(q)}`);
-        const json = await res.json();
-
-        if (!json.places?.length) {
-          autocompletePlaces.innerHTML = '';
-          return;
-        }
-
-        autocompletePlaces.innerHTML = json.places
-          .map(p => `<div data-id="${p.id}" data-name="${p.placename}">${p.placename}</div>`)
-          .join('');
-
-        document.querySelectorAll('#autocomplete-places div').forEach(el => {
-          el.addEventListener('click', () => {
-            locationInput.value = el.dataset.name;
-            locationInput.dataset.placeId = el.dataset.id;
-            autocompletePlaces.innerHTML = '';
-          });
-        });
-
-      } catch (err) {
-        console.error(err);
-      }
-    });
-
-    document.addEventListener('click', e => {
-      if (!autocompletePlaces.contains(e.target) && e.target !== locationInput) {
-        autocompletePlaces.innerHTML = '';
-      }
-    });
-
-    /* REDIRECCIÓN A results.html */
-    btnSearch.addEventListener('click', () => {
-      const categoryId = searchInput.dataset.categoryId || '';
-      const place = locationInput.value.trim() || '';
-
-      if (!categoryId && !place) {
-        alert('Introduce al menos una categoría o ubicación.');
-        return;
-      }
-
-      const params = new URLSearchParams();
-      if (categoryId) params.append('category_id', categoryId);
-      if (place) params.append('place', place);
-
-      window.location.href = `results.html?${params.toString()}`;
-    });
-  </script>
-<script>
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-      }
-    });
-  }, { threshold: 0.2 });
-
-  document.querySelectorAll('.observe').forEach(section => {
-    observer.observe(section);
-  });
-</script>
-<div id="footer-placeholder"></div>
+    </fieldset>
+  </form>
+</div>
 
 <script>
-  // Cargar footer.html dinámicamente
-  fetch("footer.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("footer-placeholder").innerHTML = html;
-    })
-    .catch(err => console.error("No se pudo cargar el footer:", err));
-</script>
-<script>
-document.addEventListener("scroll", () => {
-  const header = document.querySelector(".main-header");
-  if (window.scrollY > 40) {
-    header.classList.add("scrolled");
-  } else {
-    header.classList.remove("scrolled");
-  }
-});
-</script>
-<script>
-  // Obtener elementos
   const btn = document.getElementById('btnSearch');
-  const inputCategory = document.getElementById('category');
-  const inputPlace = document.getElementById('place');
+  const inputCategory = document.getElementById('search');
+  const inputPlace = document.getElementById('location');
   const hint = document.getElementById('searchHint');
 
-  // Evento del botón Buscar
   btn.addEventListener('click', () => {
     const category = inputCategory.value.trim();
     const place = inputPlace.value.trim();
 
-    // Validación: ambos obligatorios
     if (category === "" || place === "") {
       showHint();
       return;
     }
 
-    // Aquí tu lógica de búsqueda real
-    console.log("Buscando...", category, place);
+    const url = `shop.html?category=${encodeURIComponent(category)}&place=${encodeURIComponent(place)}`;
+    window.location.href = url;
   });
 
-  // Mostrar bocadillo
   function showHint() {
     hint.classList.add('show');
-
-    // Se oculta solo
-    setTimeout(() => {
-      hint.classList.remove('show');
-    }, 2300);
+    setTimeout(() => hint.classList.remove('show'), 2300);
   }
 </script>
-
 
 </body>
 </html>
