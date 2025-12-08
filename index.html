@@ -623,6 +623,38 @@ document.addEventListener("scroll", () => {
   }
 });
 </script>
+<script>
+  // Obtener elementos
+  const btn = document.getElementById('btnSearch');
+  const inputCategory = document.getElementById('category');
+  const inputPlace = document.getElementById('place');
+  const hint = document.getElementById('searchHint');
+
+  // Evento del botón Buscar
+  btn.addEventListener('click', () => {
+    const category = inputCategory.value.trim();
+    const place = inputPlace.value.trim();
+
+    // Validación: ambos obligatorios
+    if (category === "" || place === "") {
+      showHint();
+      return;
+    }
+
+    // Aquí tu lógica de búsqueda real
+    console.log("Buscando...", category, place);
+  });
+
+  // Mostrar bocadillo
+  function showHint() {
+    hint.classList.add('show');
+
+    // Se oculta solo
+    setTimeout(() => {
+      hint.classList.remove('show');
+    }, 2300);
+  }
+</script>
 
 </body>
 </html>
