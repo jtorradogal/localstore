@@ -655,6 +655,40 @@ document.addEventListener("scroll", () => {
     }, 2300);
   }
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const btn = document.getElementById('btnSearch');
+  const inputCategory = document.getElementById('search');     // ID real
+  const inputPlace = document.getElementById('location');       // ID real
+  const hint = document.getElementById('searchHint');
+
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const category = inputCategory.value.trim();
+    const place = inputPlace.value.trim();
+
+    // Validación obligatoria
+    if (category === "" || place === "") {
+      showHint();
+      return;
+    }
+
+    // Redirección real
+    window.location.href = `shops.html?category=${encodeURIComponent(category)}&place=${encodeURIComponent(place)}`;
+  });
+
+  function showHint() {
+    hint.classList.add('show');
+
+    setTimeout(() => {
+      hint.classList.remove('show');
+    }, 2200);
+  }
+
+});
+</script>
 
 
 </body>
