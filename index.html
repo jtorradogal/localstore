@@ -249,6 +249,55 @@
   display: block;
 }
 
+/* CSS del HEADER */
+
+    /* HEADER */
+.main-header {
+  width: 100%;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  position: absolute; /* para que quede encima del hero */
+  top: 0;
+  left: 0;
+  z-index: 2000;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo img {
+  width: 42px;
+  height: auto;
+  cursor: pointer;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links li a {
+  color: white;
+  font-family: Poppins, sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+
+.nav-links li a:hover {
+  opacity: 0.7;
+}
+
+
+
+    
   </style>
 </head>
 
@@ -256,6 +305,16 @@
   
 
   <div class="s01">
+    <!-- Header -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch("header.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("header-placeholder").innerHTML = html;
+      });
+  </script>
+    
     <div class="header-block">
   <img src="images/full_logo_white.png" alt="Logo LocalStore" class="main-logo">
   </div>
