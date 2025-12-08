@@ -294,6 +294,37 @@
 .nav-links li a:hover {
   opacity: 0.7;
 }
+/* ESTADO NORMAL (al principio, transparente sobre la imagen) */
+.main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  z-index: 2000;
+
+  background: transparent;
+  backdrop-filter: none;
+  transition: background 0.25s ease, backdrop-filter 0.25s ease, padding 0.25s ease;
+}
+
+/* ESTADO SCROLLED: sticky + blur */
+.main-header.scrolled {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(8px);
+  padding: 12px 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Para que los enlaces se vean oscuros cuando el fondo se aclare */
+.main-header.scrolled .nav-links li a {
+  color: #222;
+}
+
+.main-header.scrolled .nav-logo img {
+  filter: brightness(0) invert(1); /* convierte logo blanco en negro si lo necesitas */
+}
 
 
 
@@ -500,6 +531,16 @@
       document.getElementById("footer-placeholder").innerHTML = html;
     })
     .catch(err => console.error("No se pudo cargar el footer:", err));
+</script>
+<script>
+document.addEventListener("scroll", () => {
+  const header = document.querySelector(".main-header");
+  if (window.scrollY > 40) {
+    header.classList.add("scrolled");
+  } else {
+    header.classList.remove("scrolled");
+  }
+});
 </script>
 
 </body>
