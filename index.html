@@ -671,25 +671,14 @@ document.addEventListener("scroll", () => {
   });
 
   // Mostrar bocadillo
-  function showHint(event) {
-  const hint = document.getElementById("searchHint");
-  const btn = document.getElementById("btnSearch");
+  function showHint() {
+    hint.classList.add('show');
 
-  // Posición del click dentro del botón
-  const rect = btn.getBoundingClientRect();
-  const clickX = event.clientX - rect.left;
-
-  // Ajustar según el click
-  hint.style.left = `${clickX}px`;
-
-  // Mostrar
-  hint.classList.add("show");
-
-  setTimeout(() => {
-    hint.classList.remove("show");
-  }, 2300);
-}
-
+    // Se oculta solo
+    setTimeout(() => {
+      hint.classList.remove('show');
+    }, 2300);
+  }
 </script>
 
 
