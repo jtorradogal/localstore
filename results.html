@@ -17,43 +17,38 @@
     h1 {
       font-size: 28px;
       margin-bottom: 28px;
+      color: #222;
     }
 
-    /* EFECTO DE REVELADO IZQUIERDA → DERECHA */
-.reveal-text {
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-  white-space: nowrap;
-  opacity: 0;
-}
-
-.reveal-text::after {
-  content: "";
-  position: absolute;
-  right: 0;              /* El panel sale desde la derecha */
-  top: 0;
-  height: 100%;
-  width: 0;
-  background: white;     /* Ajustar si el fondo cambia */
-  z-index: 2;
-  animation: none;
-}
-
-.reveal-active {
-  opacity: 1;
-}
-
-.reveal-active::after {
-  animation: sweep 0.7s ease forwards;
-}
-
-@keyframes sweep {
-  from { width: 100%; }  /* Empieza tapado por completo */
-  to   { width: 0%; }    /* Se retira hacia la derecha */
-}
-
-
+    /* EFECTO REVEAL (izq → der) */
+    .reveal-text {
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      white-space: nowrap;
+      opacity: 0;
+    }
+    .reveal-text::after {
+      content: "";
+      position: absolute;
+      right: 0;        /* panel parte desde la derecha */
+      top: 0;
+      height: 100%;
+      width: 100%;     /* empieza cubriendo todo */
+      background: white;
+      z-index: 2;
+      animation: none;
+    }
+    .reveal-active {
+      opacity: 1;
+    }
+    .reveal-active::after {
+      animation: sweep 0.7s ease forwards;
+    }
+    @keyframes sweep {
+      from { width: 100%; }
+      to   { width: 0%; }
+    }
 
     /* Tarjeta moderna */
     .shop {
@@ -99,15 +94,17 @@
     }
 
     /* CSS del HEADER */
-
     .main-header {
       width: 100%;
       padding: 20px 40px;
       box-sizing: border-box;
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       z-index: 2000;
+      background: rgba(255,255,255,0.9) !important;
+      backdrop-filter: blur(8px) !important;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
     }
 
     .nav-container {
@@ -120,6 +117,7 @@
       width: 42px;
       height: auto;
       cursor: pointer;
+      filter: invert(1) brightness(0); /* logo blanco → negro */
     }
 
     .nav-links {
@@ -131,7 +129,7 @@
     }
 
     .nav-links li a {
-      color: black;
+      color: #222;
       font-family: Poppins, sans-serif;
       font-size: 16px;
       text-decoration: none;
@@ -143,51 +141,7 @@
       opacity: 0.7;
     }
 
-    /* NAVBAR EN RESULTS.HTML → fondo claro */
-    .main-header {
-      background: rgba(255, 255, 255, 0.9) !important;
-      backdrop-filter: blur(8px) !important;
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-    }
-
-    .nav-links li a {
-      color: #222 !important;
-    }
-
-    .nav-logo img {
-      filter: invert(1) brightness(0) !important;
-    }
-
-    .main-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 20px 40px;
-      box-sizing: border-box;
-      z-index: 2000;
-
-      background: transparent;
-      backdrop-filter: none;
-      transition: background 0.25s ease, backdrop-filter 0.25s ease, padding 0.25s ease;
-    }
-
-    .main-header.scrolled {
-      background: rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(8px);
-      padding: 12px 40px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-    }
-
-    .main-header.scrolled .nav-links li a {
-      color: #222;
-    }
-
-    .main-header.scrolled .nav-logo img {
-      filter: brightness(0) invert(1);
-    }
-
-    /* FOOTER */
+    /* FOOTER - ancho completo */
     #main-footer {
       background: #365cab;
       color: white;
@@ -201,7 +155,6 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 30px;
-
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -230,6 +183,7 @@
       text-decoration: underline;
     }
 
+    /* Responsive */
     @media (max-width: 768px) {
       .footer-container {
         flex-direction: column;
@@ -241,6 +195,7 @@
         margin-left: 10px;
         margin-right: 10px;
       }
+      .thumb { width: 120px; height: 120px; }
     }
 
     .s01 .header-block {
@@ -249,56 +204,88 @@
       text-align: center;
       margin-bottom: 40px;
     }
-    
   </style>
 </head>
 
 <body>
-  <!-- Header -->
+ <!-- Header -->
   <div id="header-placeholder"></div>
   <script>
     fetch("header.html")
       .then(r => r.text())
       .then(html => {
         document.getElementById("header-placeholder").innerHTML = html;
-      });
+      })
+      .catch(e => console.error("No se pudo cargar header:", e));
   </script>
 
-  <!-- Nuevo h1 vacío con efecto -->
-  <h1 id="dynamic-title" class="reveal-text"></h1>
-
+  <!-- título dinámico: inicialmente en blanco (reveal) -->
+  <h1 id="dynamic-title"><span class="reveal-text" id="title-text">Resultados</span></h1>
   <div id="results">Cargando...</div>
 
   <script>
+    // Leer parámetros de la URL
     const params = new URLSearchParams(window.location.search);
-
     const categoryId = params.get("category_id") || "";
     const place = params.get("place") || "";
 
+    // Construir llamada a la API de shops
     const apiParams = new URLSearchParams();
     if (categoryId) apiParams.append("category_id", categoryId);
     if (place) apiParams.append("place", place);
 
     async function loadResults() {
       try {
-        const res = await fetch(`/api/shops?${apiParams.toString()}`);
-        const json = await res.json();
+        const url = `/api/shops?${apiParams.toString()}`;
+        console.log("Fetching:", url);
+
+        const res = await fetch(url);
+        console.log("response.status =", res.status);
+
+        // Intenta parsear JSON siempre (para ver el error real)
+        const json = await res.json().catch(err => {
+          console.error("Error parsing JSON:", err);
+          throw new Error("Respuesta inválida del servidor");
+        });
+
+        console.log("json from API:", json);
 
         const resultsDiv = document.getElementById("results");
+        const titleSpan = document.getElementById("title-text");
 
         if (!json.data || json.data.length === 0) {
+          // Si no hay resultados, título y mensaje
+          titleSpan.textContent = "Sin resultados";
+          // activar reveal (aunque el texto sea corto)
+          titleSpan.classList.add("reveal-active");
           resultsDiv.innerHTML = "<p>No se encontraron resultados.</p>";
           return;
         }
 
+        // Obtener nombre de categoría y lugar desde el primer resultado (fallback si no hay)
+        const first = json.data[0];
+        const cat = first.category_name || "Categoría";
+        const loc = first.place_name || place || "Localidad";
+
+        // Poner título dinámico (con efecto reveal)
+        titleSpan.textContent = `${cat} en ${loc}`;
+        // Forzar reflow antes de activar la animación (asegura que ::after se reprograme)
+        void titleSpan.offsetWidth;
+        titleSpan.classList.add("reveal-active");
+
+        // Renderizar resultados
         resultsDiv.innerHTML = json.data
           .map(s => `
             <div class="shop">
-              ${s.image_url ? `<img class="thumb" src="${s.image_url}" alt="${s.name}">` : `
-                <div class="thumb" style="background:#eee; display:flex; align-items:center; justify-content:center; font-size:12px; color:#777;">
-                  No image
-                </div>
-              `}
+              ${
+                s.image_url
+                  ? `<img class="thumb" src="${s.image_url}" alt="${s.name}">`
+                  : `
+                    <div class="thumb" style="background:#eee; display:flex; align-items:center; justify-content:center; font-size:12px; color:#777;">
+                      No image
+                    </div>
+                  `
+              }
               <div class="shop-content">
                 <a href="/shop.html?id=${s.id}">${s.name}</a>
                 <p class="meta">
@@ -310,38 +297,40 @@
           `)
           .join("");
 
-        /* TÍTULO DINÁMICO + EFECTO */
-        const titleEl = document.getElementById("");
-
-        const cat = json.data[0]?.category_name || "Resultados";
-        const loc = json.data[0]?.place_name || "";
-
-        titleEl.textContent = loc ? `${cat} en ${loc}` : `${cat}`;
-
-        titleEl.classList.remove("reveal-active");
-        void titleEl.offsetWidth;
-        titleEl.classList.add("reveal-active");
-
       } catch (err) {
-        console.error(err);
+        console.error("Error en loadResults:", err);
         document.getElementById("results").innerHTML =
-          "<p>Error cargando resultados.</p>";
+          `<p>Error cargando resultados. ${err.message ? err.message : ''}</p>`;
       }
     }
 
+    // Llamada única
     loadResults();
   </script>
 
   <div id="footer-placeholder"></div>
 
   <script>
+    // Cargar footer.html dinámicamente
     fetch("footer.html")
       .then(res => res.text())
       .then(html => {
         document.getElementById("footer-placeholder").innerHTML = html;
       })
-      .catch(err => console.error("No se pudo cargar footer.html"));
+      .catch(err => console.error("No se pudo cargar el footer:", err));
   </script>
 
+  <script>
+    document.addEventListener("scroll", () => {
+      const header = document.querySelector(".main-header");
+      if (header) {
+        if (window.scrollY > 40) {
+          header.classList.add("scrolled");
+        } else {
+          header.classList.remove("scrolled");
+        }
+      }
+    });
+  </script>
 </body>
 </html>
