@@ -573,21 +573,23 @@
     });
 
     /* REDIRECCIÓN A results.html */
-    btnSearch.addEventListener('click', () => {
-      const categoryId = searchInput.dataset.categoryId || '';
-      const place = locationInput.value.trim() || '';
+btnSearch.addEventListener('click', () => {
+  const categoryId = searchInput.dataset.categoryId || '';
+  const place = locationInput.value.trim() || '';
 
-      if (!categoryId && !place) {
-        showHint();   // <- llama al bocadillo
-        return;
-      }
+  // Ambos obligatorios
+  if (!categoryId || place === "") {
+    showHint();
+    return;
+  }
 
-      const params = new URLSearchParams();
-      if (categoryId) params.append('category_id', categoryId);
-      if (place) params.append('place', place);
+  const params = new URLSearchParams();
+  params.append('category_id', categoryId);
+  params.append('place', place);
 
-      window.location.href = `results.html?${params.toString()}`;
-    });
+  window.location.href = `results.html?${params.toString()}`;
+});
+
   </script>
 <script>
   const observer = new IntersectionObserver((entries) => {
