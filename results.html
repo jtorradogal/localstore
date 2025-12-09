@@ -19,35 +19,40 @@
       margin-bottom: 28px;
     }
 
-    /* EFECTO DE REVELADO IZQ → DER */
-    .reveal-text {
-      display: inline-block;
-      position: relative;
-      overflow: hidden;
-      white-space: nowrap;
-      opacity: 0;
-    }
-    .reveal-text::after {
-      content: "";
-      position: absolute;
-      right: 0;
-      top: 0;
-      height: 100%;
-      width: 0;
-      background: white; /* AJUSTA SI EL FONDO CAMBIA */
-      z-index: 2;
-      animation: none;
-    }
-    .reveal-active {
-      opacity: 1;
-    }
-    .reveal-active::after {
-      animation: sweep 0.7s ease forwards;
-    }
-    @keyframes sweep {
-      from { width: 100%; }
-      to   { width: 0%; }
-    }
+    /* EFECTO DE REVELADO IZQUIERDA → DERECHA */
+.reveal-text {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+}
+
+.reveal-text::after {
+  content: "";
+  position: absolute;
+  right: 0;              /* El panel sale desde la derecha */
+  top: 0;
+  height: 100%;
+  width: 0;
+  background: white;     /* Ajustar si el fondo cambia */
+  z-index: 2;
+  animation: none;
+}
+
+.reveal-active {
+  opacity: 1;
+}
+
+.reveal-active::after {
+  animation: sweep 0.7s ease forwards;
+}
+
+@keyframes sweep {
+  from { width: 100%; }  /* Empieza tapado por completo */
+  to   { width: 0%; }    /* Se retira hacia la derecha */
+}
+
 
 
     /* Tarjeta moderna */
