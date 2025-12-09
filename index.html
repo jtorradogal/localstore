@@ -578,7 +578,7 @@
       const place = locationInput.value.trim() || '';
 
       if (!categoryId && !place) {
-        alert('Introduce al menos una categoría o ubicación.');
+        showHint();   // <- llama al bocadillo
         return;
       }
 
