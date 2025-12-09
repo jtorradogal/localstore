@@ -30,7 +30,7 @@
     .reveal-text::after {
       content: "";
       position: absolute;
-      left: 0;
+      right: 0;
       top: 0;
       height: 100%;
       width: 0;
@@ -306,7 +306,7 @@
           .join("");
 
         /* TÍTULO DINÁMICO + EFECTO */
-        const titleEl = document.getElementById("dynamic-title");
+        const titleEl = document.getElementById("");
 
         const cat = json.data[0]?.category_name || "Resultados";
         const loc = json.data[0]?.place_name || "";
