@@ -8,58 +8,59 @@
   <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
   <style>
     body {
-      font-family: Poppins, Arial, sans-serif;
-      max-width: 700px;
-      margin: 40px auto;
-      padding: 15px;
-    }
+  font-family: Poppins, Arial, sans-serif;
+  max-width: 900px;       /* más aire */
+  margin: 120px auto 40px; /* deja sitio al header fijo */
+  padding: 20px;
+}
 
-    h1 {
-      font-size: 26px;
-      margin-bottom: 20px;
-    }
+h1 {
+  font-size: 28px;
+  margin-bottom: 28px;
+}
 
-    .shop {
-      background: #faf9ed;
-      padding: 15px;
-      border-radius: 6px;
-      margin-bottom: 12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
 
-    .shop a {
-      font-size: 18px;
-      font-weight: 600;
-      color: #0070f3;
-      text-decoration: none;
-    }
-
-    .meta {
-      font-size: 14px;
-      color: #555;
-    }
-    .shop {
+    /* Tarjeta moderna */
+.shop {
   display: flex;
-  flex-direction: row;
-  gap: 14px;
-  background: #fff;
-  padding: 15px;
-  border-radius: 6px;
-  margin-bottom: 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  align-items: flex-start;
+  gap: 20px;
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.shop:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
 }
 
 .thumb {
-  width: 200px;
-  height: 200px;
+  width: 170px;
+  height: 170px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 10px;
   flex-shrink: 0;
 }
 
-.shop-content {
-  flex: 1;
+.shop-content a {
+  font-size: 20px;
+  font-weight: 600;
+  color: #365cab;
+  text-decoration: none;
+}
+
+.shop-content a:hover {
+  text-decoration: underline;
+}
+
+.meta {
+  margin-top: 6px;
+  font-size: 15px;
+  color: #555;
+  line-height: 1.35;
 }
 
 /* CSS del HEADER */
@@ -107,6 +108,22 @@
 .nav-links li a:hover {
   opacity: 0.7;
 }
+
+  /* NAVBAR EN RESULTS.HTML → fondo claro desde el inicio */
+.main-header {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(8px) !important;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.nav-links li a {
+  color: #222 !important;
+}
+
+.nav-logo img {
+  filter: invert(1) brightness(0) !important; /* convierte logo blanco en negro */
+}
+
 /* ESTADO NORMAL (al principio, transparente sobre la imagen) */
 .main-header {
   position: fixed;
@@ -141,36 +158,23 @@
 
     /* CSS DEL FOOTER */
 
-    #main-footer {
+  #main-footer {
   background: #365cab;
   color: white;
-  padding: 40px 0 20px 0;
-  font-family: Poppins, Arial, sans-serif;
+  padding: 50px 0 30px 0;
+  width: 100vw;            /* se extiende a todo lo ancho */
+  margin-left: calc(50% - 50vw); /* rompe el contenedor estrecho del body */
+  margin-right: calc(50% - 50vw);
 }
 
 .footer-container {
-  max-width: 1200px; /* MISMA ALINEACIÓN QUE EL GLASS BOX */
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 30px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.footer-left .footer-contact a {
-  color: white;
-  text-decoration: underline;
-}
-
-.footer-right a {
-  margin-left: 20px;
-  color: white;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.footer-right a:hover {
-  text-decoration: underline;
 }
 
 .footer-disclaimer {
