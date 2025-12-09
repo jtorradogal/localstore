@@ -404,6 +404,27 @@
   opacity: 1;
   transform: scale(1);
 }
+/* Bocadillo de aviso */
+#searchHint {
+  position: absolute;
+  top: 50px; /* ajusta si lo quieres más arriba/abajo */
+  right: 0;
+  background: #d9534f;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity .25s ease, transform .25s ease;
+  z-index: 3000;
+}
+
+#searchHint.show {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 
     
@@ -446,7 +467,7 @@
           <div id="autocomplete-places"></div>
         </div>
 
-        <div class="input-field third-wrap">
+        <div class="input-field third-wrap style="position: relative;"">
           <button class="btn-search" type="button" id="btnSearch">
             Buscar
           </button>
