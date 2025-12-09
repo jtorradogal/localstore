@@ -232,7 +232,7 @@ h1 {
         document.getElementById("header-placeholder").innerHTML = html;
       });
   </script>
-  <h1>Resultados</h1>
+  <h1 id="dynamic-title">Resultados</h1>
   <div id="results">Cargando...</div>
 
   <script>
@@ -311,5 +311,65 @@ document.addEventListener("scroll", () => {
   }
 });
 </script>
+
+  <script>
+async function loadResults() {
+  try {
+    const res = await fetch(`/api/shops?${apiParams.toString()}`);
+    const json = await res.json();
+
+    const resultsDiv = document.getElementById("results");
+    const titleEl = document.getElementById("dynamic-title");
+
+    // SI NO HAY RESULTADOS → título genérico
+    if (!json.data || json.data.length === 0) {
+      titleEl.textContent = "Sin resultados";
+      resultsDiv.innerHTML = "<p>No se encontraron resultados.</p>";
+      return;
+    }
+
+    // OBTENER NOMBRE DE CATEGORÍA Y LUGAR DESDE EL PRIMER RESULTADO
+    const first = json.data[0];
+    const cat = first.category_name || "Categoría";
+    const loc = first.place_name || "Localidad";
+
+    // ACTUALIZAR TÍTULO
+    titleEl.textContent = `${cat} en ${loc}`;
+
+    // Mostrar resultados
+    resultsDiv.innerHTML = json.data
+      .map(s => `
+        <div class="shop">
+          ${
+            s.image_url
+              ? `<img class="thumb" src="${s.image_url}" alt="${s.name}">`
+              : `
+                <div class="thumb" style="background:#eee; display:flex; align-items:center; justify-content:center; font-size:12px; color:#777;">
+                  No image
+                </div>
+              `
+          }
+          
+          <div class="shop-content">
+            <a href="/shop.html?id=${s.id}">${s.name}</a>
+            <p class="meta">
+              Categoría: ${s.category_name || "Sin categoría"}<br>
+              Lugar: ${s.place_name || "Sin lugar"}
+            </p>
+          </div>
+        </div>
+      `)
+      .join("");
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById("results").innerHTML =
+      "<p>Error cargando resultados.</p>";
+  }
+}
+
+loadResults();
+</script>
+
 </body>
 </html>
