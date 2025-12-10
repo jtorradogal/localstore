@@ -58,52 +58,45 @@
       border: 0;
       border-radius: 8px;
     }
+
     .full-image {
-  width: 100%;
-  max-width: 300px;
-  border-radius: 8px;
-  margin: 10px 0 20px 0;
-  object-fit: cover;
-  display: block;
-}
+      width: 100%;
+      max-width: 300px;
+      border-radius: 8px;
+      margin: 10px 0 20px 0;
+      object-fit: cover;
+      display: block;
+    }
 
     #detailsWrapper {
       display: flex;
       align-items: flex-start;
       gap: 20px;
     }
+
     #shopLayout {
-  width: 100%;
-  margin-top: 20px;
-  border-collapse: collapse;
-}
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
 
-#shopLayout td {
-  vertical-align: top;
-  padding: 10px;
-}
+    #shopLayout td {
+      vertical-align: top;
+      padding: 10px;
+    }
 
-#leftCol {
-  width: 60%;
-}
+    #leftCol {
+      width: 60%;
+    }
 
-#rightCol {
-  width: 40%;
-  text-align: right;
-}
+    #rightCol {
+      width: 40%;
+      text-align: right;
+    }
 
-.full-image {
-  width: 100%;
-  max-width: 250px;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
-#locationWrapper {
-  margin-top: 30px;
-}
-
-    
+    #locationWrapper {
+      margin-top: 30px;
+    }
   </style>
 </head>
 
@@ -112,27 +105,31 @@
   <a href="javascript:history.back()" class="back">Volver</a>
   <h1 id="shopName">Cargando...</h1>
 
-<table id="shopLayout">
-  <tr>
-    <!-- Columna izquierda: datos -->
-    <td id="leftCol">
-      <div id="shopData">Cargando datos...</div>
-    </td>
+  <table id="shopLayout">
+    <tr>
+      <td id="leftCol">
+        <div id="shopData">Cargando datos...</div>
+      </td>
+      <td id="rightCol">
+        <div id="imageWrapper"></div>
+      </td>
+    </tr>
+  </table>
 
-    <!-- Columna derecha: imagen -->
-    <td id="rightCol">
-      <div id="imageWrapper"></div>
-    </td>
-  </tr>
-</table>
+  <div id="locationWrapper">
+    <iframe id="map" width="100%" height="300" style="border:0;border-radius:8px;" loading="lazy"></iframe>
+  </div>
 
-<!-- Ubicación debajo -->
-<div id="locationWrapper">
-  <iframe id="map" width="100%" height="300" style="border:0;border-radius:8px;" loading="lazy"></iframe>
-</div>
-
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
+    // Crear cliente Supabase solo para incrementar visitas
+    const supabase = createClient(
+      "TU_SUPABASE_URL",
+      "TU_SUPABASE_ANON_KEY"
+    );
+
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
 
@@ -142,47 +139,52 @@
       throw new Error("Missing shop ID");
     }
 
+    // Incrementa visitas al entrar en la ficha
+    async function incrementVisits() {
+      const { error } = await supabase.rpc("increment_visits", { shop_id: id });
+      if (error) {
+        console.error("Error incrementando visitas:", error);
+      }
+    }
+    incrementVisits();
+
     async function loadShop() {
       try {
         const res = await fetch(`/api/shop?id=${id}`);
         const json = await res.json();
 
         if (!json.data) {
-  document.getElementById("shopData").innerHTML =
-    "<p>No se encontró la tienda.</p>";
-  return;
-}
-
+          document.getElementById("shopData").innerHTML =
+            "<p>No se encontró la tienda.</p>";
+          return;
+        }
 
         const s = json.data;
 
         document.getElementById("shopName").textContent = s.name || "Sin nombre";
-        
-
 
         document.getElementById("shopData").innerHTML = `
-  ${renderField("Categoría", s.category?.category)}
-  ${renderField("Lugar", s.place?.placename)}
-  ${renderField("Teléfono", s.phone)}
-  ${renderFieldLink("Email", s.email, "mailto:" + s.email)}
-  ${renderFieldLink("Web", s.website, s.website)}
-  ${renderField("Descripción", s.description)}
-  ${renderField("Lugar", s.place_name)}
-`;
+          ${renderField("Categoría", s.category?.category)}
+          ${renderField("Lugar", s.place?.placename)}
+          ${renderField("Teléfono", s.phone)}
+          ${renderFieldLink("Email", s.email, "mailto:" + s.email)}
+          ${renderFieldLink("Web", s.website, s.website)}
+          ${renderField("Descripción", s.description)}
+        `;
 
         if (s.schedule) {
-  document.getElementById("shopData").innerHTML += renderSchedule(s.schedule);
-}
-// Mostrar la imagen si existe
-if (s.image_url) {
-  document.getElementById("imageWrapper").innerHTML = `
-    <img src="${s.image_url}" class="full-image" alt="Imagen del negocio">
-  `;
-} else {
-  document.getElementById("imageWrapper").innerHTML = `
-    <div style="color:#999;">Sin imagen disponible</div>
-  `;
-}
+          document.getElementById("shopData").innerHTML += renderSchedule(s.schedule);
+        }
+
+        // Imagen
+        if (s.image_url) {
+          document.getElementById("imageWrapper").innerHTML = `
+            <img src="${s.image_url}" class="full-image" alt="Imagen del negocio">
+          `;
+        } else {
+          document.getElementById("imageWrapper").innerHTML =
+            `<div style="color:#999;">Sin imagen disponible</div>`;
+        }
 
         loadMap(s);
 
@@ -201,8 +203,6 @@ if (s.image_url) {
 
       document.getElementById("map").src =
         `https://www.google.com/maps/embed/v1/place?key=AIzaSyD4J5HvD1OoxxrYZ0REOVdDpLCfoT8QUkM&q=${encoded}`;
-
-      document.getElementById("locationWrapper").style.display = "block";
     }
 
     function renderField(label, value) {
@@ -226,46 +226,41 @@ if (s.image_url) {
       `;
     }
 
-    loadShop();
+    function renderSchedule(schedule) {
+      const days = {
+        monday: "Lunes",
+        tuesday: "Martes",
+        wednesday: "Miércoles",
+        thursday: "Jueves",
+        friday: "Viernes",
+        saturday: "Sábado",
+        sunday: "Domingo"
+      };
 
-    
-function renderSchedule(schedule) {
-  const days = {
-    monday: "Lunes",
-    tuesday: "Martes",
-    wednesday: "Miércoles",
-    thursday: "Jueves",
-    friday: "Viernes",
-    saturday: "Sábado",
-    sunday: "Domingo"
-  };
+      let html = `
+        <div class="field">
+          <div class="label">Horario</div>
+          <div class="value">
+      `;
 
-  let html = `
-    <div class="field">
-      <div class="label">Horario</div>
-      <div class="value">
-  `;
+      for (const key in days) {
+        const slots = schedule[key] || [];
+        if (slots.length === 0) {
+          html += `<div>${days[key]}: Cerrado</div>`;
+        } else {
+          const line = slots.map(s => `${s.open} a ${s.close}`).join(" y ");
+          html += `<div>${days[key]}: ${line}</div>`;
+        }
+      }
 
-  for (const key in days) {
-    const slots = schedule[key] || [];
-    if (slots.length === 0) {
-      html += `<div>${days[key]}: Cerrado</div>`;
-    } else {
-      const line = slots
-        .map(s => `${s.open} a ${s.close}`)
-        .join(" y ");
-      html += `<div>${days[key]}: ${line}</div>`;
+      html += `
+          </div>
+        </div>
+      `;
+      return html;
     }
-  }
 
-  html += `
-      </div>
-    </div>
-  `;
-
-  return html;
-}
-
+    loadShop();
   </script>
 
 </body>
