@@ -131,29 +131,6 @@
       throw new Error("Missing shop ID");
     }
 
-    // Llamada al endpoint servidor que incrementa visitas.
-    // Usa el endpoint /api/shop-visits?id=... que ya creaste.
-    async function incrementVisits() {
-      try {
-        // Si prefieres POST, cambia method a 'POST' y ajusta el handler en server.
-        const res = await fetch(`/api/shop-visits?id=${encodeURIComponent(id)}`);
-        // opcional: comprobar resultado
-        if (!res.ok) {
-          console.warn('shop-visits returned', res.status);
-        } else {
-          // opcionalmente leer JSON:
-          // const json = await res.json();
-          // console.log('visits updated', json);
-        }
-      } catch (err) {
-        // No bloqueamos la carga si esto falla; solo lo registramos.
-        console.error('Error incrementando visitas (cliente):', err);
-      }
-    }
-
-    // Ejecutar incremento sin bloquear (no await aquí para que la UI siga cargando rápido)
-    incrementVisits();
-
     // Cargar datos de la tienda desde /api/shop?id=...
     async function loadShop() {
       try {
@@ -207,8 +184,15 @@
         document.getElementById("shopData").innerHTML =
           "<p>Error cargando la tienda.</p>";
       }
+
+      
+
     }
 
+// Incrementar visitas
+fetch(`/api/shop-visits?id=${id}`, { method: 'POST' })
+  .catch(err => console.error("Error incrementing visits:", err));
+    
     function loadMap(shop) {
       if (!shop.address) return;
 
