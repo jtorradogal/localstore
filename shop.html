@@ -120,16 +120,8 @@
     <iframe id="map" width="100%" height="300" style="border:0;border-radius:8px;" loading="lazy"></iframe>
   </div>
 
-  <!-- Supabase CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <script>
-    // Crear cliente Supabase solo para incrementar visitas
-    const supabase = createClient(
-      "TU_SUPABASE_URL",
-      "TU_SUPABASE_ANON_KEY"
-    );
-
+    // Parámetro id
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
 
@@ -139,27 +131,49 @@
       throw new Error("Missing shop ID");
     }
 
-    // Incrementa visitas al entrar en la ficha
+    // Llamada al endpoint servidor que incrementa visitas.
+    // Usa el endpoint /api/shop-visits?id=... que ya creaste.
     async function incrementVisits() {
-      const { error } = await supabase.rpc("increment_visits", { shop_id: id });
-      if (error) {
-        console.error("Error incrementando visitas:", error);
+      try {
+        // Si prefieres POST, cambia method a 'POST' y ajusta el handler en server.
+        const res = await fetch(`/api/shop-visits?id=${encodeURIComponent(id)}`);
+        // opcional: comprobar resultado
+        if (!res.ok) {
+          console.warn('shop-visits returned', res.status);
+        } else {
+          // opcionalmente leer JSON:
+          // const json = await res.json();
+          // console.log('visits updated', json);
+        }
+      } catch (err) {
+        // No bloqueamos la carga si esto falla; solo lo registramos.
+        console.error('Error incrementando visitas (cliente):', err);
       }
     }
+
+    // Ejecutar incremento sin bloquear (no await aquí para que la UI siga cargando rápido)
     incrementVisits();
 
+    // Cargar datos de la tienda desde /api/shop?id=...
     async function loadShop() {
       try {
-        const res = await fetch(`/api/shop?id=${id}`);
+        const res = await fetch(`/api/shop?id=${encodeURIComponent(id)}`);
+        if (!res.ok) {
+          console.error('API /api/shop responded with', res.status);
+          document.getElementById("shopData").innerHTML =
+            "<p>Error cargando la tienda.</p>";
+          return;
+        }
+
         const json = await res.json();
 
-        if (!json.data) {
+        // Ten en cuenta la estructura: tu server devuelve { status:'success', data: {...} }
+        const s = json.data;
+        if (!s) {
           document.getElementById("shopData").innerHTML =
             "<p>No se encontró la tienda.</p>";
           return;
         }
-
-        const s = json.data;
 
         document.getElementById("shopName").textContent = s.name || "Sin nombre";
 
@@ -198,9 +212,10 @@
     function loadMap(shop) {
       if (!shop.address) return;
 
-      const fullAddress = `${shop.address}, ${shop.place_name || ""}`;
+      const fullAddress = `${shop.address}, ${shop.place?.placename || ""}`;
       const encoded = encodeURIComponent(fullAddress);
 
+      // Reemplaza YOUR_GOOGLE_API_KEY si la usas
       document.getElementById("map").src =
         `https://www.google.com/maps/embed/v1/place?key=AIzaSyD4J5HvD1OoxxrYZ0REOVdDpLCfoT8QUkM&q=${encoded}`;
     }
@@ -221,7 +236,7 @@
       return `
         <div class="field">
           <div class="label">${label}</div>
-          <a class="value" href="${safeHref}" target="_blank">${value}</a>
+          <a class="value" href="${safeHref}" target="_blank" rel="noopener">${value}</a>
         </div>
       `;
     }
@@ -260,6 +275,7 @@
       return html;
     }
 
+    // Lanzar carga de la ficha
     loadShop();
   </script>
 
