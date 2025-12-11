@@ -49,7 +49,8 @@ export default async function handler(req, res) {
         description,
         image_url,
         categories:category ( category ),
-        places:place_id ( placename )
+        places:place_id ( placename ),
+        visits
       `);
 
     if (category_id) {
