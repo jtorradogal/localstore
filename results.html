@@ -31,10 +31,10 @@
     .reveal-text::after {
       content: "";
       position: absolute;
-      right: 0;        /* panel parte desde la derecha */
+      right: 0;
       top: 0;
       height: 100%;
-      width: 100%;     /* empieza cubriendo todo */
+      width: 100%;
       background: white;
       z-index: 2;
       animation: none;
@@ -50,21 +50,40 @@
       to   { width: 0%; }
     }
 
-    /* Tarjeta moderna */
+    /* TARJETA MODERNA MEJORADA */
     .shop {
+      position: relative;
       display: flex;
       gap: 20px;
-      background: #ffffff;
+
+      /* Fondo con degradado sutil */
+      background: linear-gradient(135deg, #ffffff 0%, #f9fbff 100%);
+
       padding: 18px;
       border-radius: 12px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      margin-bottom: 26px;
+
+      /* Sombra suave con tinte azul */
+      box-shadow: 0 4px 14px rgba(54, 92, 171, 0.12);
+
       transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    /* Barra superior decorativa */
+    .shop::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 4px;
+      width: 60px;
+      border-radius: 4px;
+      background: #365cab;
     }
 
     .shop:hover {
       transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      box-shadow: 0 8px 24px rgba(54, 92, 171, 0.20);
     }
 
     .thumb {
@@ -73,12 +92,18 @@
       object-fit: cover;
       border-radius: 10px;
       flex-shrink: 0;
+      transition: filter 0.25s ease;
+    }
+
+    /* Pequeño oscurecimiento al pasar el ratón */
+    .shop:hover .thumb {
+      filter: brightness(0.90);
     }
 
     .shop-content a {
       font-size: 20px;
       font-weight: 600;
-      color: #365cab;
+      color: #2b4f8c;
       text-decoration: none;
     }
 
@@ -89,11 +114,27 @@
     .meta {
       margin-top: 6px;
       font-size: 15px;
-      color: #555;
+      color: #333;
       line-height: 1.35;
     }
 
-    /* CSS del HEADER */
+    /* CHIPS para Categoría y Lugar */
+    .chips {
+      margin: 8px 0 4px 0;
+    }
+
+    .chip {
+      display: inline-block;
+      padding: 4px 10px;
+      margin-right: 6px;
+      background: #e8efff;
+      color: #365cab;
+      font-size: 13px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    /* HEADER */
     .main-header {
       width: 100%;
       padding: 20px 40px;
@@ -117,7 +158,7 @@
       width: 42px;
       height: auto;
       cursor: pointer;
-      filter: invert(1) brightness(0); /* logo blanco → negro */
+      filter: invert(1) brightness(0);
     }
 
     .nav-links {
@@ -130,7 +171,6 @@
 
     .nav-links li a {
       color: #222;
-      font-family: Poppins, sans-serif;
       font-size: 16px;
       text-decoration: none;
       font-weight: 500;
@@ -141,7 +181,7 @@
       opacity: 0.7;
     }
 
-    /* FOOTER - ancho completo */
+    /* FOOTER */
     #main-footer {
       background: #365cab;
       color: white;
@@ -195,7 +235,11 @@
         margin-left: 10px;
         margin-right: 10px;
       }
-      .thumb { width: 120px; height: 120px; }
+
+      .thumb {
+        width: 120px;
+        height: 120px;
+      }
     }
 
     .s01 .header-block {
@@ -204,7 +248,8 @@
       text-align: center;
       margin-bottom: 40px;
     }
-  </style>
+</style>
+
 </head>
 
 <body>
