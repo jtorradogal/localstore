@@ -87,7 +87,8 @@ export default async function handler(req, res) {
       description: s.description,
       category_name: s.categories?.category || '',
       place_name: s.places?.placename || '',
-      image_url: s.image_url || ''   // <- NUEVO
+      image_url: s.image_url || '',
+      visits: s.visits ?? 0
     }));
 
     return res.status(200).json({ status: 'success', data: formatted });
