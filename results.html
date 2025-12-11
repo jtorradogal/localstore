@@ -221,92 +221,113 @@
 
   <!-- título dinámico: inicialmente en blanco (reveal) -->
   <h1 id="dynamic-title"><span class="reveal-text" id="title-text">Resultados</span></h1>
+  <div style="margin-bottom: 25px;">
+  <label for="sort" style="font-weight:600;margin-right:10px;">Ordenar por:</label>
+  <select id="sort" style="padding:6px 10px;border-radius:6px;border:1px solid #ccc;">
+    <option value="most">Más visitados</option>
+    <option value="least">Menos visitados</option>
+    <option value="az">A-Z</option>
+    <option value="za">Z-A</option>
+  </select>
+</div>
+
   <div id="results">Cargando...</div>
 
   <script>
-    // Leer parámetros de la URL
-    const params = new URLSearchParams(window.location.search);
-    const categoryId = params.get("category_id") || "";
-    const place = params.get("place") || "";
+  const params = new URLSearchParams(window.location.search);
+  const categoryId = params.get("category_id") || "";
+  const place = params.get("place") || "";
 
-    // Construir llamada a la API de shops
-    const apiParams = new URLSearchParams();
-    if (categoryId) apiParams.append("category_id", categoryId);
-    if (place) apiParams.append("place", place);
+  const apiParams = new URLSearchParams();
+  if (categoryId) apiParams.append("category_id", categoryId);
+  if (place) apiParams.append("place", place);
 
-    async function loadResults() {
-      try {
-        const url = `/api/shops?${apiParams.toString()}`;
-        console.log("Fetching:", url);
+  async function loadResults() {
+    try {
+      const url = `/api/shops?${apiParams.toString()}`;
+      const res = await fetch(url);
+      const json = await res.json();
 
-        const res = await fetch(url);
-        console.log("response.status =", res.status);
+      const resultsDiv = document.getElementById("results");
+      const titleSpan = document.getElementById("title-text");
 
-        // Intenta parsear JSON siempre (para ver el error real)
-        const json = await res.json().catch(err => {
-          console.error("Error parsing JSON:", err);
-          throw new Error("Respuesta inválida del servidor");
-        });
+      if (!json.data || json.data.length === 0) {
+        titleSpan.textContent = "Sin resultados";
+        titleSpan.classList.add("reveal-active");
+        resultsDiv.innerHTML = "<p>No se encontraron resultados.</p>";
+        return;
+      }
 
-        console.log("json from API:", json);
+      const first = json.data[0];
+      const cat = first.category_name || "Categoría";
+      const loc = first.place_name || place || "Localidad";
 
-        const resultsDiv = document.getElementById("results");
-        const titleSpan = document.getElementById("title-text");
+      titleSpan.textContent = `${cat} en ${loc}`;
+      void titleSpan.offsetWidth;
+      titleSpan.classList.add("reveal-active");
 
-        if (!json.data || json.data.length === 0) {
-          // Si no hay resultados, título y mensaje
-          titleSpan.textContent = "Sin resultados";
-          // activar reveal (aunque el texto sea corto)
-          titleSpan.classList.add("reveal-active");
-          resultsDiv.innerHTML = "<p>No se encontraron resultados.</p>";
-          return;
+      const sortSelect = document.getElementById("sort");
+
+      function applySorting(data) {
+        const mode = sortSelect.value;
+
+        if (mode === "most") {
+          data.sort((a, b) => (b.visits || 0) - (a.visits || 0));
+        } 
+        else if (mode === "least") {
+          data.sort((a, b) => (a.visits || 0) - (b.visits || 0));
+        }
+        else if (mode === "az") {
+          data.sort((a, b) => a.name.localeCompare(b.name));
+        }
+        else if (mode === "za") {
+          data.sort((a, b) => b.name.localeCompare(a.name));
         }
 
-        // Obtener nombre de categoría y lugar desde el primer resultado (fallback si no hay)
-        const first = json.data[0];
-        const cat = first.category_name || "Categoría";
-        const loc = first.place_name || place || "Localidad";
+        return data;
+      }
 
-        // Poner título dinámico (con efecto reveal)
-        titleSpan.textContent = `${cat} en ${loc}`;
-        // Forzar reflow antes de activar la animación (asegura que ::after se reprograme)
-        void titleSpan.offsetWidth;
-        titleSpan.classList.add("reveal-active");
-
-        // Renderizar resultados
-        resultsDiv.innerHTML = json.data
-          .map(s => `
+      function render(data) {
+        resultsDiv.innerHTML = data
+          .map(
+            s => `
             <div class="shop">
               ${
                 s.image_url
                   ? `<img class="thumb" src="${s.image_url}" alt="${s.name}">`
-                  : `
-                    <div class="thumb" style="background:#eee; display:flex; align-items:center; justify-content:center; font-size:12px; color:#777;">
-                      No image
-                    </div>
-                  `
+                  : `<div class="thumb" style="background:#ddd"></div>`
               }
               <div class="shop-content">
                 <a href="/shop.html?id=${s.id}">${s.name}</a>
-                <p class="meta">
-                  Categoría: ${s.category_name || "Sin categoría"}<br>
-                  Lugar: ${s.place_name || "Sin lugar"}
-                </p>
+                <div class="meta">
+                  ${s.address ?? ""}<br>
+                  ${s.phone ?? ""}<br>
+                  <strong>Visitas:</strong> ${s.visits || 0}
+                </div>
               </div>
-            </div>
-          `)
+            </div>`
+          )
           .join("");
-
-      } catch (err) {
-        console.error("Error en loadResults:", err);
-        document.getElementById("results").innerHTML =
-          `<p>Error cargando resultados. ${err.message ? err.message : ''}</p>`;
       }
-    }
 
-    // Llamada única
-    loadResults();
-  </script>
+      // Ordena y muestra inicialmente
+      render(applySorting(json.data));
+
+      // Cambiar orden en tiempo real
+      sortSelect.addEventListener("change", () => {
+        render(applySorting(json.data));
+      });
+
+    } catch (e) {
+      console.error(e);
+      document.getElementById("results").innerHTML =
+        "<p>Error cargando resultados.</p>";
+    }
+  }
+
+  loadResults();
+</script>
+
 
   <div id="footer-placeholder"></div>
 
