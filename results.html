@@ -93,53 +93,73 @@
       line-height: 1.35;
     }
 
-    /* HEADER (ahora azul #365cab, texto y logo blanco) */
-    .main-header {
-      width: 100%;
-      padding: 20px 40px;
-      box-sizing: border-box;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 2000;
-      background: #365cab !important;
-      backdrop-filter: blur(8px) !important;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
-    }
+    /* HEADER – estado inicial (color base #365cab) */
+.main-header {
+  width: 100%;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
 
-    .nav-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+  background: #365cab;         /* color base solicitado */
+  backdrop-filter: none;       
+  transition: background 0.25s ease, backdrop-filter 0.25s ease, padding 0.25s ease;
+}
 
-    .nav-logo img {
-      width: 42px;
-      height: auto;
-      cursor: pointer;
-      filter: invert(1) brightness(2); /* blanco */
-    }
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-    .nav-links {
-      list-style: none;
-      display: flex;
-      gap: 28px;
-      padding: 0;
-      margin: 0;
-    }
+.nav-logo img {
+  width: 42px;
+  height: auto;
+  cursor: pointer;
+  filter: none !important;    /* logo blanco tal cual, sin invertir */
+}
 
-    .nav-links li a {
-      color: white;
-      font-family: Poppins, sans-serif;
-      font-size: 16px;
-      text-decoration: none;
-      font-weight: 500;
-      transition: opacity 0.2s ease;
-    }
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+  padding: 0;
+  margin: 0;
+}
 
-    .nav-links li a:hover {
-      opacity: 0.7;
-    }
+.nav-links li a {
+  color: white;               /* texto blanco en estado base */
+  font-family: Poppins, sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s ease, color 0.25s ease;
+}
+
+.nav-links li a:hover {
+  opacity: 0.7;
+}
+
+/* ESTADO SCROLLED (igual que index.html) */
+.main-header.scrolled {
+  background: rgba(255,255,255,0.5);  /* igual que en index */
+  backdrop-filter: blur(8px);
+  padding: 12px 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+}
+
+/* Cuando el header pasa a fondo claro → texto oscuro */
+.main-header.scrolled .nav-links li a {
+  color: #222;
+}
+
+/* Logo pasa de blanco → negro al hacer scroll (igual que index.html) */
+.main-header.scrolled .nav-logo img {
+  filter: brightness(0) invert(1);
+}
+
 
     /* FOOTER - ancho completo */
     #main-footer {
