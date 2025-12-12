@@ -10,179 +10,222 @@
   <style>
     body {
       font-family: Poppins, Arial, sans-serif;
-      max-width: 700px;
-      margin: 40px auto;
-      padding: 15px;
+      max-width: 760px;
+      margin: 120px auto 40px;
+      padding: 20px;
+      line-height: 1.55;
+      color: #222;
     }
 
-    h1 { font-size: 26px; margin-bottom: 20px; }
-
-    .field { margin-bottom: 12px; }
-    .label { font-size: 14px; color: #777; text-transform: uppercase; }
-    .value { font-size: 18px; color: #222; margin-top: 2px; }
-    a.value { color: #0070f3; text-decoration: none; }
-
-    .back {
-      display: inline-block;
-      margin-bottom: 25px;
-      font-size: 15px;
-      text-decoration: none;
-      color: #0070f3;
+    h1 { 
+      font-size: 30px; 
+      margin-bottom: 24px; 
+      font-weight: 700;
     }
 
-    #mapContainer { margin-top: 30px; }
-    #map {
+    /* ---------------------- PANEL MODERNO ---------------------- */
+    #shopLayout {
       width: 100%;
-      height: 300px;
-      border: 0;
-      border-radius: 8px;
+      margin-top: 20px;
+      border-collapse: collapse;
+      background: #fff;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      border-radius: 14px;
+      overflow: hidden;
     }
 
-    .full-image {
-      width: 100%;
-      max-width: 300px;
-      border-radius: 8px;
-      margin: 10px 0 20px;
-      object-fit: cover;
-      display: block;
+    #shopLayout td {
+      vertical-align: top;
+      padding: 24px;
     }
-
-    #shopLayout { width: 100%; margin-top: 20px; border-collapse: collapse; }
-    #shopLayout td { vertical-align: top; padding: 10px; }
 
     #leftCol { width: 60%; }
     #rightCol { width: 40%; text-align: right; }
 
-    #locationWrapper { margin-top: 30px; }
+    /* ---------------------- CAMPOS ---------------------- */
+    .field { 
+      margin-bottom: 16px; 
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
 
-    /* CONTENEDOR ADSENSE */
+    .label { 
+      font-size: 13px; 
+      color: #666; 
+      text-transform: uppercase; 
+      letter-spacing: .5px;
+      margin-bottom: 3px;
+    }
+
+    .value { 
+      font-size: 18px; 
+      color: #111;
+      font-weight: 500;
+    }
+
+    a.value {
+      color: #365cab;
+      text-decoration: none;
+    }
+
+    a.value:hover {
+      text-decoration: underline;
+    }
+
+    /* ---------------------- BACK BUTTON ---------------------- */
+    .back {
+      display: inline-block;
+      margin-bottom: 20px;
+      font-size: 15px;
+      text-decoration: none;
+      color: #365cab;
+      font-weight: 500;
+    }
+
+    .back:hover { opacity: 0.7; }
+
+    /* ---------------------- IMAGEN ---------------------- */
+    .full-image {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 10px;
+      margin: 5px 0 15px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ---------------------- MAP ---------------------- */
+    #locationWrapper { margin-top: 35px; }
+
+    #map {
+      width: 100%;
+      height: 330px;
+      border: 0;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.07);
+    }
+
+    /* ---------------------- ADS ---------------------- */
     #adsenseBlock {
       width: 100%;
       height: 150px;
-      margin: 30px 0;
-      background: #f5f5f5;
-      border-radius: 8px;
+      margin: 40px 0;
+      background: #f3f4f7;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #999;
+      color: #777;
       font-size: 14px;
+      border: 1px dashed #ccc;
     }
 
-    /* RECOMENDACIONES */
-    #relatedWrapper {
-      margin-top: 35px;
-    }
+    /* ---------------------- RELATED ---------------------- */
+    #relatedWrapper { margin-top: 40px; }
 
     #relatedWrapper h2 {
-      font-size: 20px;
-      margin-bottom: 15px;
+      font-size: 22px;
+      margin-bottom: 18px;
+      font-weight: 600;
     }
 
     .related-list {
       display: flex;
       gap: 16px;
       overflow-x: auto;
-      padding-bottom: 5px;
+      padding-bottom: 10px;
     }
 
     .related-item {
-      min-width: 140px;
-      max-width: 140px;
+      min-width: 150px;
+      max-width: 150px;
       text-decoration: none;
       color: #222;
       font-size: 14px;
     }
 
     .related-thumb {
-      width: 140px;
-      height: 140px;
-      border-radius: 6px;
+      width: 150px;
+      height: 150px;
+      border-radius: 10px;
       object-fit: cover;
       background: #ddd;
       display: block;
       margin-bottom: 8px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
     }
 
     .related-title {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
 
     .related-address {
       font-size: 12px;
       color: #555;
     }
-    /* HEADER – estado inicial (color base #365cab) */
-.main-header {
-  width: 100%;
-  padding: 20px 40px;
-  box-sizing: border-box;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 2000;
 
-  background: #365cab;         /* color base solicitado */
-  backdrop-filter: none;       
-  transition: background 0.25s ease, backdrop-filter 0.25s ease, padding 0.25s ease;
-}
+    /* ---------------------- HEADER (respeto total, sólo existente) ---------------------- */
+    .main-header {
+      width: 100%;
+      padding: 20px 40px;
+      box-sizing: border-box;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 2000;
+      background: #365cab;
+      backdrop-filter: none;
+      transition: background 0.25s ease, backdrop-filter 0.25s ease, padding 0.25s ease;
+    }
 
-.nav-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-.nav-logo img {
-  width: 42px;
-  height: auto;
-  cursor: pointer;
-  filter: none !important;    /* logo blanco tal cual, sin invertir */
-}
+    .nav-logo img {
+      width: 42px;
+      height: auto;
+      cursor: pointer;
+      filter: none !important;
+    }
 
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 28px;
-  padding: 0;
-  margin: 0;
-}
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+      padding: 0;
+      margin: 0;
+    }
 
-.nav-links li a {
-  color: white;               /* texto blanco en estado base */
-  font-family: Poppins, sans-serif;
-  font-size: 16px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: opacity 0.2s ease, color 0.25s ease;
-}
+    .nav-links li a {
+      color: white;
+      font-family: Poppins, sans-serif;
+      font-size: 16px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s ease, color 0.25s ease;
+    }
 
-.nav-links li a:hover {
-  opacity: 0.7;
-}
+    .nav-links li a:hover { opacity: 0.7; }
 
-/* ESTADO SCROLLED (igual que index.html) */
-.main-header.scrolled {
-  background: rgba(255,255,255,0.5);  /* igual que en index */
-  backdrop-filter: blur(8px);
-  padding: 12px 40px;
-  border-bottom: 1px solid rgba(255,255,255,0.25);
-}
+    .main-header.scrolled {
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(8px);
+      padding: 12px 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+    }
 
-/* Cuando el header pasa a fondo claro → texto oscuro */
-.main-header.scrolled .nav-links li a {
-  color: #222;
-}
+    .main-header.scrolled .nav-links li a { color: #222; }
 
-/* Logo pasa de blanco → negro al hacer scroll (igual que index.html) */
-.main-header.scrolled .nav-logo img {
-  filter: brightness(0) invert(1);
-}
+    .main-header.scrolled .nav-logo img {
+      filter: brightness(0) invert(1);
+    }
 
-
-    /* FOOTER - ancho completo */
+    /* ---------------------- FOOTER (sin cambios) ---------------------- */
     #main-footer {
       background: #365cab;
       color: white;
@@ -215,16 +258,13 @@
       text-decoration: none;
     }
 
-    .footer-right a:hover {
-      text-decoration: underline;
-    }
+    .footer-right a:hover { text-decoration: underline; }
 
     .footer-left .footer-contact a {
       color: white !important;
       text-decoration: underline;
     }
 
-    /* Responsive */
     @media (max-width: 768px) {
       .footer-container {
         flex-direction: column;
@@ -237,202 +277,111 @@
         margin-right: 10px;
       }
 
-      .thumb { width: 120px; height: 120px; }
-    }
-
-    .s01 .header-block {
-      width: 100%;
-      display: block;
-      text-align: center;
-      margin-bottom: 40px;
+      .full-image { max-width: 240px; }
     }
   </style>
 </head>
 
 <body>
+
 <!-- Header -->
-  <div id="header-placeholder"></div>
-  <script>
-    fetch("header.html")
-      .then(r => r.text())
-      .then(html => {
-        document.getElementById("header-placeholder").innerHTML = html;
-      })
-      .catch(e => console.error("No se pudo cargar header:", e));
-  </script>
-  <a href="javascript:history.back()" class="back">Volver</a>
-  <h1 id="shopName">Cargando...</h1>
+<div id="header-placeholder"></div>
+<script>
+  fetch("header.html")
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("header-placeholder").innerHTML = html;
+    })
+    .catch(e => console.error("No se pudo cargar header:", e));
+</script>
 
-  <table id="shopLayout">
-    <tr>
-      <td id="leftCol">
-        <div id="shopData">Cargando datos...</div>
-      </td>
-      <td id="rightCol">
-        <div id="imageWrapper"></div>
-      </td>
-    </tr>
-  </table>
+<a href="javascript:history.back()" class="back">Volver</a>
+<h1 id="shopName">Cargando...</h1>
 
-  <div id="locationWrapper">
-    <iframe id="map" loading="lazy"></iframe>
-  </div>
+<table id="shopLayout">
+  <tr>
+    <td id="leftCol">
+      <div id="shopData">Cargando datos...</div>
+    </td>
+    <td id="rightCol">
+      <div id="imageWrapper"></div>
+    </td>
+  </tr>
+</table>
 
-  <!-- Bloque de Adsense -->
-  <div id="adsenseBlock">
-    Espacio para Google AdSense
-  </div>
+<div id="locationWrapper">
+  <iframe id="map" loading="lazy"></iframe>
+</div>
 
-  <!-- RECOMENDACIONES -->
-  <div id="relatedWrapper" style="display:none;">
-    <h2>También te podría interesar</h2>
-    <div class="related-list" id="relatedList"></div>
-  </div>
+<div id="adsenseBlock">Espacio para Google AdSense</div>
 
-  <script>
-    // Obtener ID
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
-    if (!id) {
-      document.getElementById("shopData").innerHTML = "<p>No se ha proporcionado un ID.</p>";
-      throw new Error("Missing ID");
-    }
+<div id="relatedWrapper" style="display:none;">
+  <h2>También te podría interesar</h2>
+  <div class="related-list" id="relatedList"></div>
+</div>
 
-    // Cargar ficha principal
-    async function loadShop() {
-      try {
-        const res = await fetch(`/api/shop?id=${encodeURIComponent(id)}`);
-        const json = await res.json();
-        const s = json.data;
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  if (!id) {
+    document.getElementById("shopData").innerHTML = "<p>No se ha proporcionado un ID válido.</p>";
+    throw new Error("ID no válido");
+  }
 
-        if (!s) {
-          document.getElementById("shopData").innerHTML = "<p>No se encontró la tienda.</p>";
-          return;
-        }
-
-        document.getElementById("shopName").textContent = s.name || "Sin nombre";
-
-        document.getElementById("shopData").innerHTML = `
-          ${renderField("Categoría", s.category?.category)}
-          ${renderField("Lugar", s.place?.placename)}
-          ${renderField("Teléfono", s.phone)}
-          ${renderFieldLink("Email", s.email, "mailto:" + s.email)}
-          ${renderFieldLink("Web", s.website, s.website)}
-          ${renderField("Descripción", s.description)}
-        `;
-
-        if (s.image_url) {
-          document.getElementById("imageWrapper").innerHTML =
-            `<img src="${s.image_url}" class="full-image" alt="">`;
-        } else {
-          document.getElementById("imageWrapper").innerHTML =
-            `<div style="color:#999;">Sin imagen disponible</div>`;
-        }
-
-        loadMap(s);
-        loadRelated(s);
-
-      } catch (err) {
-        console.error(err);
-        document.getElementById("shopData").innerHTML = "<p>Error cargando la tienda.</p>";
-      }
-    }
-
-    // Incrementar visitas
-    fetch(`/api/shop-visits?id=${id}`, { method: 'POST' });
-
-    function loadMap(shop) {
-      if (!shop.address) return;
-      const fullAddress = `${shop.address}, ${shop.place?.placename || ""}`;
-      const encoded = encodeURIComponent(fullAddress);
-
-      document.getElementById("map").src =
-        `https://www.google.com/maps/embed/v1/place?key=AIzaSyD4J5HvD1OoxxrYZ0REOVdDpLCfoT8QUkM&q=${encoded}`;
-    }
-
-    // Cargar recomendaciones
-    async function loadRelated(shop) {
-      if (!shop.category || !shop.place) return;
-
-      const categoryId = shop.category.id;
-      const placeId = shop.place.id;
-
-      const res = await fetch(`/api/shops?category=${categoryId}&place_id=${placeId}`);
+  async function loadShop() {
+    try {
+      const res = await fetch(`/api/shop?id=${id}`);
       const json = await res.json();
 
-      const all = json.data || [];
-      const filtered = all
-        .filter(x => x.id !== shop.id)
-        .slice(0, 4);
-
-      if (filtered.length === 0) return;
-
-      const list = document.getElementById("relatedList");
-
-      filtered.forEach(item => {
-        const url = `/shop.html?id=${item.id}`;
-        const img = item.image_url || "";
-
-        list.innerHTML += `
-          <a class="related-item" href="${url}">
-            <img src="${img}" class="related-thumb">
-            <div class="related-title">${item.name}</div>
-            <div class="related-address">${item.address || ""}</div>
-          </a>
-        `;
-      });
-
-      document.getElementById("relatedWrapper").style.display = "block";
-    }
-
-    // Render helpers
-    function renderField(label, value) {
-      if (!value) return "";
-      return `
-        <div class="field">
-          <div class="label">${label}</div>
-          <div class="value">${value}</div>
-        </div>
-      `;
-    }
-
-    function renderFieldLink(label, value, href) {
-      if (!value) return "";
-      const safeHref = href.startsWith("http") ? href : "https://" + href;
-      return `
-        <div class="field">
-          <div class="label">${label}</div>
-          <a class="value" href="${safeHref}" target="_blank">${value}</a>
-        </div>
-      `;
-    }
-
-    // Ejecutar carga
-    loadShop();
-  </script>
-
-  <div id="footer-placeholder"></div>
-  <script>
-    // Cargar footer.html dinámicamente
-    fetch("footer.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("footer-placeholder").innerHTML = html;
-      })
-      .catch(err => console.error("No se pudo cargar el footer:", err));
-  </script>
-
-  <script>
-    document.addEventListener("scroll", () => {
-      const header = document.querySelector(".main-header");
-      if (header) {
-        if (window.scrollY > 40) {
-          header.classList.add("scrolled");
-        } else {
-          header.classList.remove("scrolled");
-        }
+      if (!json.data) {
+        document.getElementById("shopName").textContent = "No encontrado";
+        document.getElementById("shopData").innerHTML = "<p>Error al cargar los datos.</p>";
+        return;
       }
-    });
-  </script>
+
+      const shop = json.data;
+
+      document.getElementById("shopName").textContent = shop.name;
+
+      const wrapper = document.getElementById("shopData");
+      wrapper.innerHTML = `
+        <div class="field"><div class="label">Dirección</div><div class="value">${shop.address || "Sin datos"}</div></div>
+        <div class="field"><div class="label">Teléfono</div><div class="value">${shop.phone || "Sin datos"}</div></div>
+        <div class="field"><div class="label">Web</div><div class="value"><a class="value" href="${shop.web || "#"}" target="_blank">${shop.web || "Sin datos"}</a></div></div>
+        <div class="field"><div class="label">Categoría</div><div class="value">${shop.category_name}</div></div>
+      `;
+
+      const img = shop.image
+        ? `<img src="${shop.image}" class="full-image" />`
+        : "";
+      document.getElementById("imageWrapper").innerHTML = img;
+
+      if (shop.lat && shop.lng) {
+        document.getElementById("map").src =
+          `https://www.google.com/maps?q=${shop.lat},${shop.lng}&hl=es&z=15&output=embed`;
+      }
+
+      if (json.related && json.related.length > 0) {
+        const list = document.getElementById("relatedList");
+        json.related.forEach(r => {
+          list.innerHTML += `
+            <a class="related-item" href="shop.html?id=${r.id}">
+              <img src="${r.image || ""}" class="related-thumb" />
+              <div class="related-title">${r.name}</div>
+              <div class="related-address">${r.address || ""}</div>
+            </a>
+          `;
+        });
+        document.getElementById("relatedWrapper").style.display = "block";
+      }
+
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  loadShop();
+</script>
+
 </body>
 </html>
