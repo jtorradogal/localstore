@@ -290,6 +290,8 @@
          res = await fetch(`/api/shop?id=${encodeURIComponent(id)}`);
          json = await res.json();
         const s = json.data;
+        const fullAddress = `${s.address || ""}, ${s.place?.placename || ""}`;
+
 
         if (!s) {
           document.getElementById("shopData").innerHTML = "<p>No se encontró la tienda.</p>";
@@ -300,7 +302,7 @@
 
         document.getElementById("shopData").innerHTML = `
           ${renderField("Categoría", s.category?.category)}
-          ${renderField("Lugar", {fullAddress}}
+          ${renderField("Ubicación", fullAddress)}
           ${renderField("Teléfono", s.phone)}
           ${renderFieldLink("Email", s.email, "mailto:" + s.email)}
           ${renderFieldLink("Web", s.website, s.website)}
