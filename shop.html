@@ -6,6 +6,7 @@
   <title>Ficha de tienda</title>
 
   <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+
   <style>
     body {
       font-family: Poppins, Arial, sans-serif;
@@ -14,31 +15,12 @@
       padding: 15px;
     }
 
-    h1 {
-      font-size: 26px;
-      margin-bottom: 20px;
-    }
+    h1 { font-size: 26px; margin-bottom: 20px; }
 
-    .field {
-      margin-bottom: 12px;
-    }
-
-    .label {
-      font-size: 14px;
-      color: #777;
-      text-transform: uppercase;
-    }
-
-    .value {
-      font-size: 18px;
-      color: #222;
-      margin-top: 2px;
-    }
-
-    a.value {
-      color: #0070f3;
-      text-decoration: none;
-    }
+    .field { margin-bottom: 12px; }
+    .label { font-size: 14px; color: #777; text-transform: uppercase; }
+    .value { font-size: 18px; color: #222; margin-top: 2px; }
+    a.value { color: #0070f3; text-decoration: none; }
 
     .back {
       display: inline-block;
@@ -48,10 +30,7 @@
       color: #0070f3;
     }
 
-    #mapContainer {
-      margin-top: 30px;
-    }
-
+    #mapContainer { margin-top: 30px; }
     #map {
       width: 100%;
       height: 300px;
@@ -63,39 +42,77 @@
       width: 100%;
       max-width: 300px;
       border-radius: 8px;
-      margin: 10px 0 20px 0;
+      margin: 10px 0 20px;
       object-fit: cover;
       display: block;
     }
 
-    #detailsWrapper {
-      display: flex;
-      align-items: flex-start;
-      gap: 20px;
-    }
+    #shopLayout { width: 100%; margin-top: 20px; border-collapse: collapse; }
+    #shopLayout td { vertical-align: top; padding: 10px; }
 
-    #shopLayout {
+    #leftCol { width: 60%; }
+    #rightCol { width: 40%; text-align: right; }
+
+    #locationWrapper { margin-top: 30px; }
+
+    /* CONTENEDOR ADSENSE */
+    #adsenseBlock {
       width: 100%;
-      margin-top: 20px;
-      border-collapse: collapse;
+      height: 150px;
+      margin: 30px 0;
+      background: #f5f5f5;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 14px;
     }
 
-    #shopLayout td {
-      vertical-align: top;
-      padding: 10px;
+    /* RECOMENDACIONES */
+    #relatedWrapper {
+      margin-top: 35px;
     }
 
-    #leftCol {
-      width: 60%;
+    #relatedWrapper h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
     }
 
-    #rightCol {
-      width: 40%;
-      text-align: right;
+    .related-list {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 5px;
     }
 
-    #locationWrapper {
-      margin-top: 30px;
+    .related-item {
+      min-width: 140px;
+      max-width: 140px;
+      text-decoration: none;
+      color: #222;
+      font-size: 14px;
+    }
+
+    .related-thumb {
+      width: 140px;
+      height: 140px;
+      border-radius: 6px;
+      object-fit: cover;
+      background: #ddd;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .related-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .related-address {
+      font-size: 12px;
+      color: #555;
     }
   </style>
 </head>
@@ -117,38 +134,38 @@
   </table>
 
   <div id="locationWrapper">
-    <iframe id="map" width="100%" height="300" style="border:0;border-radius:8px;" loading="lazy"></iframe>
+    <iframe id="map" loading="lazy"></iframe>
+  </div>
+
+  <!-- Bloque de Adsense -->
+  <div id="adsenseBlock">
+    Espacio para Google AdSense
+  </div>
+
+  <!-- RECOMENDACIONES -->
+  <div id="relatedWrapper" style="display:none;">
+    <h2>También te podría interesar</h2>
+    <div class="related-list" id="relatedList"></div>
   </div>
 
   <script>
-    // Parámetro id
+    // Obtener ID
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
-
     if (!id) {
-      document.getElementById("shopData").innerHTML =
-        "<p>No se ha proporcionado un ID de tienda.</p>";
-      throw new Error("Missing shop ID");
+      document.getElementById("shopData").innerHTML = "<p>No se ha proporcionado un ID.</p>";
+      throw new Error("Missing ID");
     }
 
-    // Cargar datos de la tienda desde /api/shop?id=...
+    // Cargar ficha principal
     async function loadShop() {
       try {
         const res = await fetch(`/api/shop?id=${encodeURIComponent(id)}`);
-        if (!res.ok) {
-          console.error('API /api/shop responded with', res.status);
-          document.getElementById("shopData").innerHTML =
-            "<p>Error cargando la tienda.</p>";
-          return;
-        }
-
         const json = await res.json();
-
-        // Ten en cuenta la estructura: tu server devuelve { status:'success', data: {...} }
         const s = json.data;
+
         if (!s) {
-          document.getElementById("shopData").innerHTML =
-            "<p>No se encontró la tienda.</p>";
+          document.getElementById("shopData").innerHTML = "<p>No se encontró la tienda.</p>";
           return;
         }
 
@@ -163,47 +180,71 @@
           ${renderField("Descripción", s.description)}
         `;
 
-        if (s.schedule) {
-          document.getElementById("shopData").innerHTML += renderSchedule(s.schedule);
-        }
-
-        // Imagen
         if (s.image_url) {
-          document.getElementById("imageWrapper").innerHTML = `
-            <img src="${s.image_url}" class="full-image" alt="Imagen del negocio">
-          `;
+          document.getElementById("imageWrapper").innerHTML =
+            `<img src="${s.image_url}" class="full-image" alt="">`;
         } else {
           document.getElementById("imageWrapper").innerHTML =
             `<div style="color:#999;">Sin imagen disponible</div>`;
         }
 
         loadMap(s);
+        loadRelated(s);
 
       } catch (err) {
         console.error(err);
-        document.getElementById("shopData").innerHTML =
-          "<p>Error cargando la tienda.</p>";
+        document.getElementById("shopData").innerHTML = "<p>Error cargando la tienda.</p>";
       }
-
-      
-
     }
 
-// Incrementar visitas
-fetch(`/api/shop-visits?id=${id}`, { method: 'POST' })
-  .catch(err => console.error("Error incrementing visits:", err));
-    
+    // Incrementar visitas
+    fetch(`/api/shop-visits?id=${id}`, { method: 'POST' });
+
     function loadMap(shop) {
       if (!shop.address) return;
-
       const fullAddress = `${shop.address}, ${shop.place?.placename || ""}`;
       const encoded = encodeURIComponent(fullAddress);
 
-      // Reemplaza YOUR_GOOGLE_API_KEY si la usas
       document.getElementById("map").src =
         `https://www.google.com/maps/embed/v1/place?key=AIzaSyD4J5HvD1OoxxrYZ0REOVdDpLCfoT8QUkM&q=${encoded}`;
     }
 
+    // Cargar recomendaciones
+    async function loadRelated(shop) {
+      if (!shop.category || !shop.place) return;
+
+      const categoryId = shop.category.id;
+      const placeId = shop.place.id;
+
+      const res = await fetch(`/api/shops?category=${categoryId}&place_id=${placeId}`);
+      const json = await res.json();
+
+      const all = json.data || [];
+      const filtered = all
+        .filter(x => x.id !== shop.id)
+        .slice(0, 4);
+
+      if (filtered.length === 0) return;
+
+      const list = document.getElementById("relatedList");
+
+      filtered.forEach(item => {
+        const url = `/shop.html?id=${item.id}`;
+        const img = item.image_url || "";
+
+        list.innerHTML += `
+          <a class="related-item" href="${url}">
+            <img src="${img}" class="related-thumb">
+            <div class="related-title">${item.name}</div>
+            <div class="related-address">${item.address || ""}</div>
+          </a>
+        `;
+      });
+
+      document.getElementById("relatedWrapper").style.display = "block";
+    }
+
+    // Render helpers
     function renderField(label, value) {
       if (!value) return "";
       return `
@@ -220,46 +261,12 @@ fetch(`/api/shop-visits?id=${id}`, { method: 'POST' })
       return `
         <div class="field">
           <div class="label">${label}</div>
-          <a class="value" href="${safeHref}" target="_blank" rel="noopener">${value}</a>
+          <a class="value" href="${safeHref}" target="_blank">${value}</a>
         </div>
       `;
     }
 
-    function renderSchedule(schedule) {
-      const days = {
-        monday: "Lunes",
-        tuesday: "Martes",
-        wednesday: "Miércoles",
-        thursday: "Jueves",
-        friday: "Viernes",
-        saturday: "Sábado",
-        sunday: "Domingo"
-      };
-
-      let html = `
-        <div class="field">
-          <div class="label">Horario</div>
-          <div class="value">
-      `;
-
-      for (const key in days) {
-        const slots = schedule[key] || [];
-        if (slots.length === 0) {
-          html += `<div>${days[key]}: Cerrado</div>`;
-        } else {
-          const line = slots.map(s => `${s.open} a ${s.close}`).join(" y ");
-          html += `<div>${days[key]}: ${line}</div>`;
-        }
-      }
-
-      html += `
-          </div>
-        </div>
-      `;
-      return html;
-    }
-
-    // Lanzar carga de la ficha
+    // Ejecutar carga
     loadShop();
   </script>
 
