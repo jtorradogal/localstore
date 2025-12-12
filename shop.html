@@ -287,8 +287,8 @@
     // Cargar ficha principal
     async function loadShop() {
       try {
-        const res = await fetch(`/api/shop?id=${encodeURIComponent(id)}`);
-        const json = await res.json();
+         res = await fetch(`/api/shop?id=${encodeURIComponent(id)}`);
+         json = await res.json();
         const s = json.data;
 
         if (!s) {
@@ -300,7 +300,7 @@
 
         document.getElementById("shopData").innerHTML = `
           ${renderField("Categoría", s.category?.category)}
-          ${renderField("Lugar", s.place?.placename)}
+          ${renderField("Lugar", {fullAddress}}
           ${renderField("Teléfono", s.phone)}
           ${renderFieldLink("Email", s.email, "mailto:" + s.email)}
           ${renderFieldLink("Web", s.website, s.website)}
