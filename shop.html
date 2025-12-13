@@ -410,7 +410,8 @@ function renderSchedule(schedule) {
     sunday: "Domingo"
   };
 
-  let html = '<div style="margin-top:14px;font-size:14px;">';
+  let html = '<div style="margin-top:14px;font-size:14px;text-align:left;">';
+
 
   Object.keys(daysMap).forEach(day => {
     const slots = schedule[day];
