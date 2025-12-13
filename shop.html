@@ -93,7 +93,7 @@
     /* -------------------- IMAGEN -------------------- */
     .full-image {
       width: 100%;
-      max-width: 320px;
+      max-width: 350px;
       border-radius: 10px;
       margin: 6px 0 0;
       object-fit: cover;
@@ -310,9 +310,12 @@
         `;
 
         if (s.image_url) {
-          document.getElementById("imageWrapper").innerHTML =
-            `<img src="${s.image_url}" class="full-image" alt="">`;
-        } else {
+  document.getElementById("imageWrapper").innerHTML = `
+    <img src="${s.image_url}" class="full-image" alt="">
+    ${renderSchedule(s.schedule)}
+  `;
+}
+ else {
           document.getElementById("imageWrapper").innerHTML =
             `<div style="color:#999;">Sin imagen disponible</div>`;
         }
@@ -394,6 +397,39 @@
         </div>
       `;
     }
+function renderSchedule(schedule) {
+  if (!schedule || typeof schedule !== "object") return "";
+
+  const daysMap = {
+    monday: "Lunes",
+    tuesday: "Martes",
+    wednesday: "Miércoles",
+    thursday: "Jueves",
+    friday: "Viernes",
+    saturday: "Sábado",
+    sunday: "Domingo"
+  };
+
+  let html = '<div style="margin-top:14px;font-size:14px;">';
+
+  Object.keys(daysMap).forEach(day => {
+    const slots = schedule[day];
+    if (!slots || slots.length === 0) return;
+
+    const ranges = slots
+      .map(s => `${s.open} – ${s.close}`)
+      .join(", ");
+
+    html += `
+      <div style="margin-bottom:6px;">
+        <strong>${daysMap[day]}:</strong> ${ranges}
+      </div>
+    `;
+  });
+
+  html += "</div>";
+  return html;
+}
 
     // Ejecutar carga
     loadShop();
