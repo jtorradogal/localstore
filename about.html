@@ -415,12 +415,21 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
   status.textContent = "Enviando...";
 
-  const formData = new FormData(form);
+  const payload = {
+    name: form.name.value.trim(),
+    email: form.email.value.trim(),
+    subject: form.subject.value.trim(),
+    message: form.message.value.trim(),
+    company: form.company.value // honeypot
+  };
 
   try {
     const res = await fetch("/api/contact", {
       method: "POST",
-      body: formData
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
     });
 
     const data = await res.json();
@@ -432,11 +441,12 @@ form.addEventListener("submit", async (e) => {
       status.textContent = data.error || "Error al enviar el mensaje.";
     }
 
-  } catch (err) {
+  } catch {
     status.textContent = "No se pudo enviar el mensaje.";
   }
 });
 </script>
+
 
 </body>
 </html>
