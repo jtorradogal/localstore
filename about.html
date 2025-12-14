@@ -349,38 +349,43 @@
 
   </section>
 
-  /* Mensaje de confirmación de correo enviado */
 
 <script>
-const form = document.getElementById("contactForm");
-const status = document.getElementById("form-status");
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("contactForm");
+  const status = document.getElementById("form-status");
+  const submitBtn = document.getElementById("submitButton");
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault(); // Evita la redirección y el envío tradicional
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const formData = new FormData(form);
+    // Bloquear el formulario inmediatamente
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Enviando…";
 
-  try {
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData
-    });
+    // Mostrar mensaje inmediato
+    status.textContent = "¡Gracias por tu mensaje! Nos pondremos en contacto contigo a la mayor brevedad posible.";
+    status.style.color = "#28a745";
 
-    const result = await response.json();
+    // Opcional: vaciar campos inmediatamente
+    form.querySelectorAll("input, textarea").forEach(field => field.value = "");
 
-    if (result.success) {
-      status.textContent = "¡Gracias por tu mensaje! Nos pondremos en contacto contigo a la mayor brevedad posible.";
-      status.style.color = "#28a745"; // verde
-      form.reset(); // vacía los campos del formulario
-    } else {
-      status.textContent = "Oops… hubo un error al enviar tu mensaje. Intenta de nuevo.";
-      status.style.color = "#dc3545"; // rojo
+    // Enviar datos en segundo plano
+    const formData = new FormData(form);
+
+    try {
+      await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+      // La respuesta no importa, ya mostramos el mensaje
+    } catch (err) {
+      console.error(err);
+      // Si quieres, puedes añadir un mensaje de error opcional
+      // status.textContent = "Error de conexión. Intenta de nuevo más tarde.";
+      // status.style.color = "#dc3545";
     }
-  } catch (err) {
-    console.error(err);
-    status.textContent = "Error de conexión. Intenta de nuevo más tarde.";
-    status.style.color = "#dc3545";
-  }
+  });
 });
 </script>
 <br>
