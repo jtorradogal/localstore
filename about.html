@@ -241,6 +241,40 @@
   opacity: 0.9;
 }
 
+.contact-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Mensaje de confirmación */
+.success-message {
+  text-align: center;
+  padding: 30px 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #28a745;
+  max-width: 520px;
+  margin-top: 20px;
+}
+
+.success-message h3 {
+  color: #28a745;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.success-message p {
+  margin-bottom: 15px;
+  color: #333;
+  line-height: 1.6;
+}
+
+.success-message .note {
+  font-size: 12px;
+  color: #666;
+  margin-top: 15px;
+}
+
 /* ---------- SEPARADOR ---------- */
 
 .section-separator {
@@ -305,41 +339,46 @@
   <section class="about-block from-right">
     <h2>Contacto</h2>
 
-    <form id="contactForm" class="contact-form">
-        <input type="hidden" name="access_key" value="a3e4a2e5-3031-4701-8f77-ab74f2711110">
-        <input type="checkbox" name="botcheck" style="display:none">
+    <!-- Contenedor para el formulario -->
+    <div id="contactContainer">
+        <form id="contactForm" class="contact-form">
+            <input type="hidden" name="access_key" value="a3e4a2e5-3031-4701-8f77-ab74f2711110">
+            <input type="checkbox" name="botcheck" style="display:none">
 
-        <label>
-            Nombre
-            <input type="text" name="name" required>
-        </label>
+            <label>
+                Nombre
+                <input type="text" name="name" required>
+            </label>
 
-        <label>
-            Email
-            <input type="email" name="email" required>
-        </label>
+            <label>
+                Email
+                <input type="email" name="email" required>
+            </label>
 
-        <label>
-            Asunto
-            <input type="text" name="subject" required>
-        </label>
+            <label>
+                Asunto
+                <input type="text" name="subject" required>
+            </label>
 
-        <label>
-            Mensaje
-            <textarea name="message" required></textarea>
-        </label>
+            <label>
+                Mensaje
+                <textarea name="message" required></textarea>
+            </label>
 
-        <button type="submit" id="submitButton">Enviar</button>
-
-        <p id="form-status" style="margin-top:10px;font-size:14px;color:#365cab;"></p>
-    </form>
+            <button type="submit" id="submitButton">Enviar</button>
+        </form>
+    </div>
+    
+    <!-- Aquí aparecerá el mensaje de confirmación -->
+    <div id="successMessage"></div>
 </section>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("contactForm");
-    const status = document.getElementById("form-status");
     const submitBtn = document.getElementById("submitButton");
+    const successMessage = document.getElementById("successMessage");
+    const contactContainer = document.getElementById("contactContainer");
     
     // Verificar si ya se envió el formulario en esta sesión
     const formSubmitted = sessionStorage.getItem('formSubmitted');
@@ -383,24 +422,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function showSuccessMessage() {
-        // Ocultar todo el formulario
-        form.style.display = "none";
+        // Ocultar el formulario
+        contactContainer.style.display = "none";
         
-        // Crear mensaje de éxito
-        status.innerHTML = `
-            <div style="text-align: center; padding: 20px;">
-                <h3 style="color: #28a745; margin-bottom: 10px;">
-                    ¡Mensaje enviado correctamente!
-                </h3>
-                <p style="margin-bottom: 15px;">
-                    Gracias por contactarnos. Nos pondremos en contacto contigo a la mayor brevedad posible.
-                </p>
-                <p style="font-size: 12px; color: #666;">
-                    (Si necesitas enviar otro mensaje, por favor actualiza la página)
-                </p>
+        // Crear y mostrar mensaje de éxito
+        successMessage.innerHTML = `
+            <div class="success-message">
+                <h3>¡Mensaje enviado correctamente!</h3>
+                <p>Gracias por contactarnos. Nos pondremos en contacto contigo a la mayor brevedad posible.</p>
+                <p class="note">(Si necesitas enviar otro mensaje, por favor actualiza la página)</p>
             </div>
         `;
-        status.style.color = "#28a745";
     }
 });
 </script>
