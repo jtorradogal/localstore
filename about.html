@@ -409,46 +409,7 @@
     separatorObserver.observe(line);
   });
 </script>
-  /* JavaScript de envío (fetch + feedback) */
-<script>
-const form = document.getElementById("contactForm");
-const status = document.getElementById("form-status");
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  status.textContent = "Enviando...";
-
-  const payload = {
-    name: form.name.value.trim(),
-    email: form.email.value.trim(),
-    subject: form.subject.value.trim(),
-    message: form.message.value.trim(),
-    company: form.company.value // honeypot
-  };
-
-  try {
-    const res = await fetch("/api/contact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      status.textContent = "Mensaje enviado correctamente.";
-      form.reset();
-    } else {
-      status.textContent = data.error || "Error al enviar el mensaje.";
-    }
-
-  } catch {
-    status.textContent = "No se pudo enviar el mensaje.";
-  }
-});
-</script>
 
 
 </body>
