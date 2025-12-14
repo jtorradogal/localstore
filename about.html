@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resultados</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+  <style>
+    body {
+      font-family: Poppins, Arial, sans-serif;
+      max-width: 900px;
+      margin: 120px auto 40px;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 28px;
+      color: #222;
+    }
+/* HEADER – estado inicial (color base #365cab) */
+.main-header {
+  width: 100%;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+
+  background: #365cab;         /* color base solicitado */
+  backdrop-filter: none;       
+  transition: background 0.25s ease, backdrop-filter 0.25s ease, padding 0.25s ease;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo img {
+  width: 42px;
+  height: auto;
+  cursor: pointer;
+  filter: none !important;    /* logo blanco tal cual, sin invertir */
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links li a {
+  color: white;               /* texto blanco en estado base */
+  font-family: Poppins, sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s ease, color 0.25s ease;
+}
+
+.nav-links li a:hover {
+  opacity: 0.7;
+}
+
+/* ESTADO SCROLLED (igual que index.html) */
+.main-header.scrolled {
+  background: rgba(255,255,255,0.5);  /* igual que en index */
+  backdrop-filter: blur(8px);
+  padding: 12px 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+}
+
+/* Cuando el header pasa a fondo claro → texto oscuro */
+.main-header.scrolled .nav-links li a {
+  color: #222;
+}
+
+/* Logo pasa de blanco → negro al hacer scroll (igual que index.html) */
+.main-header.scrolled .nav-logo img {
+  filter: brightness(0) invert(1);
+}
+
+
+    /* FOOTER - ancho completo */
+    #main-footer {
+      background: #365cab;
+      color: white;
+      padding: 50px 0 30px 0;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-disclaimer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 14px;
+      opacity: 0.85;
+    }
+
+    .footer-right a {
+      margin-left: 20px;
+      color: white !important;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .footer-right a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-left .footer-contact a {
+      color: white !important;
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .footer-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+      }
+
+      .footer-right a {
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+
+      .thumb { width: 120px; height: 120px; }
+    }
+
+    .s01 .header-block {
+      width: 100%;
+      display: block;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    /* ---------- ABOUT ---------- */
+
+.about-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.about-block {
+  opacity: 0;
+  transform: translateX(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.about-block.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.from-left {
+  transform: translateX(-60px);
+}
+
+.from-right {
+  transform: translateX(60px);
+}
+
+.about-block h2,
+.about-block h1 {
+  color: #111;
+  margin-bottom: 12px;
+}
+
+.about-block p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #444;
+  max-width: 760px;
+}
+
+/* ---------- FORMULARIO ---------- */
+
+.contact-form {
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contact-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.contact-form input,
+.contact-form textarea {
+  margin-top: 6px;
+  padding: 10px 12px;
+  font-family: Poppins, Arial, sans-serif;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: #365cab;
+}
+
+.contact-form button {
+  margin-top: 10px;
+  align-self: flex-start;
+  background: #365cab;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.contact-form button:hover {
+  opacity: 0.9;
+}
+
+</style>
+
+
+</head>
+
+<body>
+ <!-- Header -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch("header.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("header-placeholder").innerHTML = html;
+      })
+      .catch(e => console.error("No se pudo cargar header:", e));
+  </script>
+  <div id="footer-placeholder"></div>
+
+  <main class="about-wrapper">
+
+  <section class="about-block from-left">
+    <h1>¿Qué es LocalStore?</h1>
+    <p>
+      LocalStore es una plataforma creada para dar visibilidad a los comercios locales,
+      facilitando a los usuarios descubrir tiendas, servicios y negocios cercanos de forma sencilla y honesta.
+    </p>
+  </section>
+
+  <section class="about-block from-right">
+    <h2>¿Por qué nace LocalStore?</h2>
+    <p>
+      Nace como respuesta a la dificultad que tienen muchos pequeños negocios para
+      competir en visibilidad frente a grandes plataformas y cadenas.
+      LocalStore apuesta por lo cercano, lo real y lo local.
+    </p>
+  </section>
+
+  <section class="about-block from-left">
+    <h2>Nuestra misión</h2>
+    <p>
+      Conectar personas con comercios locales, fomentar la economía de proximidad
+      y ofrecer una alternativa transparente, sin resultados patrocinados ni rankings artificiales.
+    </p>
+  </section>
+
+  <section class="about-block from-right">
+    <h2>Contacto</h2>
+
+    <form class="contact-form"
+          action="mailto:localstore@mail.com"
+          method="post"
+          enctype="text/plain">
+
+      <label>
+        Nombre
+        <input type="text" name="nombre" required>
+      </label>
+
+      <label>
+        Dirección de correo
+        <input type="email" name="email" required>
+      </label>
+
+      <label>
+        Asunto
+        <input type="text" name="asunto" required>
+      </label>
+
+      <label>
+        Mensaje
+        <textarea name="mensaje" rows="5" required></textarea>
+      </label>
+
+      <button type="submit">Enviar mensaje</button>
+    </form>
+  </section>
+
+</main>
+
+
+  
+  <script>
+    // Cargar footer.html dinámicamente
+    fetch("footer.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+      })
+      .catch(err => console.error("No se pudo cargar el footer:", err));
+  </script>
+
+  <script>
+    document.addEventListener("scroll", () => {
+      const header = document.querySelector(".main-header");
+      if (header) {
+        if (window.scrollY > 40) {
+          header.classList.add("scrolled");
+        } else {
+          header.classList.remove("scrolled");
+        }
+      }
+    });
+  </script>
+
+  <script>
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  document.querySelectorAll(".about-block").forEach(block => {
+    observer.observe(block);
+  });
+</script>
+</body>
+</html>
