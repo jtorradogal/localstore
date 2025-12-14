@@ -314,19 +314,24 @@
   <section class="about-block from-right">
     <h2>Contacto</h2>
 
-    <form class="contact-form" id="contactForm" novalidate>
-
-  <!-- Honeypot anti-bots -->
-  <input type="text" name="company" tabindex="-1" autocomplete="off" style="display:none">
+    <form
+  action="https://formsubmit.co/localstore@mail.com"
+  method="POST"
+  class="contact-form"
+  novalidate
+>
+  <!-- Honeypot -->
+  <input type="text" name="_honey" style="display:none">
+  <input type="hidden" name="_captcha" value="false">
 
   <label>
     Nombre
-    <input type="text" name="name" required autocomplete="name">
+    <input type="text" name="name" required>
   </label>
 
   <label>
     Dirección de correo
-    <input type="email" name="email" required autocomplete="email">
+    <input type="email" name="email" required>
   </label>
 
   <label>
@@ -340,8 +345,6 @@
   </label>
 
   <button type="submit">Enviar mensaje</button>
-
-  <p id="form-status" style="margin-top:10px;font-size:14px;"></p>
 </form>
 
   </section>
