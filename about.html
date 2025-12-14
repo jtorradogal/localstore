@@ -314,15 +314,13 @@
   <section class="about-block from-right">
     <h2>Contacto</h2>
 
-    <form
-  action="https://formsubmit.co/localstore@mail.com"
-  method="POST"
-  class="contact-form"
-  novalidate
->
+    <form action="https://api.web3forms.com/submit" method="POST">
+
+  <!-- CLAVE -->
+  <input type="hidden" name="access_key" value="a3e4a2e5-3031-4701-8f77-ab74f2711110">
+
   <!-- Honeypot -->
-  <input type="text" name="_honey" style="display:none">
-  <input type="hidden" name="_captcha" value="false">
+  <input type="checkbox" name="botcheck" style="display:none">
 
   <label>
     Nombre
@@ -330,7 +328,7 @@
   </label>
 
   <label>
-    Dirección de correo
+    Email
     <input type="email" name="email" required>
   </label>
 
@@ -341,10 +339,11 @@
 
   <label>
     Mensaje
-    <textarea name="message" rows="5" required></textarea>
+    <textarea name="message" required></textarea>
   </label>
 
-  <button type="submit">Enviar mensaje</button>
+  <button type="submit">Enviar</button>
+
 </form>
 
   </section>
