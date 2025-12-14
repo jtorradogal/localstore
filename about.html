@@ -314,35 +314,39 @@
   <section class="about-block from-right">
     <h2>Contacto</h2>
 
-    <form class="contact-form"
-          action="mailto:localstore@mail.com"
-          method="post"
-          enctype="text/plain">
+    <form class="contact-form" id="contactForm" novalidate>
 
-      <label>
-        Nombre
-        <input type="text" name="nombre" required>
-      </label>
+  <!-- Honeypot anti-bots -->
+  <input type="text" name="company" tabindex="-1" autocomplete="off" style="display:none">
 
-      <label>
-        Dirección de correo
-        <input type="email" name="email" required>
-      </label>
+  <label>
+    Nombre
+    <input type="text" name="name" required autocomplete="name">
+  </label>
 
-      <label>
-        Asunto
-        <input type="text" name="asunto" required>
-      </label>
+  <label>
+    Dirección de correo
+    <input type="email" name="email" required autocomplete="email">
+  </label>
 
-      <label>
-        Mensaje
-        <textarea name="mensaje" rows="5" required></textarea>
-      </label>
+  <label>
+    Asunto
+    <input type="text" name="subject" required>
+  </label>
 
-      <button type="submit">Enviar mensaje</button>
-    </form>
+  <label>
+    Mensaje
+    <textarea name="message" rows="5" required></textarea>
+  </label>
+
+  <button type="submit">Enviar mensaje</button>
+
+  <p id="form-status" style="margin-top:10px;font-size:14px;"></p>
+</form>
+
   </section>
-
+<br>
+<br>
 </main>
 
 
@@ -401,6 +405,37 @@
   document.querySelectorAll(".section-separator").forEach(line => {
     separatorObserver.observe(line);
   });
+</script>
+  /* JavaScript de envío (fetch + feedback) */
+<script>
+const form = document.getElementById("contactForm");
+const status = document.getElementById("form-status");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  status.textContent = "Enviando...";
+
+  const formData = new FormData(form);
+
+  try {
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      status.textContent = "Mensaje enviado correctamente.";
+      form.reset();
+    } else {
+      status.textContent = data.error || "Error al enviar el mensaje.";
+    }
+
+  } catch (err) {
+    status.textContent = "No se pudo enviar el mensaje.";
+  }
+});
 </script>
 
 </body>
