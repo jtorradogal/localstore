@@ -344,10 +344,45 @@
   </label>
 
   <button type="submit">Enviar</button>
-
+<p id="form-status" style="margin-top:10px;font-size:14px;color:#365cab;"></p>
 </form>
 
   </section>
+
+  /* Mensaje de confirmación de correo enviado */
+
+<script>
+const form = document.getElementById("contactForm");
+const status = document.getElementById("form-status");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault(); // Evita la redirección y el envío tradicional
+
+  const formData = new FormData(form);
+
+  try {
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      status.textContent = "¡Gracias por tu mensaje! Nos pondremos en contacto contigo a la mayor brevedad posible.";
+      status.style.color = "#28a745"; // verde
+      form.reset(); // vacía los campos del formulario
+    } else {
+      status.textContent = "Oops… hubo un error al enviar tu mensaje. Intenta de nuevo.";
+      status.style.color = "#dc3545"; // rojo
+    }
+  } catch (err) {
+    console.error(err);
+    status.textContent = "Error de conexión. Intenta de nuevo más tarde.";
+    status.style.color = "#dc3545";
+  }
+});
+</script>
 <br>
 <br>
 </main>
@@ -410,39 +445,6 @@
   });
 </script>
 
-/* Mensaje de confirmación de correo enviado */
 
-<script>
-const form = document.getElementById("contactForm");
-const status = document.getElementById("form-status");
-
-form.addEventListener("submit", async (e) => {
-  e.preventDefault(); // Evita la redirección y el envío tradicional
-
-  const formData = new FormData(form);
-
-  try {
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      status.textContent = "¡Gracias por tu mensaje! Nos pondremos en contacto contigo a la mayor brevedad posible.";
-      status.style.color = "#28a745"; // verde
-      form.reset(); // vacía los campos del formulario
-    } else {
-      status.textContent = "Oops… hubo un error al enviar tu mensaje. Intenta de nuevo.";
-      status.style.color = "#dc3545"; // rojo
-    }
-  } catch (err) {
-    console.error(err);
-    status.textContent = "Error de conexión. Intenta de nuevo más tarde.";
-    status.style.color = "#dc3545";
-  }
-});
-</script>
 </body>
 </html>
