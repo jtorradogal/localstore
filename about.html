@@ -417,7 +417,7 @@ const form = document.getElementById("contactForm");
 const status = document.getElementById("form-status");
 
 form.addEventListener("submit", async (e) => {
-  e.preventDefault(); // Evita el envío tradicional y la redirección
+  e.preventDefault(); // Evita la redirección y el envío tradicional
 
   const formData = new FormData(form);
 
@@ -430,12 +430,12 @@ form.addEventListener("submit", async (e) => {
     const result = await response.json();
 
     if (result.success) {
-      status.textContent = "¡Gracias! Tu mensaje se ha enviado correctamente.";
-      status.style.color = "#28a745";
-      form.reset();
+      status.textContent = "¡Gracias por tu mensaje! Nos pondremos en contacto contigo a la mayor brevedad posible.";
+      status.style.color = "#28a745"; // verde
+      form.reset(); // vacía los campos del formulario
     } else {
       status.textContent = "Oops… hubo un error al enviar tu mensaje. Intenta de nuevo.";
-      status.style.color = "#dc3545";
+      status.style.color = "#dc3545"; // rojo
     }
   } catch (err) {
     console.error(err);
