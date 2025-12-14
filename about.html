@@ -314,11 +314,8 @@
   <section class="about-block from-right">
     <h2>Contacto</h2>
 
-    <form
-    class="contact-form"
-    action="https://api.web3forms.com/submit"
-    method="POST"
-  >
+    <form id="contactForm">
+  
 
   <!-- CLAVE -->
   <input type="hidden" name="access_key" value="a3e4a2e5-3031-4701-8f77-ab74f2711110">
@@ -420,7 +417,7 @@ const form = document.getElementById("contactForm");
 const status = document.getElementById("form-status");
 
 form.addEventListener("submit", async (e) => {
-  e.preventDefault(); // Evita el envío tradicional
+  e.preventDefault(); // Evita el envío tradicional y la redirección
 
   const formData = new FormData(form);
 
@@ -434,11 +431,11 @@ form.addEventListener("submit", async (e) => {
 
     if (result.success) {
       status.textContent = "¡Gracias! Tu mensaje se ha enviado correctamente.";
-      status.style.color = "#28a745"; // verde
-      form.reset(); // limpia el formulario
+      status.style.color = "#28a745";
+      form.reset();
     } else {
       status.textContent = "Oops… hubo un error al enviar tu mensaje. Intenta de nuevo.";
-      status.style.color = "#dc3545"; // rojo
+      status.style.color = "#dc3545";
     }
   } catch (err) {
     console.error(err);
