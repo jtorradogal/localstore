@@ -253,7 +253,20 @@
 .donate-main:hover {
   opacity: 0.9;
 }
+/* CSS DEL TAMBALEO DEL BOTON DE DONAR */
+@keyframes shake {
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-4px); }
+  40%  { transform: translateX(4px); }
+  60%  { transform: translateX(-3px); }
+  80%  { transform: translateX(3px); }
+  100% { transform: translateX(0); }
+}
 
+.donate-main.shake {
+  animation: shake 0.35s ease;
+}
+    
 </style>
 
 
@@ -271,56 +284,70 @@
       .catch(e => console.error("No se pudo cargar header:", e));
   </script>
 <main class="support-wrapper">
+
   <section class="support-hero">
     <h1>Apoya el proyecto</h1>
     <p class="intro">
-      Este proyecto nace con una idea sencilla: crear una plataforma útil, clara y honesta,
-      sin muros de pago ni registros obligatorios.
+      Este proyecto se mantiene activo gracias a la publicidad no intrusiva
+      y, sobre todo, al apoyo voluntario de las personas que lo utilizan.
     </p>
   </section>
 
-  <section class="support-text">
-    <h2>¿Cómo se financia?</h2>
-    <p>
-      El mantenimiento del servidor, el desarrollo y las mejoras continuas se sostienen mediante
-      dos vías: <strong>publicidad no intrusiva</strong> y <strong>donaciones voluntarias</strong>.
-    </p>
-    <p>
-      No hay contenidos patrocinados ocultos ni resultados manipulados.
-      La prioridad es siempre ofrecer información clara y fiable.
-    </p>
-
-    <h2>Filosofía del proyecto</h2>
-    <p>
-      Creemos en un desarrollo independiente, transparente y centrado en el usuario.
-      Si este sitio te resulta útil, una pequeña aportación ayuda mucho más de lo que parece.
-    </p>
-  </section>
-
+  <!-- DONACIONES PRIMERO -->
   <section class="donation-box">
     <h2>Apoyar con una donación</h2>
     <p class="donation-note">
-      Puedes contribuir con la cantidad que prefieras. Todas las donaciones son opcionales.
+      Si esta web te resulta útil, puedes contribuir con la cantidad que prefieras.
+      No es obligatorio y no desbloquea funciones ocultas.
     </p>
 
-    <!-- PAYPAL -->
-    <form action="https://www.paypal.com/donate" method="post" target="_blank">
+    <form id="donationForm"
+          action="https://www.paypal.com/donate"
+          method="post"
+          target="_blank">
+
       <input type="hidden" name="business" value="jtorradogal@gmail.com" />
       <input type="hidden" name="currency_code" value="EUR" />
 
       <div class="donation-options">
-        <button name="amount" value="1">1 €</button>
-        <button name="amount" value="2">2 €</button>
-        <button name="amount" value="5">5 €</button>
-        <button name="amount" value="10">10 €</button>
+        <button type="button" data-amount="1">1 €</button>
+        <button type="button" data-amount="2">2 €</button>
+        <button type="button" data-amount="5">5 €</button>
+        <button type="button" data-amount="10">10 €</button>
       </div>
 
       <div class="donation-custom">
-        <input type="number" name="amount" step="0.01" min="0.5" placeholder="Otro importe (€)">
-        <button type="submit" class="donate-main">Donar con PayPal</button>
+        <input
+          type="number"
+          name="amount"
+          id="donationAmount"
+          step="0.01"
+          min="0.5"
+          placeholder="Otro importe (€)"
+          required
+        >
+        <button type="submit" class="donate-main" id="donateBtn">
+          Donar con PayPal
+        </button>
       </div>
     </form>
   </section>
+
+  <!-- TEXTO DESPUÉS -->
+  <section class="support-text">
+    <h2>¿Cómo se financia?</h2>
+    <p>
+      El mantenimiento del servidor, el desarrollo y las mejoras continuas
+      se sostienen mediante publicidad discreta y donaciones voluntarias.
+    </p>
+
+    <h2>Filosofía del proyecto</h2>
+    <p>
+      Apostamos por un desarrollo independiente, transparente y centrado en el usuario.
+      No hay resultados patrocinados ni contenidos manipulados.
+    </p>
+  </section>
+
 </main>
 
 
@@ -349,5 +376,23 @@
       }
     });
   </script>
+  <script>
+  const amountInput = document.getElementById("donationAmount");
+  const donateBtn = document.getElementById("donateBtn");
+  const presetButtons = document.querySelectorAll(".donation-options button");
+
+  presetButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const value = btn.dataset.amount;
+      amountInput.value = value;
+
+      // efecto visual en el botón de donar
+      donateBtn.classList.remove("shake");
+      void donateBtn.offsetWidth; // reset animación
+      donateBtn.classList.add("shake");
+    });
+  });
+</script>
+
 </body>
 </html>
