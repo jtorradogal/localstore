@@ -301,36 +301,32 @@
       No es obligatorio y no desbloquea funciones ocultas.
     </p>
 
-    <form id="donationForm"
-          action="https://www.paypal.com/donate"
-          method="post"
-          target="_blank">
+    <section>
+  <div id="donationForm">
 
-      <input type="hidden" name="business" value="jtorradogal@gmail.com" />
-      <input type="hidden" name="currency_code" value="EUR" />
+    <div class="donation-options">
+      <button type="button" data-amount="1">1 €</button>
+      <button type="button" data-amount="2">2 €</button>
+      <button type="button" data-amount="5">5 €</button>
+      <button type="button" data-amount="10">10 €</button>
+    </div>
 
-      <div class="donation-options">
-        <button type="button" data-amount="1">1 €</button>
-        <button type="button" data-amount="2">2 €</button>
-        <button type="button" data-amount="5">5 €</button>
-        <button type="button" data-amount="10">10 €</button>
-      </div>
+    <div class="donation-custom">
+      <input
+        type="number"
+        id="donationAmount"
+        step="0.01"
+        min="0.5"
+        placeholder="Otro importe (€)"
+      >
+      <button type="button" class="donate-main" id="donateBtn">
+        Donar con PayPal
+      </button>
+    </div>
 
-      <div class="donation-custom">
-        <input
-          type="number"
-          name="amount"
-          id="donationAmount"
-          step="0.01"
-          min="0.5"
-          placeholder="Otro importe (€)"
-          required
-        >
-        <button type="submit" class="donate-main" id="donateBtn">
-          Donar con PayPal
-        </button>
-      </div>
-    </form>
+  </div>
+</section>
+
   </section>
 
   <!-- TEXTO DESPUÉS -->
@@ -377,22 +373,41 @@
     });
   </script>
   <script>
+  const paypalBase = "https://www.paypal.me/localstorespain";
+
   const amountInput = document.getElementById("donationAmount");
   const donateBtn = document.getElementById("donateBtn");
   const presetButtons = document.querySelectorAll(".donation-options button");
 
+  // Botones de importe fijo
   presetButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       const value = btn.dataset.amount;
       amountInput.value = value;
 
-      // efecto visual en el botón de donar
+      // efecto shake
       donateBtn.classList.remove("shake");
-      void donateBtn.offsetWidth; // reset animación
+      void donateBtn.offsetWidth;
       donateBtn.classList.add("shake");
     });
   });
+
+  // Botón principal de donar
+  donateBtn.addEventListener("click", () => {
+    const amount = parseFloat(amountInput.value);
+
+    if (!amount || amount < 0.5) {
+      donateBtn.classList.remove("shake");
+      void donateBtn.offsetWidth;
+      donateBtn.classList.add("shake");
+      return;
+    }
+
+    const url = `${paypalBase}/${amount}`;
+    window.open(url, "_blank");
+  });
 </script>
+
 
 </body>
 </html>
