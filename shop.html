@@ -232,6 +232,35 @@
       #map { height: 200px; }
       .related-thumb { height: 94px; }
     }
+
+    /* -------------------- SHARE BUTTON -------------------- */
+.share-wrapper {
+  margin-top: 14px;
+  text-align: left;
+}
+
+.share-btn {
+  background: #365cab;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+  box-shadow: 0 6px 16px rgba(54,92,171,0.25);
+}
+
+.share-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(54,92,171,0.35);
+  opacity: .95;
+}
+
   </style>
 </head>
 
@@ -310,15 +339,28 @@
         `;
 
         if (s.image_url) {
-  document.getElementById("imageWrapper").innerHTML = `
-    <img src="${s.image_url}" class="full-image" alt="">
-    ${renderSchedule(s.schedule)}
-  `;
+ document.getElementById("imageWrapper").innerHTML = `
+  <img src="${s.image_url}" class="full-image" alt="">
+  ${renderSchedule(s.schedule)}
+  ${renderShareButton(s)}
+`;
+
+setupShare(s);
+
 }
  else {
           document.getElementById("imageWrapper").innerHTML =
             `<div style="color:#999;">Sin imagen disponible</div>`;
         }
+function renderShareButton(shop) {
+  return `
+    <div class="share-wrapper">
+      <button class="share-btn" id="shareBtn">
+        Compartir negocio
+      </button>
+    </div>
+  `;
+}
 
         loadMap(s);
         loadRelated(s);
@@ -328,6 +370,28 @@
         document.getElementById("shopData").innerHTML = "<p>Error cargando la tienda.</p>";
       }
     }
+
+    function setupShare(shop) {
+  const btn = document.getElementById("shareBtn");
+  if (!btn) return;
+
+  const url = window.location.href;
+  const text = `${shop.name}\n${shop.address || ""}, ${shop.place?.placename || ""}`;
+
+  btn.addEventListener("click", () => {
+    if (navigator.share) {
+      navigator.share({
+        title: shop.name,
+        text: text,
+        url: url
+      });
+    } else {
+      const whatsappUrl =
+        `https://wa.me/?text=${encodeURIComponent(text + "\n" + url)}`;
+      window.open(whatsappUrl, "_blank");
+    }
+  });
+}
 
     // Incrementar visitas
     fetch(`/api/shop-visits?id=${id}`, { method: 'POST' });
