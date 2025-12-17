@@ -547,28 +547,123 @@
         });
 
         document.getElementById("finalSubmitBtn").addEventListener("click", () => {
-            // Get form data
-            const form = document.getElementById("shopForm");
-            const formData = new FormData(form);
-            const scheduleData = getScheduleData();
+            document.getElementById("finalSubmitBtn").addEventListener("click", async () => {
+    const submitBtn = document.getElementById("finalSubmitBtn");
+    const originalText = submitBtn.textContent;
+    
+    // Deshabilitar el botón para evitar múltiples envíos
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Enviando...";
+    
+    try {
+        // 1. RECOLECTAR DATOS DEL FORMULARIO Y HORARIOS
+        const form = document.getElementById("shopForm");
+        const formData = new FormData(form);
+        const scheduleData = getScheduleData(); // Tu función existente
+        
+        // Convertir todo a un objeto plano para Web3Forms
+        const dataObject = {
+            access_key: "e914a7b1-7805-4c73-bb65-d2cc8cd6a5d5", // Tu nueva clave
+            subject: `Nueva Solicitud de Anuncio: ${formData.get("name") || "Sin nombre"}`,
+            from_name: "Formulario LocalStore",
             
-            // Convert to JSON format for Supabase
-            const businessData = {
-                name: formData.get("name"),
-                category: formData.get("category"),
-                address: formData.get("address"),
-                phone: formData.get("phone"),
-                email: formData.get("email"),
-                website: formData.get("website"),
-                description: formData.get("description"),
-                schedule: scheduleData
-            };
+            // Mapear campos del formulario
+            "Nombre del Negocio": formData.get("name"),
+            "Categoría": formData.get("category"),
+            "Dirección": formData.get("address"),
+            "Teléfono": formData.get("phone"),
+            "Email": formData.get("email"),
+            "Sitio Web": formData.get("website"),
+            "Descripción": formData.get("description"),
             
-            console.log("Datos a enviar:", businessData);
-            alert("Aquí iría el envío real al backend\n\n" + 
-                  "Datos del horario en formato Supabase:\n" + 
-                  JSON.stringify(scheduleData, null, 2));
+            // Convertir horarios a texto legible para el correo
+            "Horarios (JSON)": JSON.stringify(scheduleData, null, 2),
+            "Horarios (Texto)": formatScheduleForEmail(scheduleData),
+            
+            // Campo anti-spam
+            botcheck: ""
+        };
+        
+        // 2. MANEJAR LA IMAGEN (si se subió una)
+        const imageFile = document.getElementById("imageInput").files[0];
+        const finalFormData = new FormData();
+        
+        // Agregar todos los campos del objeto al FormData
+        for (const key in dataObject) {
+            finalFormData.append(key, dataObject[key]);
+        }
+        
+        // Agregar la imagen SI EXISTE (requiere plan Pro para >1MB)
+        if (imageFile) {
+            // Validar tamaño (~5MB límite en plan gratuito)[citation:4]
+            const fileSizeMB = imageFile.size / (1024 * 1024);
+            if (fileSizeMB > 5) {
+                alert(`La imagen (${fileSizeMB.toFixed(1)}MB) supera el límite recomendado de 5MB. Por favor, comprímela.`);
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+                return;
+            }
+            finalFormData.append("attachment", imageFile);
+        }
+        
+        // 3. ENVIAR A WEB3FORMS
+        const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: finalFormData
+            // NO agregar headers 'Content-Type' cuando se envía FormData con archivos[citation:3][citation:4]
         });
+        
+        const result = await response.json();
+        
+        // 4. MANEJAR RESPUESTA
+        if (response.status === 200) {
+            alert("✅ ¡Solicitud enviada con éxito! Revisa el correo localstore@mail.com.");
+            
+            // Aquí puedes agregar una redirección si lo deseas:
+            // window.location.href = "gracias.html";
+            
+            // Opcional: Limpiar el formulario
+            // form.reset();
+            // previewWrapper.style.display = "none";
+            // formWrapper.style.display = "block";
+            
+        } else {
+            alert(`❌ Error al enviar: ${result.message || "Por favor, intenta de nuevo."}`);
+        }
+        
+    } catch (error) {
+        console.error("Error de conexión:", error);
+        alert("⚠️ No se pudo conectar. Verifica tu internet e intenta nuevamente.");
+    } finally {
+        // 5. RESTAURAR BOTÓN
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+    }
+});
+
+// FUNCIÓN ADICIONAL: Formatear horarios para el cuerpo del correo
+function formatScheduleForEmail(schedule) {
+    const dayNames = {
+        monday: "Lunes",
+        tuesday: "Martes",
+        wednesday: "Miércoles",
+        thursday: "Jueves",
+        friday: "Viernes",
+        saturday: "Sábado",
+        sunday: "Domingo"
+    };
+    
+    let text = "";
+    for (const [day, times] of Object.entries(schedule)) {
+        text += `${dayNames[day]}: `;
+        if (times.length === 0) {
+            text += "Cerrado\n";
+        } else {
+            text += times.map(t => `${t.open} - ${t.close}`).join(" / ") + "\n";
+        }
+    }
+    return text;
+}
 
         // Helper functions
         function renderPreviewField(label, value){
