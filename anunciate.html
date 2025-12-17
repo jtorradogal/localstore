@@ -223,6 +223,11 @@ button{
     <input name="name" required>
   </div>
   <div class="field">
+  <div class="label">Imagen del negocio</div>
+  <input type="file" name="image" id="imageInput" accept="image/*">
+</div>
+
+  <div class="field">
     <div class="label">Categoría</div>
     <input name="category">
   </div>
@@ -250,8 +255,27 @@ button{
 </tr>
 </table>
 
-<button type="button" id="submitBtn">Enviar solicitud</button>
+<button type="button" id="previewBtn">Previsualizar</button>
 </form>
+</div>
+<div id="previewWrapper" style="display:none;margin-top:40px;">
+  <h1 id="previewName"></h1>
+
+  <table id="shopLayout">
+    <tr>
+      <td id="leftCol">
+        <div id="previewData"></div>
+      </td>
+      <td id="rightCol">
+        <div id="previewImage"></div>
+      </td>
+    </tr>
+  </table>
+
+  <div style="margin-top:24px;display:flex;gap:14px;">
+    <button id="editBtn">Modificar</button>
+    <button id="finalSubmitBtn">Enviar solicitud</button>
+  </div>
 </div>
 
 <!-- CONFIRM MODAL -->
@@ -298,6 +322,78 @@ addBtn.addEventListener("click", () => {
   options.style.display = "none";
   disclaimer.style.display = "block";
 });
+</script>
+<script>
+const previewBtn = document.getElementById("previewBtn");
+const formWrapper = document.getElementById("formWrapper");
+const previewWrapper = document.getElementById("previewWrapper");
+
+const imageInput = document.getElementById("imageInput");
+
+previewBtn.addEventListener("click", () => {
+  const form = document.getElementById("shopForm");
+  const data = new FormData(form);
+
+  // Nombre
+  document.getElementById("previewName").textContent =
+    data.get("name") || "Sin nombre";
+
+  // Campos (mismo formato que shop.html)
+  document.getElementById("previewData").innerHTML = `
+    ${renderPreviewField("Categoría", data.get("category"))}
+    ${renderPreviewField("Ubicación", data.get("address"))}
+    ${renderPreviewField("Teléfono", data.get("phone"))}
+    ${renderPreviewLink("Email", data.get("email"), "mailto:" + data.get("email"))}
+    ${renderPreviewLink("Web", data.get("website"), data.get("website"))}
+    ${renderPreviewField("Descripción", data.get("description"))}
+  `;
+
+  // Imagen
+  const file = imageInput.files[0];
+  if (file) {
+    const url = URL.createObjectURL(file);
+    document.getElementById("previewImage").innerHTML = `
+      <img src="${url}" class="full-image">
+    `;
+  } else {
+    document.getElementById("previewImage").innerHTML =
+      `<div style="color:#999;">Sin imagen</div>`;
+  }
+
+  formWrapper.style.display = "none";
+  previewWrapper.style.display = "block";
+});
+
+document.getElementById("editBtn").addEventListener("click", () => {
+  previewWrapper.style.display = "none";
+  formWrapper.style.display = "block";
+});
+
+document.getElementById("finalSubmitBtn").addEventListener("click", () => {
+  alert("Aquí iría el envío real al backend");
+});
+</script>
+<script>
+function renderPreviewField(label, value){
+  if (!value) return "";
+  return `
+    <div class="field">
+      <div class="label">${label}</div>
+      <div class="value">${value}</div>
+    </div>
+  `;
+}
+
+function renderPreviewLink(label, value, href){
+  if (!value) return "";
+  const safe = href.startsWith("http") ? href : "https://" + href;
+  return `
+    <div class="field">
+      <div class="label">${label}</div>
+      <a class="value" href="${safe}" target="_blank">${value}</a>
+    </div>
+  `;
+}
 </script>
 
 
