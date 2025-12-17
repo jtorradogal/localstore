@@ -121,6 +121,23 @@ button{
   text-align:center;
 }
 .modal button{margin:10px}
+
+  #legalBox{
+  max-height:220px;
+  overflow-y:auto;
+  padding:16px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  background:#fff;
+  font-size:14px;
+  line-height:1.6;
+}
+
+#acceptBtn:disabled{
+  opacity:.4;
+  cursor:not-allowed;
+}
+
 </style>
 </head>
 
@@ -142,15 +159,57 @@ button{
 
 <!-- DISCLAIMER -->
 <div id="disclaimer">
-  <p>
-    Al continuar aceptas la cesión de los datos proporcionados para su
-    publicación en la plataforma.
-  </p>
-  <label>
+  <div id="legalBox">
+    <h3>Información sobre protección de datos y consentimiento</h3>
+
+    <p>
+      De conformidad con lo establecido en el Reglamento (UE) 2016/679
+      (Reglamento General de Protección de Datos) y la normativa vigente
+      en materia de protección de datos, le informamos de que los datos
+      personales que facilite a través de este formulario serán tratados
+      por LocalStore, como responsable del tratamiento, con la finalidad
+      de atender su solicitud, gestionar la relación comercial y enviarle
+      comunicaciones informativas y promocionales relacionadas con
+      nuestros productos, servicios, actividades o iniciativas
+      vinculadas al negocio.
+    </p>
+
+    <p>
+      El tratamiento de sus datos se basa en el consentimiento expreso
+      otorgado mediante la aceptación de la presente cláusula,
+      consentimiento que podrá retirar en cualquier momento sin que ello
+      afecte a la licitud del tratamiento previo a su retirada.
+    </p>
+
+    <p>
+      Sus datos no serán cedidos a terceros, salvo en los casos en que
+      exista una obligación legal, y se conservarán durante el tiempo
+      estrictamente necesario para cumplir con la finalidad para la que
+      fueron recabados o mientras exista un interés legítimo o
+      consentimiento válido.
+    </p>
+
+    <p>
+      Asimismo, le informamos de que puede ejercer en cualquier momento
+      sus derechos de acceso, rectificación, supresión, limitación del
+      tratamiento, oposición y portabilidad de sus datos, enviando una
+      solicitud junto con una copia de un documento identificativo a
+      localstore@mail.com.
+    </p>
+
+    <p>
+      Al enviar este formulario, usted declara haber leído y comprendido
+      la presente información y acepta expresamente el tratamiento de sus
+      datos personales en los términos indicados.
+    </p>
+  </div>
+
+  <label style="margin-top:14px;display:flex;gap:10px;">
     <input type="checkbox" id="acceptCheck">
-    <span>Acepto los términos y la cesión de datos</span>
+    <span>Acepto el tratamiento de mis datos</span>
   </label>
-  <button id="acceptBtn">Continuar</button>
+
+  <button id="acceptBtn" disabled>Continuar</button>
 </div>
 
 <!-- FORM -->
@@ -205,41 +264,32 @@ button{
 </div>
 
 <script>
-const options = document.getElementById("options");
-const disclaimer = document.getElementById("disclaimer");
-const formWrapper = document.getElementById("formWrapper");
+const legalBox = document.getElementById("legalBox");
+const acceptCheck = document.getElementById("acceptCheck");
+const acceptBtn = document.getElementById("acceptBtn");
 
-document.getElementById("addBtn").onclick = () => {
-  options.style.display="none";
-  disclaimer.style.display="block";
-};
+let scrolledToBottom = false;
 
-document.getElementById("acceptBtn").onclick = () => {
-  if(!document.getElementById("acceptCheck").checked){
-    alert("Debes aceptar los términos");
-    return;
-  }
-  disclaimer.style.display="none";
-  formWrapper.style.display="block";
-};
-
-document.getElementById("submitBtn").onclick = () => {
-  document.getElementById("confirmModal").style.display="flex";
-};
-
-function closeModal(){
-  document.getElementById("confirmModal").style.display="none";
+function updateButtonState(){
+  acceptBtn.disabled = !(scrolledToBottom && acceptCheck.checked);
 }
 
-document.getElementById("confirmYes").onclick = () => {
-  const data = new FormData(document.getElementById("shopForm"));
-  let body="";
-  for (let [k,v] of data.entries()) body+=`${k}: ${v}\n`;
+legalBox.addEventListener("scroll", () => {
+  const tolerance = 5;
+  if (legalBox.scrollTop + legalBox.clientHeight >= legalBox.scrollHeight - tolerance) {
+    scrolledToBottom = true;
+    updateButtonState();
+  }
+});
 
-  window.location.href =
-    `mailto:localstore@mail.com?subject=Nuevo anuncio&body=${encodeURIComponent(body)}`;
+acceptCheck.addEventListener("change", updateButtonState);
+
+acceptBtn.onclick = () => {
+  document.getElementById("disclaimer").style.display = "none";
+  document.getElementById("formWrapper").style.display = "block";
 };
 </script>
+
 
 </body>
 </html>
