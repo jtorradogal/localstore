@@ -64,7 +64,6 @@ p{color:#555;line-height:1.6}
   padding:30px;
   border-radius:12px;
 }
-#disclaimer label{display:flex;gap:10px;align-items:flex-start}
 
 /* ---------- FORM ---------- */
 #formWrapper{display:none;margin-top:40px}
@@ -104,25 +103,8 @@ button{
   margin-top:20px;
 }
 
-/* ---------- MODAL ---------- */
-#confirmModal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.4);
-  align-items:center;
-  justify-content:center;
-}
-.modal{
-  background:#fff;
-  padding:30px;
-  border-radius:12px;
-  max-width:400px;
-  text-align:center;
-}
-.modal button{margin:10px}
-
-  #legalBox{
+/* ---------- LEGAL ---------- */
+#legalBox{
   max-height:220px;
   overflow-y:auto;
   padding:16px;
@@ -132,83 +114,55 @@ button{
   font-size:14px;
   line-height:1.6;
 }
+#acceptBtn:disabled{opacity:.4;cursor:not-allowed}
 
-#acceptBtn:disabled{
-  opacity:.4;
-  cursor:not-allowed;
+/* ---------- IMAGE ---------- */
+.full-image{
+  width:100%;
+  max-width:350px;
+  border-radius:10px;
+  margin:6px 0 0;
+  object-fit:cover;
+  display:block;
+  box-shadow:0 8px 20px rgba(15,23,42,0.06);
+  border:1px solid rgba(0,0,0,0.03);
 }
 
+/* ---------- SCHEDULE ---------- */
+.schedule-day{
+  display:grid;
+  grid-template-columns:110px 1fr 1fr auto;
+  gap:10px;
+  align-items:center;
+  margin-bottom:10px;
+}
+.schedule-day strong{font-size:14px}
+.schedule-day input[type="time"]{padding:6px}
+
+/* ---------- PREVIEW ---------- */
+.value{font-size:17px;color:#0f1720;font-weight:500}
+a.value{color:var(--accent);text-decoration:none}
 </style>
 </head>
 
 <body>
 
 <h1>Anúnciate</h1>
-<p>Aquí podrás anunciar tu negocio gratuitamente. Revisaremos la información antes de publicarla.</p>
+<p>Aquí podrás anunciar tu negocio gratuitamente.</p>
 
 <div class="options" id="options">
   <div class="option left" id="addBtn">
     <h2>Anunciar mi negocio</h2>
     <p>Publica tu ficha gratuitamente</p>
   </div>
-  <div class="option right">
-    <h2>Modificar mi anuncio</h2>
-    <p>Próximamente</p>
-  </div>
 </div>
 
 <!-- DISCLAIMER -->
 <div id="disclaimer">
   <div id="legalBox">
-    <h3>Información sobre protección de datos y consentimiento</h3>
-
-    <p>
-      De conformidad con lo establecido en el Reglamento (UE) 2016/679
-      (Reglamento General de Protección de Datos) y la normativa vigente
-      en materia de protección de datos, le informamos de que los datos
-      personales que facilite a través de este formulario serán tratados
-      por LocalStore, como responsable del tratamiento, con la finalidad
-      de atender su solicitud, gestionar la relación comercial y enviarle
-      comunicaciones informativas y promocionales relacionadas con
-      nuestros productos, servicios, actividades o iniciativas
-      vinculadas al negocio.
-    </p>
-
-    <p>
-      El tratamiento de sus datos se basa en el consentimiento expreso
-      otorgado mediante la aceptación de la presente cláusula,
-      consentimiento que podrá retirar en cualquier momento sin que ello
-      afecte a la licitud del tratamiento previo a su retirada.
-    </p>
-
-    <p>
-      Sus datos no serán cedidos a terceros, salvo en los casos en que
-      exista una obligación legal, y se conservarán durante el tiempo
-      estrictamente necesario para cumplir con la finalidad para la que
-      fueron recabados o mientras exista un interés legítimo o
-      consentimiento válido.
-    </p>
-
-    <p>
-      Asimismo, le informamos de que puede ejercer en cualquier momento
-      sus derechos de acceso, rectificación, supresión, limitación del
-      tratamiento, oposición y portabilidad de sus datos, enviando una
-      solicitud junto con una copia de un documento identificativo a
-      localstore@mail.com.
-    </p>
-
-    <p>
-      Al enviar este formulario, usted declara haber leído y comprendido
-      la presente información y acepta expresamente el tratamiento de sus
-      datos personales en los términos indicados.
-    </p>
+    <p>Texto legal…</p>
   </div>
-
-  <label style="margin-top:14px;display:flex;gap:10px;">
-    <input type="checkbox" id="acceptCheck">
-    <span>Acepto el tratamiento de mis datos</span>
-  </label>
-
+  <label><input type="checkbox" id="acceptCheck"> Acepto</label>
   <button id="acceptBtn" disabled>Continuar</button>
 </div>
 
@@ -216,186 +170,141 @@ button{
 <div id="formWrapper">
 <form id="shopForm">
 <table>
-<tr>
-<td>
-  <div class="field">
-    <div class="label">Nombre</div>
-    <input name="name" required>
-  </div>
-  <div class="field">
+<tr><td>
+
+<div class="field"><div class="label">Nombre</div><input name="name" required></div>
+
+<div class="field">
   <div class="label">Imagen del negocio</div>
-  <input type="file" name="image" id="imageInput" accept="image/*">
+  <input type="file" id="imageInput" accept="image/*">
 </div>
 
-  <div class="field">
-    <div class="label">Categoría</div>
-    <input name="category">
+<div class="field"><div class="label">Categoría</div><input name="category"></div>
+<div class="field"><div class="label">Dirección</div><input name="address"></div>
+<div class="field"><div class="label">Teléfono</div><input name="phone"></div>
+<div class="field"><div class="label">Email</div><input name="email"></div>
+<div class="field"><div class="label">Web</div><input name="website"></div>
+<div class="field"><div class="label">Descripción</div><textarea name="description"></textarea></div>
+
+<h3>Horario</h3>
+
+<div id="schedule">
+  <!-- repeat -->
+  <div class="schedule-day" data-day="monday">
+    <strong>Lunes</strong>
+    <input type="time" class="open">
+    <input type="time" class="close">
+    <label><input type="checkbox" class="closed"> Cerrado</label>
   </div>
-  <div class="field">
-    <div class="label">Dirección</div>
-    <input name="address">
+  <div class="schedule-day" data-day="tuesday">
+    <strong>Martes</strong>
+    <input type="time" class="open">
+    <input type="time" class="close">
+    <label><input type="checkbox" class="closed"> Cerrado</label>
   </div>
-  <div class="field">
-    <div class="label">Teléfono</div>
-    <input name="phone">
+  <div class="schedule-day" data-day="wednesday">
+    <strong>Miércoles</strong>
+    <input type="time" class="open">
+    <input type="time" class="close">
+    <label><input type="checkbox" class="closed"> Cerrado</label>
   </div>
-  <div class="field">
-    <div class="label">Email</div>
-    <input name="email">
+  <div class="schedule-day" data-day="thursday">
+    <strong>Jueves</strong>
+    <input type="time" class="open">
+    <input type="time" class="close">
+    <label><input type="checkbox" class="closed"> Cerrado</label>
   </div>
-  <div class="field">
-    <div class="label">Web</div>
-    <input name="website">
+  <div class="schedule-day" data-day="friday">
+    <strong>Viernes</strong>
+    <input type="time" class="open">
+    <input type="time" class="close">
+    <label><input type="checkbox" class="closed"> Cerrado</label>
   </div>
-  <div class="field">
-    <div class="label">Descripción</div>
-    <textarea name="description"></textarea>
+  <div class="schedule-day" data-day="saturday">
+    <strong>Sábado</strong>
+    <input type="time" class="open">
+    <input type="time" class="close">
+    <label><input type="checkbox" class="closed"> Cerrado</label>
   </div>
-</td>
-</tr>
+  <div class="schedule-day" data-day="sunday">
+    <strong>Domingo</strong>
+    <input type="time" class="open">
+    <input type="time" class="close">
+    <label><input type="checkbox" class="closed"> Cerrado</label>
+  </div>
+</div>
+
+</td></tr>
 </table>
 
 <button type="button" id="previewBtn">Previsualizar</button>
 </form>
 </div>
+
+<!-- PREVIEW -->
 <div id="previewWrapper" style="display:none;margin-top:40px;">
   <h1 id="previewName"></h1>
 
-  <table id="shopLayout">
+  <table>
     <tr>
-      <td id="leftCol">
-        <div id="previewData"></div>
-      </td>
-      <td id="rightCol">
+      <td id="previewData"></td>
+      <td>
         <div id="previewImage"></div>
+        <div id="previewSchedule"></div>
       </td>
     </tr>
   </table>
 
-  <div style="margin-top:24px;display:flex;gap:14px;">
-    <button id="editBtn">Modificar</button>
-    <button id="finalSubmitBtn">Enviar solicitud</button>
-  </div>
-</div>
-
-<!-- CONFIRM MODAL -->
-<div id="confirmModal">
-  <div class="modal">
-    <p>¿Estás seguro de enviar este anuncio?</p>
-    <button id="confirmYes">Sí, enviar</button>
-    <button onclick="closeModal()">Cancelar</button>
-  </div>
+  <button id="editBtn">Modificar</button>
 </div>
 
 <script>
-const legalBox = document.getElementById("legalBox");
-const acceptCheck = document.getElementById("acceptCheck");
-const acceptBtn = document.getElementById("acceptBtn");
-
-let scrolledToBottom = false;
-
-function updateButtonState(){
-  acceptBtn.disabled = !(scrolledToBottom && acceptCheck.checked);
-}
-
-legalBox.addEventListener("scroll", () => {
-  const tolerance = 5;
-  if (legalBox.scrollTop + legalBox.clientHeight >= legalBox.scrollHeight - tolerance) {
-    scrolledToBottom = true;
-    updateButtonState();
-  }
+document.querySelectorAll(".schedule-day").forEach(row=>{
+  const open=row.querySelector(".open");
+  const close=row.querySelector(".close");
+  const closed=row.querySelector(".closed");
+  closed.onchange=()=>{
+    open.disabled=close.disabled=closed.checked;
+    if(closed.checked){open.value="";close.value="";}
+  };
 });
 
-acceptCheck.addEventListener("change", updateButtonState);
+function buildSchedule(){
+  const s={};
+  document.querySelectorAll(".schedule-day").forEach(r=>{
+    const d=r.dataset.day;
+    const o=r.querySelector(".open").value;
+    const c=r.querySelector(".close").value;
+    s[d]=(!o||!c||r.querySelector(".closed").checked)?[]:[{open:o,close:c}];
+  });
+  return s;
+}
 
-acceptBtn.onclick = () => {
-  document.getElementById("disclaimer").style.display = "none";
-  document.getElementById("formWrapper").style.display = "block";
+document.getElementById("previewBtn").onclick=()=>{
+  const f=new FormData(shopForm);
+  previewName.textContent=f.get("name");
+  previewData.innerHTML=`
+    ${render("Categoría",f.get("category"))}
+    ${render("Ubicación",f.get("address"))}
+    ${render("Teléfono",f.get("phone"))}
+  `;
+  const img=imageInput.files[0];
+  previewImage.innerHTML=img?`<img src="${URL.createObjectURL(img)}" class="full-image">`:"";
+  previewSchedule.innerHTML=renderSchedule(buildSchedule());
+  formWrapper.style.display="none";
+  previewWrapper.style.display="block";
 };
-</script>
-<script>
-const addBtn = document.getElementById("addBtn");
-const options = document.getElementById("options");
-const disclaimer = document.getElementById("disclaimer");
 
-addBtn.addEventListener("click", () => {
-  options.style.display = "none";
-  disclaimer.style.display = "block";
-});
-</script>
-<script>
-const previewBtn = document.getElementById("previewBtn");
-const formWrapper = document.getElementById("formWrapper");
-const previewWrapper = document.getElementById("previewWrapper");
+editBtn.onclick=()=>{previewWrapper.style.display="none";formWrapper.style.display="block";};
 
-const imageInput = document.getElementById("imageInput");
-
-previewBtn.addEventListener("click", () => {
-  const form = document.getElementById("shopForm");
-  const data = new FormData(form);
-
-  // Nombre
-  document.getElementById("previewName").textContent =
-    data.get("name") || "Sin nombre";
-
-  // Campos (mismo formato que shop.html)
-  document.getElementById("previewData").innerHTML = `
-    ${renderPreviewField("Categoría", data.get("category"))}
-    ${renderPreviewField("Ubicación", data.get("address"))}
-    ${renderPreviewField("Teléfono", data.get("phone"))}
-    ${renderPreviewLink("Email", data.get("email"), "mailto:" + data.get("email"))}
-    ${renderPreviewLink("Web", data.get("website"), data.get("website"))}
-    ${renderPreviewField("Descripción", data.get("description"))}
-  `;
-
-  // Imagen
-  const file = imageInput.files[0];
-  if (file) {
-    const url = URL.createObjectURL(file);
-    document.getElementById("previewImage").innerHTML = `
-      <img src="${url}" class="full-image">
-    `;
-  } else {
-    document.getElementById("previewImage").innerHTML =
-      `<div style="color:#999;">Sin imagen</div>`;
-  }
-
-  formWrapper.style.display = "none";
-  previewWrapper.style.display = "block";
-});
-
-document.getElementById("editBtn").addEventListener("click", () => {
-  previewWrapper.style.display = "none";
-  formWrapper.style.display = "block";
-});
-
-document.getElementById("finalSubmitBtn").addEventListener("click", () => {
-  alert("Aquí iría el envío real al backend");
-});
-</script>
-<script>
-function renderPreviewField(label, value){
-  if (!value) return "";
-  return `
-    <div class="field">
-      <div class="label">${label}</div>
-      <div class="value">${value}</div>
-    </div>
-  `;
-}
-
-function renderPreviewLink(label, value, href){
-  if (!value) return "";
-  const safe = href.startsWith("http") ? href : "https://" + href;
-  return `
-    <div class="field">
-      <div class="label">${label}</div>
-      <a class="value" href="${safe}" target="_blank">${value}</a>
-    </div>
-  `;
+function render(l,v){return v?`<div class="field"><div class="label">${l}</div><div class="value">${v}</div></div>`:"";}
+function renderSchedule(s){
+  const m={monday:"Lunes",tuesday:"Martes",wednesday:"Miércoles",thursday:"Jueves",friday:"Viernes",saturday:"Sábado",sunday:"Domingo"};
+  let h='<div style="margin-top:14px;font-size:14px">';
+  Object.keys(m).forEach(d=>{if(s[d].length)h+=`<div><strong>${m[d]}:</strong> ${s[d][0].open} – ${s[d][0].close}</div>`});
+  return h+"</div>";
 }
 </script>
-
 
 </body>
 </html>
