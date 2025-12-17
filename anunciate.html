@@ -289,6 +289,16 @@ acceptBtn.onclick = () => {
   document.getElementById("formWrapper").style.display = "block";
 };
 </script>
+<script>
+const addBtn = document.getElementById("addBtn");
+const options = document.getElementById("options");
+const disclaimer = document.getElementById("disclaimer");
+
+addBtn.addEventListener("click", () => {
+  options.style.display = "none";
+  disclaimer.style.display = "block";
+});
+</script>
 
 
 </body>
