@@ -485,6 +485,114 @@
     to { opacity: 1; transform: translateY(0); }
   }
 }
+    /* =================================================== */
+/* ACTUALIZACIONES PARA SECCIONES */
+/* =================================================== */
+
+/* SECCIÓN 1 - Altura reducida */
+.first-bg {
+  min-height: 75vh !important; /* Reducido de 90vh */
+}
+
+.feature-container {
+  height: 75vh !important; /* Igual que la sección */
+}
+
+/* Mejorar calidad de imagen */
+.feature-image-full img {
+  object-fit: contain; /* En lugar de 'cover' para evitar pixeleo */
+  object-position: left center;
+  background: rgba(0,0,0,0.05); /* Fondo sutil si la imagen no llena */
+}
+
+/* SECCIÓN 2 - Glassbox más ancho */
+.second-bg {
+  min-height: 60vh; /* Menos alto que la sección 1 */
+  padding: 80px 0 !important; /* Margen superior e inferior */
+}
+
+.glass-box-wide {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 60px 50px;
+  border-radius: 20px;
+  color: #000;
+  width: 70% !important; /* Más ancho que antes (50%) */
+  max-width: 800px; /* Ancho máximo cómodo */
+  margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.glass-box-wide h2 {
+  font-size: 44px;
+  margin-bottom: 25px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.glass-box-wide p {
+  font-size: 22px;
+  line-height: 1.7;
+  margin-bottom: 35px;
+  max-width: 90%; /* Evita líneas demasiado largas */
+}
+
+/* Botón más prominente */
+.glass-box-wide .feature-button {
+  background: #000;
+  color: white;
+  padding: 18px 32px;
+  font-size: 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.glass-box-wide .feature-button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+  background: #333;
+}
+
+/* Responsive ajustado */
+@media (max-width: 1100px) {
+  .first-bg { min-height: 65vh !important; }
+  .feature-container { height: 65vh !important; }
+  .glass-box-wide { width: 80% !important; }
+}
+
+@media (max-width: 768px) {
+  .first-bg, .second-bg {
+    min-height: auto !important;
+    padding: 60px 0 !important;
+  }
+  
+  .feature-container {
+    height: auto !important;
+    grid-template-rows: 50vh auto;
+  }
+  
+  .glass-box-wide {
+    width: 90% !important;
+    padding: 40px 30px;
+  }
+  
+  .glass-box-wide h2 {
+    font-size: 36px !important;
+  }
+  
+  .glass-box-wide p {
+    font-size: 20px !important;
+  }
+  
+  .feature-image-full img {
+    object-fit: cover; /* En móvil, mejor cover */
+  }
+}
   </style>
 </head>
 
@@ -536,10 +644,10 @@
     </form>
   </div>
 
-<!-- SECCIÓN 1 - VERSIÓN MEJORADA -->
+<!-- SECCIÓN 1 -->
 <section class="feature-section first-bg observe">
   <div class="feature-container">
-    <!-- Imagen de pantalla completa -->
+    <!-- Imagen con altura reducida -->
     <div class="feature-image-full">
       <img src="images/section1.jpg" alt="Buscador de negocios locales" class="img-fill">
     </div>
@@ -558,7 +666,7 @@
 <!-- SECCIÓN 2 -->
 <section class="feature-section second-bg observe">
   <div class="feature-container">
-    <div class="glass-box">
+    <div class="glass-box-wide">
       <h2>¡Promociona tu negocio gratis!</h2>
       <p>Mejora el posicionamiento de tu negocio publicitándolo con un sencillo formulario.</p>
       <a class="feature-button" href="anunciate.html">Ir al formulario</a>
