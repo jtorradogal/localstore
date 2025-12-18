@@ -219,9 +219,154 @@
             opacity:.4;
             cursor:not-allowed;
         }
+
+
+        /* HEADER – estado inicial (color base #365cab) */
+.main-header {
+  width: 100%;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+
+  background: #365cab;         /* color base solicitado */
+  backdrop-filter: none;       
+  transition: background 0.25s ease, backdrop-filter 0.25s ease, padding 0.25s ease;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo img {
+  width: 42px;
+  height: auto;
+  cursor: pointer;
+  filter: none !important;    /* logo blanco tal cual, sin invertir */
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links li a {
+  color: white;               /* texto blanco en estado base */
+  font-family: Poppins, sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s ease, color 0.25s ease;
+}
+
+.nav-links li a:hover {
+  opacity: 0.7;
+}
+
+/* ESTADO SCROLLED (igual que index.html) */
+.main-header.scrolled {
+  background: rgba(255,255,255,0.5);  /* igual que en index */
+  backdrop-filter: blur(8px);
+  padding: 12px 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+}
+
+/* Cuando el header pasa a fondo claro → texto oscuro */
+.main-header.scrolled .nav-links li a {
+  color: #222;
+}
+
+/* Logo pasa de blanco → negro al hacer scroll (igual que index.html) */
+.main-header.scrolled .nav-logo img {
+  filter: brightness(0) invert(1);
+}
+
+
+    /* FOOTER - ancho completo */
+    #main-footer {
+      background: #365cab;
+      color: white;
+      padding: 50px 0 30px 0;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-disclaimer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 14px;
+      opacity: 0.85;
+    }
+
+    .footer-right a {
+      margin-left: 20px;
+      color: white !important;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .footer-right a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-left .footer-contact a {
+      color: white !important;
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .footer-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+      }
+
+      .footer-right a {
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+
+      .thumb { width: 120px; height: 120px; }
+    }
+
+    .s01 .header-block {
+      width: 100%;
+      display: block;
+      text-align: center;
+      margin-bottom: 40px;
+    }
     </style>
 </head>
 <body>
+
+    <!-- Header -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch("header.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("header-placeholder").innerHTML = html;
+      })
+      .catch(e => console.error("No se pudo cargar header:", e));
+  </script>
     <h1>Anúnciate</h1>
     <p>Aquí podrás anunciar tu negocio gratuitamente. Revisaremos la información antes de publicarla.</p>
     
@@ -345,7 +490,17 @@
             <button onclick="closeModal()">Cancelar</button>
         </div>
     </div>
+<div id="footer-placeholder"></div>
 
+  <script>
+    // Cargar footer.html dinámicamente
+    fetch("footer.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+      })
+      .catch(err => console.error("No se pudo cargar el footer:", err));
+  </script>
     <script>
         // Disclaimer logic
         const legalBox = document.getElementById("legalBox");
