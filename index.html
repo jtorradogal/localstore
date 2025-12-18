@@ -429,6 +429,159 @@
   position: relative;
 }
 
+    /* =================================================== */
+/* MEJORAS PARA LAS SECCIONES 1 Y 2 */
+/* =================================================== */
+
+/* Aumentar altura de las secciones */
+.feature-section {
+  padding: 100px 0 !important; /* Antes 80px */
+  min-height: 70vh; /* Asegura altura mínima */
+  display: flex;
+  align-items: center;
+}
+
+/* Tamaño de fuente aumentado */
+.feature-text h2,
+.glass-box h2 {
+  font-size: 40px !important; /* Antes 32px */
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.feature-text p,
+.glass-box p {
+  font-size: 22px !important; /* Antes 18px */
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+/* Imagen con bordes difuminados */
+.image-blurred {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-blurred::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to right,
+    rgba(66, 114, 215, 0.1) 0%,
+    rgba(66, 114, 215, 0.9) 100%
+  );
+  z-index: 1;
+  border-radius: 8px;
+}
+
+.image-blurred img {
+  z-index: 0;
+}
+
+/* Glassbox sutil para sección 1 (texto blanco sobre fondo oscurecido) */
+.glassbox-subtle {
+  background: rgba(0, 0, 0, 0.35) !important; /* Fondo oscuro translúcido */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 40px !important;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Oscurecer fondo de la imagen en sección 1 */
+.first-bg {
+  position: relative;
+}
+
+.first-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3); /* Capa oscura sobre la imagen de fondo */
+  z-index: 0;
+}
+
+.first-bg .feature-container {
+  position: relative;
+  z-index: 1; /* Asegura que el contenido esté por encima del overlay */
+}
+
+/* Ajustar el botón para sección 1 (más visible sobre fondo oscuro) */
+.glassbox-subtle .feature-button {
+  background: white !important;
+  color: #4272d7 !important;
+  padding: 14px 24px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.glassbox-subtle .feature-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Botón sección 2 mejorado */
+.glass-box .feature-button {
+  background: #000 !important;
+  color: white !important;
+  padding: 14px 24px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.glass-box .feature-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Asegurar que el texto sea blanco en sección 1 */
+.first-bg .feature-text {
+  color: white !important;
+}
+
+/* Responsive ajustado */
+@media (max-width: 768px) {
+  .feature-section {
+    padding: 60px 0 !important;
+    min-height: auto;
+  }
+
+  .feature-text h2,
+  .glass-box h2 {
+    font-size: 32px !important;
+  }
+
+  .feature-text p,
+  .glass-box p {
+    font-size: 18px !important;
+  }
+
+  .image-blurred::before {
+    background: linear-gradient(
+      to bottom,
+      rgba(66, 114, 215, 0.1) 0%,
+      rgba(66, 114, 215, 0.8) 100%
+    );
+  }
+}
     
   </style>
 </head>
@@ -482,21 +635,20 @@
   </div>
 
 <!-- SECCIÓN 1 -->
-<section class="feature-section blue-section first-bg observe">
+<section class="feature-section first-bg observe">
   <div class="feature-container">
-
-    <div class="feature-image">
-      <img src="images/section1.jpg" alt="Imagen sección 1" class="img-fill">
+    <!-- Imagen con bordes difuminados -->
+    <div class="feature-image image-blurred">
+      <img src="images/section1.jpg" alt="Buscador de negocios locales" class="img-fill">
     </div>
 
-    <div class="feature-text">
+    <!-- Texto con glassbox sutil -->
+    <div class="feature-text glassbox-subtle">
       <h2>Buscador gratuito de negocios locales</h2>
       <p>¿Buscas una zapatería? ¿Una librería? ¿Un estanco? ¡Encuéntralos con este buscador y descubre los comercios que tu localidad te puede ofrecer!</p>
     </div>
-
   </div>
 </section>
-
 
 <!-- SECCIÓN 2 -->
 <section class="feature-section second-bg observe">
@@ -504,7 +656,7 @@
     <div class="glass-box">
       <h2>¡Promociona tu negocio gratis!</h2>
       <p>Mejora el posicionamiento de tu negocio publicitándolo con un sencillo formulario.</p>
-      <a class="feature-button" href="">Ir al formulario</a>
+      <a class="feature-button" href="anunciate.html">Ir al formulario</a>
     </div>
   </div>
 </section>
