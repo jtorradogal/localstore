@@ -13,715 +13,524 @@
   <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
   <link href="css/main.css" rel="stylesheet" />
 
-  <style>
+    <style>
     /* =================================================== */
-/* ESTILOS GENERALES Y BUSCADOR */
-/* =================================================== */
-#results { display: none; }
-
-#autocomplete-categories,
-#autocomplete-places {
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 100%;
-  max-width: 320px;
-  position: absolute;
-  top: 48px;
-  left: 0;
-  z-index: 9999;
-  font-family: Poppins, Arial, sans-serif;
-}
-
-#autocomplete-categories div,
-#autocomplete-places div {
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-#autocomplete-categories div:hover,
-#autocomplete-places div:hover {
-  background: #f0f0f0;
-}
-
-/* Logo */
-.logo-wrapper {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.main-logo {
-  width: 280px;
-  max-width: 40vw;
-  height: auto;
-  display: inline-block;
-}
-
-.s01 fieldset legend {
-  text-align: center;
-  width: 100%;
-  display: block;
-}
-
-/* Animaciones inputs */
-.s01 form input {
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-
-.s01 form input:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 10px rgba(0,0,0,0.15);
-}
-
-.s01 form input:focus {
-  transform: scale(1.04);
-  box-shadow: 0 0 12px rgba(0,0,0,0.2);
-  outline: none;
-}
-
-.s01 form .btn-search {
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-
-.s01 form .btn-search:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 10px rgba(0,0,0,0.15);
-}
-
-/* =================================================== */
-/* HEADER */
-/* =================================================== */
-.main-header {
-  width: 100%;
-  padding: 20px 40px;
-  box-sizing: border-box;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 2000;
-  background: transparent;
-  backdrop-filter: none;
-  transition: background 0.25s ease, backdrop-filter 0.25s ease, padding 0.25s ease;
-}
-
-.nav-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.nav-logo img {
-  width: 42px;
-  height: auto;
-  cursor: pointer;
-}
-
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 28px;
-  padding: 0;
-  margin: 0;
-}
-
-.nav-links li a {
-  color: white;
-  font-family: Poppins, sans-serif;
-  font-size: 16px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: opacity 0.2s ease;
-}
-
-.nav-links li a:hover { opacity: 0.7; }
-
-/* Estado scrolled */
-.main-header.scrolled {
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(8px);
-  padding: 12px 40px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-.main-header.scrolled .nav-links li a { color: #222; }
-.main-header.scrolled .nav-logo img { filter: brightness(0) invert(1); }
-
-/* =================================================== */
-/* BOCADILLO DE ERROR */
-/* =================================================== */
-.search-hint {
-  position: absolute;
-  top: -60px;
-  right: 0;
-  background: #fff;
-  color: #333;
-  padding: 10px 14px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  opacity: 0;
-  pointer-events: none;
-  font-size: 14px;
-  width: 210px;
-  transform: scale(0.8);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  z-index: 20;
-}
-
-.search-hint::after {
-  content: "";
-  position: absolute;
-  bottom: -10px;
-  right: 20px;
-  border-width: 10px;
-  border-style: solid;
-  border-color: #fff transparent transparent transparent;
-}
-
-.search-hint.show {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.input-field.third-wrap { position: relative; }
-
-/* =================================================== */
-/* SECCIÓN 1 - IMAGEN A PANTALLA COMPLETA */
-/* =================================================== */
-.feature-section {
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-}
-
-/* SECCIÓN 1 específica */
-.first-bg {
-  background-image: url("images/fondo_section1.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 90vh;
-  display: flex;
-  align-items: center;
-}
-
-/* Capa oscura sutil sobre el fondo */
-.first-bg::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.25);
-  z-index: 1;
-}
-
-/* Contenedor principal - GRID */
-.feature-container {
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: 60% 40%;
-  height: 90vh;
-  position: relative;
-  z-index: 2;
-}
-
-/* IMAGEN - OCUPA TODA LA ALTURA */
-.feature-image-full {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateX(-50px);
-  animation: slideInImage 1.2s ease-out 0.3s forwards;
-}
-
-.feature-image-full img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: left center;
-  display: block;
-}
-
-/* DIFUMINADO EN EL BORDE DERECHO */
-.feature-image-full::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 150px;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0) 20%,
-    rgba(66, 114, 215, 0.1) 50%,
-    rgba(66, 114, 215, 0.4) 100%
-  );
-  z-index: 2;
-  pointer-events: none;
-}
-
-/* CONTENEDOR DEL TEXTO */
-.feature-text-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 60px;
-  opacity: 0;
-  transform: translateX(30px);
-  animation: slideInText 1s ease-out 0.6s forwards;
-}
-
-/* GLASSBOX SUTIL */
-.glassbox-subtle {
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  padding: 50px 40px;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  max-width: 500px;
-}
-
-/* TIPOGRAFÍA AUMENTADA */
-.glassbox-subtle h2 {
-  font-size: 44px;
-  margin-bottom: 25px;
-  font-weight: 700;
-  line-height: 1.2;
-  color: white;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.glassbox-subtle p {
-  font-size: 22px;
-  line-height: 1.7;
-  margin-bottom: 0;
-  color: rgba(255, 255, 255, 0.95);
-}
-
-/* =================================================== */
-/* SECCIÓN 2 */
-/* =================================================== */
-.second-bg {
-  background-image: url("images/section2.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 70vh;
-  display: flex;
-  align-items: center;
-}
-
-/* Glassbox para sección 2 */
-.glass-box {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 60px 50px;
-  border-radius: 16px;
-  color: #000;
-  width: 50%;
-  margin: 0 auto;
-}
-
-.glass-box h2 {
-  font-size: 42px;
-  margin-bottom: 20px;
-  font-weight: 700;
-}
-
-.glass-box p {
-  font-size: 22px;
-  line-height: 1.6;
-  margin-bottom: 30px;
-}
-
-/* Botón común */
-.feature-button {
-  display: inline-block;
-  padding: 16px 28px;
-  background: #000;
-  color: white;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 18px;
-  border: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.feature-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-/* =================================================== */
-/* ANIMACIONES */
-/* =================================================== */
-@keyframes slideInImage {
-  from {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInText {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Animación de observación */
-.feature-section {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity .8s ease, transform .8s ease;
-}
-
-.feature-section.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* =================================================== */
-/* RESPONSIVE */
-/* =================================================== */
-@media (max-width: 1100px) {
-  .feature-container {
-    grid-template-columns: 1fr 1fr;
-  }
-  
-  .glassbox-subtle h2 { font-size: 38px; }
-  .glassbox-subtle p { font-size: 20px; }
-  .glass-box h2 { font-size: 38px; }
-  .glass-box p { font-size: 20px; }
-}
-
-@media (max-width: 768px) {
-  .feature-container {
-    grid-template-columns: 1fr;
-    grid-template-rows: 60vh auto;
-    gap: 40px;
-    height: auto;
-  }
-  
-  .first-bg,
-  .second-bg {
-    min-height: auto;
-    padding: 60px 0;
-  }
-  
-  .feature-image-full {
-    height: 100%;
-    opacity: 0;
-    transform: translateY(-30px);
-    animation: slideInImageMobile 1s ease-out 0.3s forwards;
-  }
-  
-  .feature-image-full::after {
-    width: 100%;
-    height: 100px;
-    top: auto;
-    bottom: 0;
-    left: 0;
-    background: linear-gradient(
-      to top,
-      rgba(66, 114, 215, 0.6) 0%,
-      rgba(66, 114, 215, 0.2) 50%,
-      rgba(255, 255, 255, 0) 100%
-    );
-  }
-  
-  .feature-text-wrapper {
-    padding: 0 20px;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: slideInTextMobile 1s ease-out 0.6s forwards;
-  }
-  
-  .glassbox-subtle,
-  .glass-box {
-    padding: 40px 30px !important;
-    width: 100% !important;
-    max-width: 100%;
-  }
-  
-  .glassbox-subtle h2,
-  .glass-box h2 {
-    font-size: 32px !important;
-  }
-  
-  .glassbox-subtle p,
-  .glass-box p {
-    font-size: 18px !important;
-  }
-  
-  @keyframes slideInImageMobile {
-    from { opacity: 0; transform: translateY(-30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  @keyframes slideInTextMobile {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-}
+    /* ESTILOS GENERALES Y BUSCADOR */
     /* =================================================== */
-/* ACTUALIZACIONES PARA SECCIONES */
-/* =================================================== */
+    #results { display: none; }
 
-/* SECCIÓN 1 - Altura reducida */
-.first-bg {
-  min-height: 75vh !important; /* Reducido de 90vh */
-}
+    #autocomplete-categories,
+    #autocomplete-places {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+      max-width: 320px;
+      position: absolute;
+      top: 48px;
+      left: 0;
+      z-index: 9999;
+      font-family: Poppins, Arial, sans-serif;
+    }
 
-.feature-container {
-  height: 75vh !important; /* Igual que la sección */
-}
+    #autocomplete-categories div,
+    #autocomplete-places div {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
 
-/* Mejorar calidad de imagen */
-.feature-image-full img {
-  object-fit: contain; /* En lugar de 'cover' para evitar pixeleo */
-  object-position: left center;
-  background: rgba(0,0,0,0.05); /* Fondo sutil si la imagen no llena */
-}
+    #autocomplete-categories div:hover,
+    #autocomplete-places div:hover {
+      background: #f0f0f0;
+    }
 
-/* SECCIÓN 2 - Glassbox más ancho */
-.second-bg {
-  min-height: 60vh; /* Menos alto que la sección 1 */
-  padding: 80px 0 !important; /* Margen superior e inferior */
-}
+    /* Logo */
+    .logo-wrapper {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-.glass-box-wide {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 60px 50px;
-  border-radius: 20px;
-  color: #000;
-  width: 70% !important; /* Más ancho que antes (50%) */
-  max-width: 800px; /* Ancho máximo cómodo */
-  margin: 0 auto;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-}
+    .main-logo {
+      width: 280px;
+      max-width: 40vw;
+      height: auto;
+      display: inline-block;
+    }
 
-.glass-box-wide h2 {
-  font-size: 44px;
-  margin-bottom: 25px;
-  font-weight: 700;
-  line-height: 1.2;
-}
+    .s01 fieldset legend {
+      text-align: center;
+      width: 100%;
+      display: block;
+    }
 
-.glass-box-wide p {
-  font-size: 22px;
-  line-height: 1.7;
-  margin-bottom: 35px;
-  max-width: 90%; /* Evita líneas demasiado largas */
-}
+    /* Animaciones inputs */
+    .s01 form input {
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
 
-/* Botón más prominente */
-.glass-box-wide .feature-button {
-  background: #000;
-  color: white;
-  padding: 18px 32px;
-  font-size: 20px;
-  border-radius: 10px;
-  font-weight: 600;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.3s ease;
-}
+    .s01 form input:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
 
-.glass-box-wide .feature-button:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
-  background: #333;
-}
+    .s01 form input:focus {
+      transform: scale(1.04);
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+      outline: none;
+    }
 
-/* Responsive ajustado */
-@media (max-width: 1100px) {
-  .first-bg { min-height: 65vh !important; }
-  .feature-container { height: 65vh !important; }
-  .glass-box-wide { width: 80% !important; }
-}
+    .s01 form .btn-search {
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
 
-@media (max-width: 768px) {
-  .first-bg, .second-bg {
-    min-height: auto !important;
-    padding: 60px 0 !important;
-  }
-  
-  .feature-container {
-    height: auto !important;
-    grid-template-rows: 50vh auto;
-  }
-  
-  .glass-box-wide {
-    width: 90% !important;
-    padding: 40px 30px;
-  }
-  
-  .glass-box-wide h2 {
-    font-size: 36px !important;
-  }
-  
-  .glass-box-wide p {
-    font-size: 20px !important;
-  }
-  
-  .feature-image-full img {
-    object-fit: cover; /* En móvil, mejor cover */
-  }
-}
+    .s01 form .btn-search:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
 
     /* =================================================== */
-/* SECCIÓN 2 - GLASSBOX ANCHO Y CÓMODO */
-/* =================================================== */
+    /* HEADER */
+    /* =================================================== */
+    .main-header {
+      width: 100%;
+      padding: 20px 40px;
+      box-sizing: border-box;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 2000;
+      background: transparent;
+      backdrop-filter: none;
+      transition: background 0.25s ease, backdrop-filter 0.25s ease, padding 0.25s ease;
+    }
 
-/* Contenedor específico para sección 2 */
-.feature-container-wide {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 40px;
-  width: 100%;
-}
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-/* Glassbox ancho y espacioso */
-.glassbox-anunciate {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  padding: 70px 60px;
-  border-radius: 24px;
-  color: #000;
-  width: 85%; /* MUCHO más ancho */
-  max-width: 900px; /* Ancho máximo generoso */
-  margin: 80px auto; /* Margen arriba/abajo dentro de la sección */
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 
-    0 25px 50px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  text-align: center;
-}
+    .nav-logo img {
+      width: 42px;
+      height: auto;
+      cursor: pointer;
+    }
 
-/* Tipografía más cómoda */
-.glassbox-anunciate h2 {
-  font-size: 46px;
-  margin-bottom: 30px;
-  font-weight: 700;
-  line-height: 1.2;
-  color: #222;
-}
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+      padding: 0;
+      margin: 0;
+    }
 
-.glassbox-anunciate p {
-  font-size: 24px;
-  line-height: 1.7;
-  margin-bottom: 40px;
-  color: #444;
-  max-width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-}
+    .nav-links li a {
+      color: white;
+      font-family: Poppins, sans-serif;
+      font-size: 16px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s ease;
+    }
 
-/* Botón destacado */
-.glassbox-anunciate .feature-button {
-  background: #000;
-  color: white;
-  padding: 20px 40px;
-  font-size: 22px;
-  border-radius: 12px;
-  font-weight: 600;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border: none;
-  min-width: 250px;
-}
+    .nav-links li a:hover { opacity: 0.7; }
 
-.glassbox-anunciate .feature-button:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-  background: #333;
-}
+    /* Estado scrolled */
+    .main-header.scrolled {
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(8px);
+      padding: 12px 40px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    }
 
-/* Asegurar que la sección 2 tenga buen espaciado */
-.second-bg {
-  min-height: 70vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 0 !important;
-}
+    .main-header.scrolled .nav-links li a { color: #222; }
+    .main-header.scrolled .nav-logo img { filter: brightness(0) invert(1); }
 
-/* =================================================== */
-/* RESPONSIVE PARA SECCIÓN 2 */
-/* =================================================== */
-@media (max-width: 1024px) {
-  .glassbox-anunciate {
-    width: 90%;
-    padding: 60px 50px;
-  }
-  
-  .glassbox-anunciate h2 {
-    font-size: 40px;
-  }
-  
-  .glassbox-anunciate p {
-    font-size: 22px;
-  }
-}
+    /* =================================================== */
+    /* BOCADILLO DE ERROR */
+    /* =================================================== */
+    .search-hint {
+      position: absolute;
+      top: -60px;
+      right: 0;
+      background: #fff;
+      color: #333;
+      padding: 10px 14px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      pointer-events: none;
+      font-size: 14px;
+      width: 210px;
+      transform: scale(0.8);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 20;
+    }
 
-@media (max-width: 768px) {
-  .feature-container-wide {
-    padding: 0 20px;
-  }
-  
-  .glassbox-anunciate {
-    width: 95%;
-    padding: 50px 30px;
-    margin: 40px auto;
-  }
-  
-  .glassbox-anunciate h2 {
-    font-size: 34px;
-  }
-  
-  .glassbox-anunciate p {
-    font-size: 20px;
-    max-width: 100%;
-  }
-  
-  .glassbox-anunciate .feature-button {
-    padding: 18px 30px;
-    font-size: 20px;
-    min-width: 200px;
-  }
-  
-  .second-bg {
-    min-height: 60vh;
-    padding: 40px 0 !important;
-  }
-}
+    .search-hint::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      right: 20px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: #fff transparent transparent transparent;
+    }
+
+    .search-hint.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .input-field.third-wrap { position: relative; }
+
+    /* =================================================== */
+    /* SECCIÓN 1 - IMAGEN A PANTALLA COMPLETA */
+    /* =================================================== */
+    .feature-section {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+
+    .feature-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* SECCIÓN 1 específica */
+    .first-bg {
+      background-image: url("images/fondo_section1.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 75vh;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Capa oscura sutil sobre el fondo */
+    .first-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.25);
+      z-index: 1;
+    }
+
+    /* Contenedor principal - GRID */
+    .feature-container {
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 60% 40%;
+      height: 75vh;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* IMAGEN - OCUPA TODA LA ALTURA (reducida) */
+    .feature-image-full {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateX(-50px);
+      animation: slideInImage 1.2s ease-out 0.3s forwards;
+    }
+
+    .feature-image-full img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: left center;
+      display: block;
+      background: rgba(0,0,0,0.05);
+    }
+
+    /* DIFUMINADO EN EL BORDE DERECHO */
+    .feature-image-full::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 150px;
+      background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0) 20%,
+        rgba(66, 114, 215, 0.1) 50%,
+        rgba(66, 114, 215, 0.4) 100%
+      );
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* CONTENEDOR DEL TEXTO */
+    .feature-text-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 60px;
+      opacity: 0;
+      transform: translateX(30px);
+      animation: slideInText 1s ease-out 0.6s forwards;
+    }
+
+    /* GLASSBOX SUTIL - Sección 1 */
+    .glassbox-subtle {
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      padding: 50px 40px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      max-width: 500px;
+    }
+
+    /* TIPOGRAFÍA SECCIÓN 1 - Reducida */
+    .glassbox-subtle h2 {
+      font-size: 38px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: white;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .glassbox-subtle p {
+      font-size: 20px;
+      line-height: 1.6;
+      margin-bottom: 0;
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    /* =================================================== */
+    /* SECCIÓN 2 - GLASSBOX ANCHO Y TRANSPARENTE */
+    /* =================================================== */
+    .second-bg {
+      background-image: url("images/section2.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 0;
+    }
+
+    /* Contenedor específico para sección 2 */
+    .feature-container-wide {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+      width: 100%;
+    }
+
+    /* Glassbox ancho y transparente */
+    .glassbox-anunciate {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 60px 50px;
+      border-radius: 24px;
+      color: #000;
+      width: 80%;
+      max-width: 800px;
+      margin: 0 auto;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      text-align: center;
+    }
+
+    /* TIPOGRAFÍA SECCIÓN 2 - Reducida */
+    .glassbox-anunciate h2 {
+      font-size: 40px;
+      margin-bottom: 25px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #222;
+    }
+
+    .glassbox-anunciate p {
+      font-size: 21px;
+      line-height: 1.6;
+      margin-bottom: 35px;
+      color: #444;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Botón común */
+    .feature-button {
+      display: inline-block;
+      padding: 18px 36px;
+      background: #000;
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 20px;
+      border: none;
+      transition: all 0.3s ease;
+      min-width: 220px;
+    }
+
+    .feature-button:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+      background: #333;
+    }
+
+    /* =================================================== */
+    /* ANIMACIONES */
+    /* =================================================== */
+    @keyframes slideInImage {
+      from {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInText {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* =================================================== */
+    /* RESPONSIVE GENERAL */
+    /* =================================================== */
+    @media (max-width: 1100px) {
+      .feature-container {
+        grid-template-columns: 1fr 1fr;
+        height: 65vh;
+      }
+      
+      .first-bg { min-height: 65vh; }
+      
+      .glassbox-subtle h2 { font-size: 34px; }
+      .glassbox-subtle p { font-size: 18px; }
+      
+      .glassbox-anunciate { width: 85%; }
+      .glassbox-anunciate h2 { font-size: 36px; }
+      .glassbox-anunciate p { font-size: 19px; }
+    }
+
+    @media (max-width: 768px) {
+      .feature-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 50vh auto;
+        gap: 40px;
+        height: auto;
+      }
+      
+      .first-bg,
+      .second-bg {
+        min-height: auto;
+        padding: 60px 0;
+      }
+      
+      /* Animaciones móvil */
+      .feature-image-full {
+        opacity: 0;
+        transform: translateY(-30px);
+        animation: slideInImageMobile 1s ease-out 0.3s forwards;
+      }
+      
+      .feature-image-full::after {
+        width: 100%;
+        height: 100px;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(
+          to top,
+          rgba(66, 114, 215, 0.6) 0%,
+          rgba(66, 114, 215, 0.2) 50%,
+          rgba(255, 255, 255, 0) 100%
+        );
+      }
+      
+      .feature-image-full img {
+        object-fit: cover;
+      }
+      
+      .feature-text-wrapper {
+        padding: 0 20px;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: slideInTextMobile 1s ease-out 0.6s forwards;
+      }
+      
+      .feature-container-wide {
+        padding: 0 20px;
+      }
+      
+      .glassbox-subtle,
+      .glassbox-anunciate {
+        padding: 40px 30px;
+        width: 100% !important;
+        max-width: 100%;
+        margin: 0 auto;
+      }
+      
+      .glassbox-subtle h2,
+      .glassbox-anunciate h2 {
+        font-size: 30px !important;
+      }
+      
+      .glassbox-subtle p,
+      .glassbox-anunciate p {
+        font-size: 17px !important;
+      }
+      
+      .glassbox-anunciate .feature-button {
+        padding: 16px 28px;
+        font-size: 18px;
+        min-width: 200px;
+      }
+      
+      .second-bg {
+        padding: 40px 0 !important;
+      }
+      
+      @keyframes slideInImageMobile {
+        from { opacity: 0; transform: translateY(-30px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      @keyframes slideInTextMobile {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    }
   </style>
   
 </head>
