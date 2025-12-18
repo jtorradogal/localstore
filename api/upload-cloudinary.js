@@ -1,13 +1,4 @@
 // api/upload-cloudinary.js
-import { v2 as cloudinary } from 'cloudinary';
-
-// Configura Cloudinary con tus credenciales
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
 export default async function handler(req, res) {
   // Solo permitir método POST
   if (req.method !== 'POST') {
@@ -15,30 +6,54 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Obtener la imagen del body (enviada como base64 o multipart)
+    // 1. Obtener la imagen en base64 del body
     const { image } = req.body;
     
     if (!image) {
       return res.status(400).json({ success: false, error: 'No se recibió ninguna imagen' });
     }
 
-    // Subir a Cloudinary
-    const result = await cloudinary.uploader.upload(image, {
-      folder: 'localstore',
-      public_id: `img_${Date.now()}`,
-    });
+    // 2. Extraer solo la parte de datos base64
+    const base64Data = image.replace(/^data:image\/\w+;base64,/, '');
+    
+    // 3. Configuración (usa tus variables de entorno)
+    const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
+    const UPLOAD_PRESET = 'localstore_unsigned'; // Asegúrate de haber creado este preset
 
-    // Devolver la URL segura
-    res.status(200).json({ 
-      success: true, 
-      link: result.secure_url 
-    });
+    // 4. Preparar FormData para Cloudinary
+    const formData = new FormData();
+    formData.append('file', `data:image/jpeg;base64,${base64Data}`);
+    formData.append('upload_preset', UPLOAD_PRESET);
+
+    // 5. Subir a Cloudinary
+    const cloudinaryResponse = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+      {
+        method: 'POST',
+        body: formData
+      }
+    );
+
+    const cloudinaryResult = await cloudinaryResponse.json();
+
+    // 6. Devolver respuesta
+    if (cloudinaryResult.secure_url) {
+      return res.status(200).json({ 
+        success: true, 
+        link: cloudinaryResult.secure_url 
+      });
+    } else {
+      return res.status(500).json({ 
+        success: false, 
+        error: cloudinaryResult.error?.message || 'Error subiendo a Cloudinary' 
+      });
+    }
     
   } catch (error) {
-    console.error('Error subiendo a Cloudinary:', error);
-    res.status(500).json({ 
+    console.error('Error en la función:', error);
+    return res.status(500).json({ 
       success: false, 
-      error: error.message || 'Error al subir la imagen' 
+      error: error.message || 'Error interno' 
     });
   }
 }
