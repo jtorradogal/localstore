@@ -582,7 +582,248 @@
     );
   }
 }
-    
+    /* =================================================== */
+/* SECCIÓN 1 - IMAGEN A PANTALLA COMPLETA CON ANIMACIÓN */
+/* =================================================== */
+
+/* Contenedor de la sección - más alto */
+.feature-section {
+  padding: 0 !important; /* Sin padding interno */
+  min-height: 85vh; /* Más alto que antes */
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+/* Contenedor principal con layout diferente */
+.feature-container {
+  max-width: 100% !important; /* Ocupa todo el ancho */
+  margin: 0 !important;
+  padding: 0 !important;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr; /* Imagen más ancha, texto más estrecho */
+  height: 100%;
+  position: relative;
+}
+
+/* IMAGEN A PANTALLA COMPLETA */
+.feature-image-full {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0; /* Sin bordes redondeados */
+  opacity: 0;
+  transform: translateX(-30px);
+  animation: slideInImage 1.2s ease-out 0.3s forwards;
+}
+
+.feature-image-full img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Gradiente de difuminado en el lado derecho */
+.feature-image-full::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 200px; /* Ancho del difuminado */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(66, 114, 215, 0.4) 50%,
+    rgba(66, 114, 215, 0.9) 100%
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* CONTENEDOR DEL TEXTO */
+.feature-text-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 60px;
+  opacity: 0;
+  transform: translateX(30px);
+  animation: slideInText 1s ease-out 0.6s forwards;
+}
+
+/* Glassbox para el texto */
+.glassbox-subtle {
+  background: rgba(0, 0, 0, 0.25); /* Más sutil */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 50px 40px !important;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  max-width: 500px;
+}
+
+/* Tipografía aumentada */
+.glassbox-subtle h2 {
+  font-size: 42px !important;
+  margin-bottom: 25px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.glassbox-subtle p {
+  font-size: 22px !important;
+  line-height: 1.7;
+  margin-bottom: 0;
+  opacity: 0.95;
+}
+
+/* ANIMACIONES */
+@keyframes slideInImage {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInText {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Fondo oscurecido para la sección */
+.first-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Asegurar que el contenedor esté por encima del overlay */
+.feature-container > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* =================================================== */
+/* RESPONSIVE */
+/* =================================================== */
+@media (max-width: 1100px) {
+  .feature-container {
+    grid-template-columns: 1fr 1fr; /* Más balanceado en tablets */
+  }
+  
+  .glassbox-subtle h2 {
+    font-size: 36px !important;
+  }
+  
+  .glassbox-subtle p {
+    font-size: 20px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .feature-section {
+    min-height: auto;
+    padding: 40px 0 !important;
+  }
+  
+  .feature-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 50vh auto;
+    gap: 40px;
+  }
+  
+  .feature-image-full {
+    height: 100%;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: slideInImageMobile 1s ease-out 0.3s forwards;
+  }
+  
+  .feature-image-full::after {
+    width: 100%;
+    height: 100px;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(
+      to top,
+      rgba(66, 114, 215, 0.9) 0%,
+      rgba(66, 114, 215, 0.3) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+  
+  .feature-text-wrapper {
+    padding: 0 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideInTextMobile 1s ease-out 0.6s forwards;
+  }
+  
+  .glassbox-subtle {
+    padding: 35px 25px !important;
+    max-width: 100%;
+  }
+  
+  .glassbox-subtle h2 {
+    font-size: 32px !important;
+  }
+  
+  .glassbox-subtle p {
+    font-size: 18px !important;
+  }
+  
+  @keyframes slideInImageMobile {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideInTextMobile {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
   </style>
 </head>
 
@@ -634,18 +875,21 @@
     </form>
   </div>
 
-<!-- SECCIÓN 1 -->
+<!-- SECCIÓN 1 - VERSIÓN MEJORADA -->
 <section class="feature-section first-bg observe">
   <div class="feature-container">
-    <!-- Imagen con bordes difuminados -->
-    <div class="feature-image image-blurred">
+    <!-- Imagen de pantalla completa -->
+    <div class="feature-image-full">
       <img src="images/section1.jpg" alt="Buscador de negocios locales" class="img-fill">
     </div>
 
-    <!-- Texto con glassbox sutil -->
-    <div class="feature-text glassbox-subtle">
-      <h2>Buscador gratuito de negocios locales</h2>
-      <p>¿Buscas una zapatería? ¿Una librería? ¿Un estanco? ¡Encuéntralos con este buscador y descubre los comercios que tu localidad te puede ofrecer!</p>
+    <!-- Contenedor del texto -->
+    <div class="feature-text-wrapper">
+      <!-- Texto con glassbox sutil -->
+      <div class="feature-text glassbox-subtle">
+        <h2>Buscador gratuito de negocios locales</h2>
+        <p>¿Buscas una zapatería? ¿Una librería? ¿Un estanco? ¡Encuéntralos con este buscador y descubre los comercios que tu localidad te puede ofrecer!</p>
+      </div>
     </div>
   </div>
 </section>
