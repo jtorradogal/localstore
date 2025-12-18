@@ -547,126 +547,155 @@
             formWrapper.style.display = "block";
         });
 
-        // ============================================================
-        // BOTÓN "ENVIAR SOLICITUD" CON WEB3FORMS - CÓDIGO CORREGIDO
-        // ============================================================
-        document.getElementById("finalSubmitBtn").addEventListener("click", async () => {
-            const submitBtn = document.getElementById("finalSubmitBtn");
-            const originalText = submitBtn.textContent;
-            
-            // Deshabilitar el botón para evitar múltiples envíos
-            submitBtn.disabled = true;
-            submitBtn.textContent = "Enviando...";
-            
-            try {
-                // 1. RECOLECTAR DATOS DEL FORMULARIO Y HORARIOS
-                const form = document.getElementById("shopForm");
-                const formData = new FormData(form);
-                const scheduleData = getScheduleData(); // Usamos la función existente
-                
-                // Convertir todo a un objeto plano para Web3Forms
-                const dataObject = {
-                    access_key: "e914a7b1-7805-4c73-bb65-d2cc8cd6a5d5", // Tu nueva clave
-                    subject: `Nueva Solicitud de Anuncio: ${formData.get("name") || "Sin nombre"}`,
-                    from_name: "Formulario LocalStore",
-                    
-                    // Mapear campos del formulario
-                    "Nombre del Negocio": formData.get("name"),
-                    "Categoría": formData.get("category"),
-                    "Dirección": formData.get("address"),
-                    "Teléfono": formData.get("phone"),
-                    "Email": formData.get("email"),
-                    "Sitio Web": formData.get("website"),
-                    "Descripción": formData.get("description"),
-                    
-                    // Convertir horarios a texto legible para el correo
-                    "Horarios (JSON)": JSON.stringify(scheduleData, null, 2),
-                    "Horarios (Texto)": formatScheduleForEmail(scheduleData),
-                    
-                    // Campo anti-spam (debe estar presente)
-                    botcheck: ""
-                };
-                
-                // 2. MANEJAR LA IMAGEN (si se subió una)
-                const imageFile = document.getElementById("imageInput").files[0];
-                const finalFormData = new FormData();
-                
-                // Agregar todos los campos del objeto al FormData
-                for (const key in dataObject) {
-                    finalFormData.append(key, dataObject[key]);
-                }
-                
-                // Agregar la imagen SI EXISTE
-                if (imageFile) {
-                    // Validar tamaño (~5MB límite en plan gratuito)
-                    const fileSizeMB = imageFile.size / (1024 * 1024);
-                    if (fileSizeMB > 5) {
-                        alert(`La imagen (${fileSizeMB.toFixed(1)}MB) supera el límite recomendado de 5MB. Por favor, comprímela.`);
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalText;
-                        return;
-                    }
-                    finalFormData.append("attachment", imageFile);
-                }
-                
-                // 3. ENVIAR A WEB3FORMS
-                const response = await fetch("https://api.web3forms.com/submit", {
-                    method: "POST",
-                    body: finalFormData
-                    // NO agregar headers 'Content-Type' cuando se envía FormData con archivos
-                });
-                
-                const result = await response.json();
-                
-                // 4. MANEJAR RESPUESTA
-                if (response.status === 200) {
-                    alert("✅ ¡Solicitud enviada con éxito! Revisa el correo localstore@mail.com.");
-                    
-                    // Aquí puedes agregar una redirección si lo deseas:
-                    // window.location.href = "gracias.html";
-                    
-                    // Opcional: Limpiar el formulario después del envío
-                    // form.reset();
-                    // previewWrapper.style.display = "none";
-                    // formWrapper.style.display = "block";
-                    
-                } else {
-                    alert(`❌ Error al enviar: ${result.message || "Por favor, intenta de nuevo."}`);
-                }
-                
-            } catch (error) {
-                console.error("Error de conexión:", error);
-                alert("⚠️ No se pudo conectar. Verifica tu internet e intenta nuevamente.");
-            } finally {
-                // 5. RESTAURAR BOTÓN
+     // ============================================================
+// BOTÓN "ENVIAR SOLICITUD" - VERSIÓN CON CLOUDINARY
+// ============================================================
+document.getElementById("finalSubmitBtn").addEventListener("click", async () => {
+    const submitBtn = document.getElementById("finalSubmitBtn");
+    const originalText = submitBtn.textContent;
+
+    // Deshabilitar el botón para evitar múltiples envíos
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Enviando...";
+
+    try {
+        // 1. RECOLECTAR DATOS DEL FORMULARIO Y HORARIOS
+        const form = document.getElementById("shopForm");
+        const formData = new FormData(form);
+        const scheduleData = getScheduleData();
+
+        // 2. SUBIR LA IMAGEN A CLOUDINARY (si existe) Y OBTENER SU URL
+        const imageFile = document.getElementById("imageInput").files[0];
+        let imageUrl = ""; // Inicializamos la variable para el enlace
+
+        if (imageFile) {
+            // Validar tamaño (~10MB límite común, ajusta si quieres)
+            const fileSizeMB = imageFile.size / (1024 * 1024);
+            if (fileSizeMB > 10) {
+                alert(`⚠️ La imagen es muy grande (${fileSizeMB.toFixed(1)}MB). Por favor, comprímela a menos de 10MB.`);
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
+                return;
             }
+            // LLAMAR A LA FUNCIÓN QUE SUBE LA IMAGEN
+            imageUrl = await uploadImageToService(imageFile);
+            if (!imageUrl) {
+                // Si uploadImageToService devuelve null, hubo un error
+                alert("⚠️ No se pudo subir la imagen. El envío continuará sin ella.");
+                // No detenemos el envío, solo continuamos sin la URL de la imagen.
+            }
+        }
+
+        // 3. CONSTRUIR OBJETO DE DATOS PARA WEB3FORMS (¡SIN ADJUNTAR EL ARCHIVO!)
+        const dataForEmail = {
+            access_key: "e914a7b1-7805-4c73-bb65-d2cc8cd6a5d5",
+            subject: `📄 Nueva Solicitud de Anuncio: ${formData.get("name") || "Sin nombre"}`,
+            from_name: "Formulario LocalStore",
+
+            // Mapear campos del formulario
+            "🏢 **Nombre del Negocio**": formData.get("name"),
+            "📂 **Categoría**": formData.get("category"),
+            "📍 **Dirección**": formData.get("address"),
+            "📞 **Teléfono**": formData.get("phone"),
+            "✉️ **Email**": formData.get("email"),
+            "🌐 **Sitio Web**": formData.get("website"),
+            "📝 **Descripción**": formData.get("description"),
+
+            // Incluir el enlace a la imagen (o un mensaje indicando que no hay)
+            "🖼️ **Enlace a la Imagen**": imageUrl || "No se subió ninguna imagen.",
+
+            // Convertir horarios a texto legible para el correo
+            "🕐 **Horarios**": formatScheduleForEmail(scheduleData),
+
+            // Campo anti-spam
+            botcheck: ""
+        };
+
+        // 4. ENVIAR LOS DATOS (NO EL ARCHIVO) A WEB3FORMS
+        // Nota: Ahora usamos JSON, no FormData, porque no adjuntamos el archivo.
+        const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dataForEmail)
         });
 
-        // FUNCIÓN ADICIONAL: Formatear horarios para el cuerpo del correo
-        function formatScheduleForEmail(schedule) {
-            const dayNames = {
-                monday: "Lunes",
-                tuesday: "Martes",
-                wednesday: "Miércoles",
-                thursday: "Jueves",
-                friday: "Viernes",
-                saturday: "Sábado",
-                sunday: "Domingo"
-            };
-            
-            let text = "";
-            for (const [day, times] of Object.entries(schedule)) {
-                text += `${dayNames[day]}: `;
-                if (times.length === 0) {
-                    text += "Cerrado\n";
-                } else {
-                    text += times.map(t => `${t.open} - ${t.close}`).join(" / ") + "\n";
-                }
-            }
-            return text;
+        const result = await response.json();
+
+        // 5. MANEJAR RESPUESTA
+        if (response.status === 200) {
+            alert("✅ ¡Solicitud enviada con éxito! Revisa el correo localstore@mail.com.");
+            // Aquí puedes agregar una redirección si lo deseas:
+            // window.location.href = "gracias.html";
+            // Opcional: Limpiar el formulario
+            // form.reset();
+            // previewWrapper.style.display = "none";
+            // formWrapper.style.display = "block";
+
+        } else {
+            alert(`❌ Error al enviar: ${result.message || "Por favor, intenta de nuevo."}`);
         }
+
+    } catch (error) {
+        console.error("Error en el proceso de envío:", error);
+        alert("⚠️ Ocurrió un problema inesperado. Verifica tu conexión e intenta nuevamente.");
+    } finally {
+        // 6. RESTAURAR BOTÓN
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+    }
+});
+
+// FUNCIÓN ADICIONAL: Formatear horarios para el cuerpo del correo
+function formatScheduleForEmail(schedule) {
+    const dayNames = {
+        monday: "Lunes",
+        tuesday: "Martes",
+        wednesday: "Miércoles",
+        thursday: "Jueves",
+        friday: "Viernes",
+        saturday: "Sábado",
+        sunday: "Domingo"
+    };
+
+    let text = "";
+    for (const [day, times] of Object.entries(schedule)) {
+        text += `**${dayNames[day]}**: `;
+        if (times.length === 0) {
+            text += "Cerrado\\n";
+        } else {
+            text += times.map(t => `${t.open} - ${t.close}`).join(" / ") + "\\n";
+        }
+    }
+    return text;
+}
+        
+
+        async function uploadImageToService(imageFile) {
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    try {
+        // IMPORTANTE: Cambia esta URL a la de tu script de Cloudinary
+        const response = await fetch('https://localstore/api/upload-cloudinary.php', {
+            method: 'POST',
+            body: formData
+        });
+        const result = await response.json();
+        if (result.success) {
+            return result.link; // URL de Cloudinary
+        } else {
+            console.error("Error subiendo a Cloudinary:", result.error);
+            return null;
+        }
+    } catch (error) {
+        console.error("Error de red:", error);
+        return null;
+    }
+}
+
+        
 
         // Helper functions para previsualización
         function renderPreviewField(label, value){
@@ -691,5 +720,7 @@
             document.getElementById("confirmModal").style.display = "none";
         }
     </script>
+
+    
 </body>
 </html>
