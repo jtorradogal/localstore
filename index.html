@@ -14,245 +14,57 @@
   <link href="css/main.css" rel="stylesheet" />
 
   <style>
-    #results { display: none; } /* ya no se usa */
+    /* =================================================== */
+/* ESTILOS GENERALES Y BUSCADOR */
+/* =================================================== */
+#results { display: none; }
 
-    #autocomplete-categories,
-    #autocomplete-places {
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      width: 100%;
-      max-width: 320px;
-      position: absolute;
-      top: 48px;
-      left: 0;
-      z-index: 9999;
-      font-family: Poppins, Arial, sans-serif;
-    }
-
-    #autocomplete-categories div,
-    #autocomplete-places div {
-      padding: 8px 12px;
-      cursor: pointer;
-    }
-
-    #autocomplete-categories div:hover,
-    #autocomplete-places div:hover {
-      background: #f0f0f0;
-    }
-
-    /* Secciones informativas debajo del buscador */
-.feature-section {
-  width: 100%;
-  padding: 80px 20px;
-}
-
-.blue-section {
-  background: #4272d7;
-  color: white;
-}
-
-.gold-section {
-  background: #bd8d28;
-  color: white;
-}
-
-.feature-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  gap: 40px;
-  align-items: center;
-}
-
-.feature-text h2 {
-  font-size: 32px;
-  margin-bottom: 10px;
-}
-
-.feature-text p {
-  font-size: 18px;
-  line-height: 1.5;
-  margin-bottom: 20px;
-}
-
-.feature-button {
-  display: inline-block;
-  padding: 12px 20px;
+#autocomplete-categories,
+#autocomplete-places {
   background: white;
-  color: #333;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.feature-image {
-  width: 50%;
-  height: 220px;
-  background: rgba(255,255,255,0.2);
-  border-radius: 8px;
-}
-
-.placeholder-left {
-  /* solo para distinguir */
-}
-
-.placeholder-right {
-  /* igual, puedes cambiar después */
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .feature-content {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .feature-image {
-    width: 100%;
-  }
-}
-/* Secciones generales */
-.feature-section {
+  border: 1px solid #ccc;
+  border-radius: 5px;
   width: 100%;
-  padding: 80px 20px;
+  max-width: 320px;
+  position: absolute;
+  top: 48px;
+  left: 0;
+  z-index: 9999;
+  font-family: Poppins, Arial, sans-serif;
 }
 
-.feature-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  gap: 40px;
-  align-items: center;
+#autocomplete-categories div,
+#autocomplete-places div {
+  padding: 8px 12px;
+  cursor: pointer;
 }
 
-/* CONTENEDOR GENERAL PARA ALINEACIÓN */
-.feature-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  gap: 40px;
-  align-items: center;
-  padding: 0 20px;
+#autocomplete-categories div:hover,
+#autocomplete-places div:hover {
+  background: #f0f0f0;
 }
 
-/* SECCIONES */
-.feature-section {
-  width: 100%;
-  padding: 80px 0;
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity .8s ease, transform .8s ease;
-}
-
-.feature-section.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* SECCIÓN 1 */
-.blue-section {
-  background: #4272d7;
-  color: white;
-}
-
-.feature-image {
-  width: 50%;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.img-fill {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.feature-text h2 {
-  font-size: 32px;
-  margin-bottom: 10px;
-}
-
-.feature-text p {
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-
-/* Botón */
-.feature-button {
-  display: inline-block;
-  padding: 12px 20px;
-  background: #000;
-  color: white;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-/* SECCIÓN 2 */
-.second-bg {
-  background-image: url("images/section2.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  padding: 120px 0;
-}
-
-.glass-box {
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  padding: 40px;
-  border-radius: 12px;
-  color: #000;
-  width: 50%; /* EXACTA alineación con el ancho de la imagen */
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .feature-container {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .feature-image,
-  .glass-box {
-    width: 100%;
-  }
-  .glass-box h2 {
-  font-size: 32px;
-  margin-bottom: 10px;
-}
-}
-/* Fondo para la sección 1 */
-.first-bg {
-  background-image: url("images/fondo_section1.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-/* Contenedor para centrar el logo */
+/* Logo */
 .logo-wrapper {
   width: 100%;
   text-align: center;
-  margin-bottom: 20px; /* separación respecto al formulario */
+  margin-bottom: 20px;
 }
 
-/* Ajuste del logo grande: reducimos la imagen original (1448x1072) */
 .main-logo {
-  width: 280px;          /* tamaño equilibrado */
-  max-width: 40vw;       /* adaptable a pantallas pequeñas */
-  height: auto;          /* mantiene proporción */
+  width: 280px;
+  max-width: 40vw;
+  height: auto;
   display: inline-block;
 }
 
-/* Centrar el texto del legend */
 .s01 fieldset legend {
   text-align: center;
   width: 100%;
   display: block;
 }
-/* Animación de hover para inputs del buscador */
+
+/* Animaciones inputs */
 .s01 form input {
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
@@ -267,7 +79,7 @@
   box-shadow: 0 0 12px rgba(0,0,0,0.2);
   outline: none;
 }
-/* Animación de hover para el botón de búsqueda */
+
 .s01 form .btn-search {
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
@@ -277,30 +89,20 @@
   box-shadow: 0 0 10px rgba(0,0,0,0.15);
 }
 
-.s01 form .btn-search:active {
-  transform: scale(1.02);
-  box-shadow: 0 0 8px rgba(0,0,0,0.12);
-}
-
-.s01 form .btn-search:focus {
-  transform: scale(1.04);
-  box-shadow: 0 0 12px rgba(0,0,0,0.2);
-  outline: none;
-}
-
-    
-    
-/* CSS del HEADER */
-
-    /* HEADER */
+/* =================================================== */
+/* HEADER */
+/* =================================================== */
 .main-header {
   width: 100%;
   padding: 20px 40px;
   box-sizing: border-box;
-  position: absolute; /* para que quede encima del hero */
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 2000;
+  background: transparent;
+  backdrop-filter: none;
+  transition: background 0.25s ease, backdrop-filter 0.25s ease, padding 0.25s ease;
 }
 
 .nav-container {
@@ -332,25 +134,9 @@
   transition: opacity 0.2s ease;
 }
 
-.nav-links li a:hover {
-  opacity: 0.7;
-}
-/* ESTADO NORMAL (al principio, transparente sobre la imagen) */
-.main-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 20px 40px;
-  box-sizing: border-box;
-  z-index: 2000;
+.nav-links li a:hover { opacity: 0.7; }
 
-  background: transparent;
-  backdrop-filter: none;
-  transition: background 0.25s ease, backdrop-filter 0.25s ease, padding 0.25s ease;
-}
-
-/* ESTADO SCROLLED: sticky + blur */
+/* Estado scrolled */
 .main-header.scrolled {
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(8px);
@@ -358,18 +144,12 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.25);
 }
 
-/* Para que los enlaces se vean oscuros cuando el fondo se aclare */
-.main-header.scrolled .nav-links li a {
-  color: #222;
-}
+.main-header.scrolled .nav-links li a { color: #222; }
+.main-header.scrolled .nav-logo img { filter: brightness(0) invert(1); }
 
-.main-header.scrolled .nav-logo img {
-  filter: brightness(0) invert(1); /* convierte logo blanco en negro si lo necesitas */
-}
-
-/* CSS del bocadillo de error en el botón Buscar */
-
-    /* Bocadillo tipo comic */
+/* =================================================== */
+/* BOCADILLO DE ERROR */
+/* =================================================== */
 .search-hint {
   position: absolute;
   top: -60px;
@@ -388,7 +168,6 @@
   z-index: 20;
 }
 
-/* Triangulito del bocadillo */
 .search-hint::after {
   content: "";
   position: absolute;
@@ -399,105 +178,34 @@
   border-color: #fff transparent transparent transparent;
 }
 
-/* Estado visible (lo activa JS) */
 .search-hint.show {
   opacity: 1;
   transform: scale(1);
 }
-/* Bocadillo de aviso */
-#searchHint {
-  position: absolute;
-  bottom: 50px; /* ajusta si lo quieres más arriba/abajo */
-  right: 0;
-  background: #d9534f;
-  color: white;
-  padding: 10px 14px;
-  border-radius: 6px;
-  font-size: 14px;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-6px);
-  transition: opacity .25s ease, transform .25s ease;
-  z-index: 3000;
-}
 
-#searchHint.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-.input-field.third-wrap {
-  position: relative;
-}
+.input-field.third-wrap { position: relative; }
 
-    /* =================================================== */
-/* MEJORAS PARA LAS SECCIONES 1 Y 2 */
 /* =================================================== */
-
-/* Aumentar altura de las secciones */
+/* SECCIÓN 1 - IMAGEN A PANTALLA COMPLETA */
+/* =================================================== */
 .feature-section {
-  padding: 100px 0 !important; /* Antes 80px */
-  min-height: 70vh; /* Asegura altura mínima */
-  display: flex;
-  align-items: center;
-}
-
-/* Tamaño de fuente aumentado */
-.feature-text h2,
-.glass-box h2 {
-  font-size: 40px !important; /* Antes 32px */
-  margin-bottom: 20px;
-  font-weight: 700;
-}
-
-.feature-text p,
-.glass-box p {
-  font-size: 22px !important; /* Antes 18px */
-  line-height: 1.6;
-  margin-bottom: 30px;
-}
-
-/* Imagen con bordes difuminados */
-.image-blurred {
+  width: 100%;
   position: relative;
   overflow: hidden;
 }
 
-.image-blurred::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    to right,
-    rgba(66, 114, 215, 0.1) 0%,
-    rgba(66, 114, 215, 0.9) 100%
-  );
-  z-index: 1;
-  border-radius: 8px;
-}
-
-.image-blurred img {
-  z-index: 0;
-}
-
-/* Glassbox sutil para sección 1 (texto blanco sobre fondo oscurecido) */
-.glassbox-subtle {
-  background: rgba(0, 0, 0, 0.35) !important; /* Fondo oscuro translúcido */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 40px !important;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-/* Oscurecer fondo de la imagen en sección 1 */
+/* SECCIÓN 1 específica */
 .first-bg {
-  position: relative;
+  background-image: url("images/fondo_section1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
 }
 
+/* Capa oscura sutil sobre el fondo */
 .first-bg::before {
   content: '';
   position: absolute;
@@ -505,117 +213,30 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.3); /* Capa oscura sobre la imagen de fondo */
-  z-index: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 1;
 }
 
-.first-bg .feature-container {
-  position: relative;
-  z-index: 1; /* Asegura que el contenido esté por encima del overlay */
-}
-
-/* Ajustar el botón para sección 1 (más visible sobre fondo oscuro) */
-.glassbox-subtle .feature-button {
-  background: white !important;
-  color: #4272d7 !important;
-  padding: 14px 24px;
-  font-size: 18px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  text-decoration: none;
-  display: inline-block;
-  transition: transform 0.2s ease;
-}
-
-.glassbox-subtle .feature-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Botón sección 2 mejorado */
-.glass-box .feature-button {
-  background: #000 !important;
-  color: white !important;
-  padding: 14px 24px;
-  font-size: 18px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  text-decoration: none;
-  display: inline-block;
-  transition: transform 0.2s ease;
-}
-
-.glass-box .feature-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Asegurar que el texto sea blanco en sección 1 */
-.first-bg .feature-text {
-  color: white !important;
-}
-
-/* Responsive ajustado */
-@media (max-width: 768px) {
-  .feature-section {
-    padding: 60px 0 !important;
-    min-height: auto;
-  }
-
-  .feature-text h2,
-  .glass-box h2 {
-    font-size: 32px !important;
-  }
-
-  .feature-text p,
-  .glass-box p {
-    font-size: 18px !important;
-  }
-
-  .image-blurred::before {
-    background: linear-gradient(
-      to bottom,
-      rgba(66, 114, 215, 0.1) 0%,
-      rgba(66, 114, 215, 0.8) 100%
-    );
-  }
-}
-    /* =================================================== */
-/* SECCIÓN 1 - IMAGEN A PANTALLA COMPLETA CON ANIMACIÓN */
-/* =================================================== */
-
-/* Contenedor de la sección - más alto */
-.feature-section {
-  padding: 0 !important; /* Sin padding interno */
-  min-height: 85vh; /* Más alto que antes */
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-}
-
-/* Contenedor principal con layout diferente */
+/* Contenedor principal - GRID */
 .feature-container {
-  max-width: 100% !important; /* Ocupa todo el ancho */
-  margin: 0 !important;
-  padding: 0 !important;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
   display: grid;
-  grid-template-columns: 1.5fr 1fr; /* Imagen más ancha, texto más estrecho */
-  height: 100%;
+  grid-template-columns: 60% 40%;
+  height: 90vh;
   position: relative;
+  z-index: 2;
 }
 
-/* IMAGEN A PANTALLA COMPLETA */
+/* IMAGEN - OCUPA TODA LA ALTURA */
 .feature-image-full {
   position: relative;
   height: 100%;
   width: 100%;
   overflow: hidden;
-  border-radius: 0; /* Sin bordes redondeados */
   opacity: 0;
-  transform: translateX(-30px);
+  transform: translateX(-50px);
   animation: slideInImage 1.2s ease-out 0.3s forwards;
 }
 
@@ -623,23 +244,24 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: left center;
   display: block;
 }
 
-/* Gradiente de difuminado en el lado derecho */
+/* DIFUMINADO EN EL BORDE DERECHO */
 .feature-image-full::after {
   content: '';
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
-  width: 200px; /* Ancho del difuminado */
+  width: 150px;
   background: linear-gradient(
     to right,
     rgba(255, 255, 255, 0) 0%,
-    rgba(66, 114, 215, 0.4) 50%,
-    rgba(66, 114, 215, 0.9) 100%
+    rgba(255, 255, 255, 0) 20%,
+    rgba(66, 114, 215, 0.1) 50%,
+    rgba(66, 114, 215, 0.4) 100%
   );
   z-index: 2;
   pointer-events: none;
@@ -656,41 +278,100 @@
   animation: slideInText 1s ease-out 0.6s forwards;
 }
 
-/* Glassbox para el texto */
+/* GLASSBOX SUTIL */
 .glassbox-subtle {
-  background: rgba(0, 0, 0, 0.25); /* Más sutil */
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 50px 40px !important;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  padding: 50px 40px;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 
-    0 15px 35px rgba(0, 0, 0, 0.25),
+    0 20px 40px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   max-width: 500px;
 }
 
-/* Tipografía aumentada */
+/* TIPOGRAFÍA AUMENTADA */
 .glassbox-subtle h2 {
-  font-size: 42px !important;
+  font-size: 44px;
   margin-bottom: 25px;
   font-weight: 700;
   line-height: 1.2;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .glassbox-subtle p {
-  font-size: 22px !important;
+  font-size: 22px;
   line-height: 1.7;
   margin-bottom: 0;
-  opacity: 0.95;
+  color: rgba(255, 255, 255, 0.95);
 }
 
+/* =================================================== */
+/* SECCIÓN 2 */
+/* =================================================== */
+.second-bg {
+  background-image: url("images/section2.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+}
+
+/* Glassbox para sección 2 */
+.glass-box {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 60px 50px;
+  border-radius: 16px;
+  color: #000;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.glass-box h2 {
+  font-size: 42px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.glass-box p {
+  font-size: 22px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+/* Botón común */
+.feature-button {
+  display: inline-block;
+  padding: 16px 28px;
+  background: #000;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 18px;
+  border: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* =================================================== */
 /* ANIMACIONES */
+/* =================================================== */
 @keyframes slideInImage {
   from {
     opacity: 0;
-    transform: translateX(-30px);
+    transform: translateX(-50px);
   }
   to {
     opacity: 1;
@@ -709,27 +390,16 @@
   }
 }
 
-/* Fondo oscurecido para la sección */
-.first-bg::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0.2) 0%,
-    rgba(0, 0, 0, 0.1) 100%
-  );
-  z-index: 1;
-  pointer-events: none;
+/* Animación de observación */
+.feature-section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity .8s ease, transform .8s ease;
 }
 
-/* Asegurar que el contenedor esté por encima del overlay */
-.feature-container > * {
-  position: relative;
-  z-index: 2;
+.feature-section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* =================================================== */
@@ -737,34 +407,33 @@
 /* =================================================== */
 @media (max-width: 1100px) {
   .feature-container {
-    grid-template-columns: 1fr 1fr; /* Más balanceado en tablets */
+    grid-template-columns: 1fr 1fr;
   }
   
-  .glassbox-subtle h2 {
-    font-size: 36px !important;
-  }
-  
-  .glassbox-subtle p {
-    font-size: 20px !important;
-  }
+  .glassbox-subtle h2 { font-size: 38px; }
+  .glassbox-subtle p { font-size: 20px; }
+  .glass-box h2 { font-size: 38px; }
+  .glass-box p { font-size: 20px; }
 }
 
 @media (max-width: 768px) {
-  .feature-section {
-    min-height: auto;
-    padding: 40px 0 !important;
-  }
-  
   .feature-container {
     grid-template-columns: 1fr;
-    grid-template-rows: 50vh auto;
+    grid-template-rows: 60vh auto;
     gap: 40px;
+    height: auto;
+  }
+  
+  .first-bg,
+  .second-bg {
+    min-height: auto;
+    padding: 60px 0;
   }
   
   .feature-image-full {
     height: 100%;
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-30px);
     animation: slideInImageMobile 1s ease-out 0.3s forwards;
   }
   
@@ -776,8 +445,8 @@
     left: 0;
     background: linear-gradient(
       to top,
-      rgba(66, 114, 215, 0.9) 0%,
-      rgba(66, 114, 215, 0.3) 50%,
+      rgba(66, 114, 215, 0.6) 0%,
+      rgba(66, 114, 215, 0.2) 50%,
       rgba(255, 255, 255, 0) 100%
     );
   }
@@ -789,39 +458,31 @@
     animation: slideInTextMobile 1s ease-out 0.6s forwards;
   }
   
-  .glassbox-subtle {
-    padding: 35px 25px !important;
+  .glassbox-subtle,
+  .glass-box {
+    padding: 40px 30px !important;
+    width: 100% !important;
     max-width: 100%;
   }
   
-  .glassbox-subtle h2 {
+  .glassbox-subtle h2,
+  .glass-box h2 {
     font-size: 32px !important;
   }
   
-  .glassbox-subtle p {
+  .glassbox-subtle p,
+  .glass-box p {
     font-size: 18px !important;
   }
   
   @keyframes slideInImageMobile {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   
   @keyframes slideInTextMobile {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 }
   </style>
