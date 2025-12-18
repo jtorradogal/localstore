@@ -540,7 +540,43 @@
             
             return html;
         }
+// ============================================================
+// FUNCIÓN PARA SUBIR LA IMAGEN A CLOUDINARY (VERSIÓN VERCELL)
+// ============================================================
+async function uploadImageToService(imageFile) {
+    // Convertir la imagen a base64 (formato que espera nuestra función)
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
 
+    try {
+        const imageBase64 = await toBase64(imageFile);
+        
+        // Enviar a la función de Vercel
+        const response = await fetch('/api/upload-cloudinary', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ image: imageBase64 })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            return result.link;
+        } else {
+            console.error('Error desde la API:', result.error);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error de red:', error);
+        return null;
+    }
+}
         // Botón Modificar
         document.getElementById("editBtn").addEventListener("click", () => {
             previewWrapper.style.display = "none";
@@ -671,41 +707,7 @@ function formatScheduleForEmail(schedule) {
     return text;
 }
         
-
-async function uploadImageToService(imageFile) {
-    // Convertir la imagen a base64 (formato que espera nuestra función)
-    const toBase64 = file => new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
-
-    try {
-        const imageBase64 = await toBase64(imageFile);
-        
-        const response = await fetch('/api/upload-cloudinary', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ image: imageBase64 })
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            return result.link;
-        } else {
-            console.error('Error:', result.error);
-            return null;
-        }
-    } catch (error) {
-        console.error('Error de red:', error);
-        return null;
-    }
-}
-        
+       
 
         // Helper functions para previsualización
         function renderPreviewField(label, value){
