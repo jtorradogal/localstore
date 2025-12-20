@@ -543,16 +543,6 @@ body {
   transform: translateY(0);
 }
 
-/* Posición de tooltips específicos */
-.field:nth-child(odd) .tooltip {
-  left: 0;
-  top: 100%;
-}
-
-.field:nth-child(even) .tooltip {
-  right: 0;
-  top: 100%;
-}
 
 @media (max-width: 768px) {
   .tooltip {
@@ -596,6 +586,80 @@ body {
     width: 100%;
     justify-content: flex-start;
   }
+}
+
+        /* Tooltip mejorado */
+.info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    background: #365cab;
+    color: white;
+    border-radius: 50%;
+    font-size: 11px;
+    cursor: help;
+    font-weight: bold;
+    position: relative;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+/* Posicionamiento del tooltip relativo al info-icon */
+.label {
+    position: relative;
+}
+
+.tooltip {
+    position: absolute;
+    background: #1f2937;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    width: 250px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    pointer-events: none;
+    top: 100%;
+    left: 0;
+    margin-top: 8px;
+}
+
+/* Flecha del tooltip */
+.tooltip::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 12px;
+    border-width: 0 6px 6px 6px;
+    border-style: solid;
+    border-color: transparent transparent #1f2937 transparent;
+}
+
+/* Mostrar tooltip al hacer hover sobre el info-icon */
+.info-icon:hover + .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Ajuste para mobile */
+@media (max-width: 768px) {
+    .tooltip {
+        width: 200px;
+        font-size: 12px;
+        left: -50px;
+    }
+    
+    .tooltip::before {
+        left: 60px;
+    }
 }
     </style>
 
