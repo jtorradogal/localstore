@@ -872,7 +872,7 @@ body {
             disclaimer.style.display = "block";
         });
 
-        // Generate schedule fields
+        
         // Generate schedule fields
 function generateScheduleFields() {
     const scheduleFields = document.getElementById("scheduleFields");
@@ -898,22 +898,22 @@ function generateScheduleFields() {
                 <div class="time-slot">
                     <input type="time" id="${day.id}_morning_open" name="${day.id}_morning_open" 
                            data-day="${day.id}" data-slot="morning" data-type="open" 
-                           placeholder="09:00" step="900">
+                           placeholder="09:00" step="900" list="minuteOptions">
                     <span>a</span>
                     <input type="time" id="${day.id}_morning_close" name="${day.id}_morning_close" 
                            data-day="${day.id}" data-slot="morning" data-type="close" 
-                           placeholder="13:00" step="900">
+                           placeholder="13:00" step="900" list="minuteOptions">
                 </div>
                 <span style="color:#999; margin:0 5px;">|</span>
                 <!-- TARDE -->
                 <div class="time-slot">
                     <input type="time" id="${day.id}_afternoon_open" name="${day.id}_afternoon_open" 
                            data-day="${day.id}" data-slot="afternoon" data-type="open" 
-                           placeholder="16:00" step="900">
+                           placeholder="16:00" step="900" list="minuteOptions">
                     <span>a</span>
                     <input type="time" id="${day.id}_afternoon_close" name="${day.id}_afternoon_close" 
                            data-day="${day.id}" data-slot="afternoon" data-type="close" 
-                           placeholder="20:00" step="900">
+                           placeholder="20:00" step="900" list="minuteOptions">
                 </div>
             </div>
             <div class="closed-check">
@@ -934,16 +934,52 @@ function generateScheduleFields() {
             });
         });
 
-        // Forzar minutos a 00, 15, 30, 45
+        // Mejor control de minutos (00, 15, 30, 45)
         timeInputs.forEach(input => {
-            input.addEventListener('change', function() {
+            input.addEventListener('input', function() {
                 if (this.value) {
                     const [hours, minutes] = this.value.split(':');
-                    const validMinutes = ['00', '15', '30', '45'];
-                    const closestMinute = validMinutes.reduce((prev, curr) => {
-                        return Math.abs(curr - minutes) < Math.abs(prev - minutes) ? curr : prev;
-                    });
-                    this.value = `${hours}:${closestMinute}`;
+                    if (minutes && !['00', '15', '30', '45'].includes(minutes)) {
+                        // Encontrar el minuto más cercano válido
+                        const minuteNum = parseInt(minutes);
+                        let validMinute;
+                        
+                        if (minuteNum < 7) validMinute = '00';
+                        else if (minuteNum < 22) validMinute = '15';
+                        else if (minuteNum < 37) validMinute = '30';
+                        else if (minuteNum < 52) validMinute = '45';
+                        else {
+                            // Si es > 52, sumar 1 hora y poner 00
+                            const hourNum = parseInt(hours) + 1;
+                            this.value = `${hourNum.toString().padStart(2, '0')}:00`;
+                            return;
+                        }
+                        
+                        this.value = `${hours}:${validMinute}`;
+                    }
+                }
+            });
+
+            // También validar al perder el foco
+            input.addEventListener('blur', function() {
+                if (this.value) {
+                    const [hours, minutes] = this.value.split(':');
+                    if (minutes && !['00', '15', '30', '45'].includes(minutes)) {
+                        const minuteNum = parseInt(minutes);
+                        let validMinute;
+                        
+                        if (minuteNum < 7) validMinute = '00';
+                        else if (minuteNum < 22) validMinute = '15';
+                        else if (minuteNum < 37) validMinute = '30';
+                        else if (minuteNum < 52) validMinute = '45';
+                        else {
+                            const hourNum = parseInt(hours) + 1;
+                            this.value = `${hourNum.toString().padStart(2, '0')}:00`;
+                            return;
+                        }
+                        
+                        this.value = `${hours}:${validMinute}`;
+                    }
                 }
             });
         });
