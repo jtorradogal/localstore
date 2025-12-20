@@ -1189,7 +1189,7 @@ document.getElementById("finalSubmitBtn").addEventListener("click", async () => 
 
         // 5. MANEJAR RESPUESTA
         if (response.status === 200) {
-            alert("✅ ¡Solicitud enviada con éxito! Revisa el correo localstore@mail.com.");
+            alert("✅ ¡Solicitud enviada con éxito! Te responderemos a la mayor brevedad posible. ¡Muchas gracias por confiar en LocalStore!.");
             // Aquí puedes agregar una redirección si lo deseas:
             // window.location.href = "gracias.html";
             // Opcional: Limpiar el formulario
@@ -1198,7 +1198,7 @@ document.getElementById("finalSubmitBtn").addEventListener("click", async () => 
             // formWrapper.style.display = "block";
 
         } else {
-            alert(`❌ Error al enviar: ${result.message || "Por favor, intenta de nuevo."}`);
+            alert(`❌ Error al enviar: ${result.message || "ALgo ha ido mal. Por favor, inténtalo de nuevo."}`);
         }
 
     } catch (error) {
