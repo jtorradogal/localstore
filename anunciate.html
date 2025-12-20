@@ -477,6 +477,126 @@ body {
   border-color: #365cab;
   box-shadow: 0 0 0 3px rgba(54, 92, 171, 0.1);
 }
+
+        /* =================================================== */
+/* TOOLTIPS PARA FORMULARIO */
+/* =================================================== */
+
+.field {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+/* Icono de información */
+.field .label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background: #365cab;
+  color: white;
+  border-radius: 50%;
+  font-size: 11px;
+  cursor: help;
+  font-weight: bold;
+  position: relative;
+}
+
+/* Tooltip */
+.tooltip {
+  position: absolute;
+  background: #1f2937;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  width: 250px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  pointer-events: none;
+}
+
+.tooltip::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 20px;
+  border-width: 0 6px 6px 6px;
+  border-style: solid;
+  border-color: transparent transparent #1f2937 transparent;
+}
+
+.info-icon:hover + .tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Posición de tooltips específicos */
+.field:nth-child(odd) .tooltip {
+  left: 0;
+  top: 100%;
+}
+
+.field:nth-child(even) .tooltip {
+  right: 0;
+  top: 100%;
+}
+
+@media (max-width: 768px) {
+  .tooltip {
+    width: 200px;
+    font-size: 12px;
+  }
+}
+
+/* =================================================== */
+/* HORARIOS CON DOS FRANJAS */
+/* =================================================== */
+.time-slot {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.time-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.time-inputs input[type="time"] {
+  width: 75px;
+  text-align: center;
+  padding: 6px 4px;
+}
+
+/* Ajustes responsive para horarios */
+@media (max-width: 768px) {
+  .time-inputs {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .time-slot {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
     </style>
 
 </head>
@@ -553,6 +673,7 @@ body {
                         </div>
                         <div class="field">
                             <div class="label">Categoría *</div>
+                             <div class="tooltip"> Ejemplo: Panadería, Mercería, Academia...</div>
                             <input name="category" required>
                         </div>
                         <div class="field">
@@ -685,55 +806,82 @@ body {
         });
 
         // Generate schedule fields
-        function generateScheduleFields() {
-            const scheduleFields = document.getElementById("scheduleFields");
-            const days = [
-                { id: 'monday', name: 'Lunes' },
-                { id: 'tuesday', name: 'Martes' },
-                { id: 'wednesday', name: 'Miércoles' },
-                { id: 'thursday', name: 'Jueves' },
-                { id: 'friday', name: 'Viernes' },
-                { id: 'saturday', name: 'Sábado' },
-                { id: 'sunday', name: 'Domingo' }
-            ];
+        // Generate schedule fields
+function generateScheduleFields() {
+    const scheduleFields = document.getElementById("scheduleFields");
+    const days = [
+        { id: 'monday', name: 'Lunes' },
+        { id: 'tuesday', name: 'Martes' },
+        { id: 'wednesday', name: 'Miércoles' },
+        { id: 'thursday', name: 'Jueves' },
+        { id: 'friday', name: 'Viernes' },
+        { id: 'saturday', name: 'Sábado' },
+        { id: 'sunday', name: 'Domingo' }
+    ];
 
-            scheduleFields.innerHTML = '';
+    scheduleFields.innerHTML = '';
 
-            days.forEach(day => {
-                const dayRow = document.createElement('div');
-                dayRow.className = 'day-row';
-                dayRow.innerHTML = `
-                    <div class="day-label">${day.name}</div>
-                    <div class="time-inputs">
-                        <input type="time" id="${day.id}_open" name="${day.id}_open" placeholder="Apertura">
-                        <span>a</span>
-                        <input type="time" id="${day.id}_close" name="${day.id}_close" placeholder="Cierre">
-                    </div>
-                    <div class="closed-check">
-                        <input type="checkbox" id="${day.id}_closed" name="${day.id}_closed">
-                        <label for="${day.id}_closed">Cerrado</label>
-                    </div>
-                `;
-                scheduleFields.appendChild(dayRow);
+    days.forEach(day => {
+        const dayRow = document.createElement('div');
+        dayRow.className = 'day-row';
+        dayRow.innerHTML = `
+            <div class="day-label">${day.name}</div>
+            <div class="time-inputs">
+                <!-- MAÑANA -->
+                <div class="time-slot">
+                    <input type="time" id="${day.id}_morning_open" name="${day.id}_morning_open" 
+                           data-day="${day.id}" data-slot="morning" data-type="open" 
+                           placeholder="09:00" step="900">
+                    <span>a</span>
+                    <input type="time" id="${day.id}_morning_close" name="${day.id}_morning_close" 
+                           data-day="${day.id}" data-slot="morning" data-type="close" 
+                           placeholder="13:00" step="900">
+                </div>
+                <span style="color:#999; margin:0 5px;">|</span>
+                <!-- TARDE -->
+                <div class="time-slot">
+                    <input type="time" id="${day.id}_afternoon_open" name="${day.id}_afternoon_open" 
+                           data-day="${day.id}" data-slot="afternoon" data-type="open" 
+                           placeholder="16:00" step="900">
+                    <span>a</span>
+                    <input type="time" id="${day.id}_afternoon_close" name="${day.id}_afternoon_close" 
+                           data-day="${day.id}" data-slot="afternoon" data-type="close" 
+                           placeholder="20:00" step="900">
+                </div>
+            </div>
+            <div class="closed-check">
+                <input type="checkbox" id="${day.id}_closed" name="${day.id}_closed">
+                <label for="${day.id}_closed">Cerrado</label>
+            </div>
+        `;
+        scheduleFields.appendChild(dayRow);
 
-                // Add event listeners for closed checkbox
-                const closedCheck = document.getElementById(`${day.id}_closed`);
-                const openInput = document.getElementById(`${day.id}_open`);
-                const closeInput = document.getElementById(`${day.id}_close`);
+        // Add event listeners for closed checkbox
+        const closedCheck = document.getElementById(`${day.id}_closed`);
+        const timeInputs = dayRow.querySelectorAll('input[type="time"]');
 
-                closedCheck.addEventListener('change', function() {
-                    if (this.checked) {
-                        openInput.disabled = true;
-                        closeInput.disabled = true;
-                        openInput.value = '';
-                        closeInput.value = '';
-                    } else {
-                        openInput.disabled = false;
-                        closeInput.disabled = false;
-                    }
-                });
+        closedCheck.addEventListener('change', function() {
+            timeInputs.forEach(input => {
+                input.disabled = this.checked;
+                if (this.checked) input.value = '';
             });
-        }
+        });
+
+        // Forzar minutos a 00, 15, 30, 45
+        timeInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                if (this.value) {
+                    const [hours, minutes] = this.value.split(':');
+                    const validMinutes = ['00', '15', '30', '45'];
+                    const closestMinute = validMinutes.reduce((prev, curr) => {
+                        return Math.abs(curr - minutes) < Math.abs(prev - minutes) ? curr : prev;
+                    });
+                    this.value = `${hours}:${closestMinute}`;
+                }
+            });
+        });
+    });
+}
 
         // Preview logic
         const previewBtn = document.getElementById("previewBtn");
@@ -783,64 +931,74 @@ body {
         });
 
         // Get schedule data from form
-        function getScheduleData() {
-            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-            const schedule = {};
-            const form = document.getElementById('shopForm');
+        // Get schedule data from form (ahora con dos franjas)
+function getScheduleData() {
+    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+    const schedule = {};
+    
+    days.forEach(day => {
+        const closedCheck = document.getElementById(`${day}_closed`);
+        if (closedCheck && closedCheck.checked) {
+            schedule[day] = [];
+        } else {
+            const morningOpen = document.getElementById(`${day}_morning_open`).value;
+            const morningClose = document.getElementById(`${day}_morning_close`).value;
+            const afternoonOpen = document.getElementById(`${day}_afternoon_open`).value;
+            const afternoonClose = document.getElementById(`${day}_afternoon_close`).value;
             
-            days.forEach(day => {
-                const closedCheck = document.getElementById(`${day}_closed`);
-                if (closedCheck && closedCheck.checked) {
-                    schedule[day] = [];
-                } else {
-                    const open = document.getElementById(`${day}_open`).value;
-                    const close = document.getElementById(`${day}_close`).value;
-                    if (open && close) {
-                        schedule[day] = [{ open, close }];
-                    } else {
-                        schedule[day] = [];
-                    }
-                }
-            });
+            const timeSlots = [];
             
-            return schedule;
+            if (morningOpen && morningClose) {
+                timeSlots.push({ open: morningOpen, close: morningClose });
+            }
+            
+            if (afternoonOpen && afternoonClose) {
+                timeSlots.push({ open: afternoonOpen, close: afternoonClose });
+            }
+            
+            schedule[day] = timeSlots;
         }
+    });
+    
+    return schedule;
+}
 
         // Render schedule preview
-        function renderSchedulePreview(schedule) {
-            const dayNames = {
-                monday: 'Lunes',
-                tuesday: 'Martes',
-                wednesday: 'Miércoles',
-                thursday: 'Jueves',
-                friday: 'Viernes',
-                saturday: 'Sábado',
-                sunday: 'Domingo'
-            };
+        // Render schedule preview (actualizado para dos franjas)
+function renderSchedulePreview(schedule) {
+    const dayNames = {
+        monday: 'Lunes',
+        tuesday: 'Martes',
+        wednesday: 'Miércoles',
+        thursday: 'Jueves',
+        friday: 'Viernes',
+        saturday: 'Sábado',
+        sunday: 'Domingo'
+    };
 
-            let html = '';
-            
-            Object.entries(schedule).forEach(([day, times]) => {
-                let scheduleText = '';
-                
-                if (times.length === 0) {
-                    scheduleText = '<span class="closed">Cerrado</span>';
-                } else {
-                    scheduleText = times.map(time => 
-                        `${time.open} - ${time.close}`
-                    ).join(', ');
-                }
-                
-                html += `
-                    <div class="schedule-day">
-                        <div class="day-name">${dayNames[day]}</div>
-                        <div class="day-schedule">${scheduleText}</div>
-                    </div>
-                `;
-            });
-            
-            return html;
+    let html = '';
+    
+    Object.entries(schedule).forEach(([day, times]) => {
+        let scheduleText = '';
+        
+        if (times.length === 0) {
+            scheduleText = '<span class="closed">Cerrado</span>';
+        } else {
+            scheduleText = times.map(time => 
+                `${time.open} - ${time.close}`
+            ).join(' y ');
         }
+        
+        html += `
+            <div class="schedule-day">
+                <div class="day-name">${dayNames[day]}</div>
+                <div class="day-schedule">${scheduleText}</div>
+            </div>
+        `;
+    });
+    
+    return html;
+}
 // ============================================================
 // FUNCIÓN PARA SUBIR LA IMAGEN A CLOUDINARY (VERSIÓN VERCELL)
 // ============================================================
