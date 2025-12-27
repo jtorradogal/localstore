@@ -1,16 +1,43 @@
 <!-- blog.html -->
-<div id="blog-container">
-  <div class="blog-layout">
-    <div class="featured-post" id="featured-post">
-      <!-- Post destacado se carga aquí -->
-    </div>
-    <div class="post-history" id="post-history">
-      <!-- Lista de posts se carga aquí -->
-    </div>
-  </div>
-</div>
-
 <script type="module">
-  import { fetchPosts } from './api/blog.js';
-  // Carga los posts desde Supabase
+  import { fetchPosts, renderFeaturedPost, renderPostCard, initBlog } from './api/blog.js';
+  
+  async function loadBlog() {
+    // Inicializar y verificar conexión
+    const isConnected = await initBlog();
+    if (!isConnected) {
+      document.getElementById('blog-container').innerHTML = 
+        '<p class="error">Error conectando con el blog</p>';
+      return;
+    }
+    
+    // Cargar posts
+    const { data: posts, error } = await fetchPosts();
+    
+    if (error) {
+      console.error('Error:', error);
+      return;
+    }
+    
+    if (posts && posts.length > 0) {
+      // Post destacado (el más reciente)
+      const featuredPost = posts[0];
+      document.getElementById('featured-post').innerHTML = renderFeaturedPost(featuredPost);
+      
+      // Historial (resto de posts)
+      const historyPosts = posts.slice(1);
+      document.getElementById('post-history').innerHTML = 
+        historyPosts.map(post => renderPostCard(post)).join('');
+    } else {
+      document.getElementById('featured-post').innerHTML = 
+        '<p>No hay posts publicados todavía.</p>';
+    }
+  }
+  
+  // Cargar cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadBlog);
+  } else {
+    loadBlog();
+  }
 </script>
