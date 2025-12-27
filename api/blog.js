@@ -1,149 +1,88 @@
-// api/blog.js
+// pages/api/blog.js
 import { createClient } from '@supabase/supabase-js';
 
-// Obtener variables de entorno (funciona en Vercel)
-const supabaseUrl = process.env.SUPABASE_URL || import.meta.env?.VITE_SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || import.meta.env?.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+);
 
-// Verificar que las variables existan
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('❌ Faltan variables de entorno de Supabase');
-  // En desarrollo, podrías usar valores por defecto (NO en producción)
-  if (process.env.NODE_ENV === 'development') {
-    console.warn('⚠️  Usando variables de desarrollo - NO para producción');
-  }
-}
-
-// Crear cliente Supabase
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-export async function fetchPosts() {
+export default async function handler(req, res) {
+  // Configurar CORS y cache
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=30');
+  
   try {
-    const { data, error } = await supabase
+    const { 
+      slug,          // Para obtener un post específico
+      limit = 10,    // Límite de posts
+      offset = 0     // Para paginación
+    } = req.query;
+    
+    let query = supabase
       .from('posts')
-      .select('*')
+      .select('*');
+    
+    // Si se solicita un post específico
+    if (slug) {
+      const { data, error } = await query
+        .eq('slug', slug)
+        .eq('is_published', true)
+        .single();
+      
+      if (error) {
+        console.error('Error fetching post:', error);
+        return res.status(404).json({ 
+          status: 'error', 
+          message: 'Post no encontrado' 
+        });
+      }
+      
+      return res.status(200).json({ 
+        status: 'success', 
+        data 
+      });
+    }
+    
+    // Obtener todos los posts publicados
+    const { data, error, count } = await query
       .eq('is_published', true)
-      .order('published_at', { ascending: false });
+      .order('published_at', { ascending: false })
+      .range(offset, offset + limit - 1);
     
     if (error) {
       console.error('Error fetching posts:', error);
-      throw error;
+      return res.status(500).json({ 
+        status: 'error', 
+        message: 'Error al obtener posts',
+        details: error.message 
+      });
     }
     
-    return { data, error: null };
-  } catch (error) {
-    console.error('Exception in fetchPosts:', error);
-    return { data: null, error };
+    // Formatear datos si es necesario
+    const formatted = (data || []).map(post => ({
+      id: post.id,
+      title: post.title,
+      slug: post.slug,
+      excerpt: post.excerpt || post.content?.substring(0, 150) + '...',
+      content: post.content,
+      thumbnail_url: post.thumbnail_url || '/default-thumbnail.jpg',
+      author: post.author,
+      published_at: post.published_at,
+      created_at: post.created_at
+    }));
+    
+    return res.status(200).json({ 
+      status: 'success', 
+      data: formatted,
+      count: count || formatted.length
+    });
+    
+  } catch (err) {
+    console.error('Unexpected error:', err);
+    return res.status(500).json({
+      status: 'error',
+      message: 'Error inesperado',
+      details: err.message
+    });
   }
 }
-
-export async function fetchFeaturedPost() {
-  try {
-    const { data, error } = await supabase
-      .from('posts')
-      .select('*')
-      .eq('is_published', true)
-      .eq('is_featured', true) // Si tienes campo para destacados
-      .order('published_at', { ascending: false })
-      .limit(1)
-      .single();
-    
-    return { data, error };
-  } catch (error) {
-    console.error('Exception in fetchFeaturedPost:', error);
-    return { data: null, error };
-  }
-}
-
-export async function fetchPostBySlug(slug) {
-  try {
-    const { data, error } = await supabase
-      .from('posts')
-      .select('*')
-      .eq('slug', slug)
-      .eq('is_published', true)
-      .single();
-    
-    return { data, error };
-  } catch (error) {
-    console.error('Exception in fetchPostBySlug:', error);
-    return { data: null, error };
-  }
-}
-
-export function renderFeaturedPost(post) {
-  if (!post) return '<div class="error">No hay post destacado</div>';
-  
-  return `
-    <article class="featured">
-      <img src="${post.thumbnail_url || '/default-thumbnail.jpg'}" 
-           alt="${post.title}"
-           class="featured-image"
-           loading="lazy">
-      <div class="featured-content">
-        <h1><a href="/post/${post.slug}.html" class="featured-link">${post.title}</a></h1>
-        <p class="excerpt">${post.excerpt || ''}</p>
-        <div class="meta">
-          <span class="author">Por ${post.author || 'Anónimo'}</span>
-          <span class="separator">•</span>
-          <time datetime="${post.published_at}">
-            ${new Date(post.published_at).toLocaleDateString('es-ES', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
-          </time>
-        </div>
-      </div>
-    </article>
-  `;
-}
-
-export function renderPostCard(post) {
-  return `
-    <article class="post-card">
-      <img src="${post.thumbnail_url || '/default-thumbnail.jpg'}" 
-           alt="${post.title}"
-           class="card-image"
-           loading="lazy">
-      <div class="card-content">
-        <h3><a href="/post/${post.slug}.html">${post.title}</a></h3>
-        <p class="card-excerpt">${post.excerpt ? post.excerpt.substring(0, 100) + '...' : ''}</p>
-        <div class="card-meta">
-          <span class="date">
-            ${new Date(post.published_at).toLocaleDateString('es-ES')}
-          </span>
-        </div>
-      </div>
-    </article>
-  `;
-}
-
-// Función de inicialización para verificar conexión
-export async function initBlog() {
-  console.log('🔄 Inicializando blog...');
-  console.log('Supabase URL:', supabaseUrl ? '✅ Configurada' : '❌ Faltante');
-  console.log('Supabase Key:', supabaseAnonKey ? '✅ Configurada' : '❌ Faltante');
-  
-  // Test de conexión simple
-  try {
-    const { data, error } = await supabase
-      .from('posts')
-      .select('count')
-      .limit(1);
-    
-    if (error) {
-      console.error('❌ Error conectando a Supabase:', error.message);
-      return false;
-    }
-    
-    console.log('✅ Conexión a Supabase establecida');
-    return true;
-  } catch (error) {
-    console.error('❌ Error en conexión:', error);
-    return false;
-  }
-}
-
-// Exportar el cliente si necesitas usarlo directamente
-export { supabase };
