@@ -11,5 +11,16 @@
     }
   ],
   "cleanUrls": false,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*\\.(html|css|js|png|jpg|jpeg|gif|ico|txt|xml))$",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
+    }
+  ]
 }
