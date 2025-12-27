@@ -1,34 +1,21 @@
 {
   "version": 2,
   "rewrites": [
-    { 
-      "source": "/api/(.*)", 
-      "destination": "/api/$1" 
-    },
-    { 
-      "source": "/post/:slug", 
-      "destination": "/post.html" 
-    }
-  ],
-  "routes": [
     {
-      "src": "^/blog(\\.html)?$",
-      "dest": "/blog.html",
-      "continue": false
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
     },
     {
-      "src": "^/post\\.html$",
-      "dest": "/post.html",
-      "continue": false
+      "source": "/blog",
+      "destination": "/blog.html"
     },
     {
-      "src": "/(.*\\.(html|css|js|png|jpg|jpeg|gif|ico|svg|webp|txt|xml|json|php))$",
-      "dest": "/$1",
-      "continue": false
+      "source": "/post/:slug",
+      "destination": "/post.html"
     },
     {
-      "src": "^/(.*)$",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
