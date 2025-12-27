@@ -6,16 +6,12 @@
       "destination": "/api/$1"
     },
     {
-      "source": "/blog",
-      "destination": "/blog.html"
-    },
-    {
       "source": "/post/:slug",
       "destination": "/post.html"
     },
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "source": "/blog",
+      "destination": "/blog.html"
     }
   ]
 }
