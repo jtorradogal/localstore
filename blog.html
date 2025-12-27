@@ -65,6 +65,34 @@
             background: #ffebee;
             border-radius: 4px;
         }
+        
+        .excerpt {
+            color: #555;
+            line-height: 1.6;
+            margin: 1rem 0;
+        }
+        
+        .meta {
+            color: #777;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        
+        .separator {
+            margin: 0 0.5rem;
+        }
+        
+        .featured-content h2 a,
+        .history-content h3 a {
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .featured-content h2 a:hover,
+        .history-content h3 a:hover {
+            color: #0070f3;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -135,7 +163,7 @@
                              onerror="this.src='/default-thumbnail.jpg'">
                         <div class="history-content">
                             <h3><a href="/post.html?slug=${post.slug}">${post.title}</a></h3>
-                            <p>${post.excerpt?.substring(0, 100)}...</p>
+                            <p class="excerpt">${post.excerpt?.substring(0, 100)}...</p>
                             <div class="meta">
                                 <time>${formatDate(post.published_at)}</time>
                             </div>
@@ -164,6 +192,16 @@
         
         // Iniciar carga cuando el DOM esté listo
         document.addEventListener('DOMContentLoaded', fetchPosts);
+        
+        // Opcional: Si quieres manejar URLs como /post/slug para redirigir automáticamente
+        // Añade esto si tienes usuarios que puedan llegar desde enlaces antiguos
+        const currentPath = window.location.pathname;
+        if (currentPath.startsWith('/post/') && !currentPath.includes('post.html')) {
+            const slug = currentPath.split('/post/')[1];
+            if (slug) {
+                window.location.href = `/post.html?slug=${slug}`;
+            }
+        }
     </script>
 </body>
 </html>
