@@ -1,26 +1,19 @@
 {
   "version": 2,
-  "rewrites": [
+  "builds": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
+      "src": "*.html",
+      "use": "@vercel/static"
     },
     {
-      "source": "/post/:slug",
-      "destination": "/post.html"
+      "src": "api/*.js",
+      "use": "@vercel/node"
     }
   ],
-  "cleanUrls": false,
-  "trailingSlash": false,
-  "headers": [
+  "routes": [
     {
-      "source": "/(.*\\.(html|css|js|png|jpg|jpeg|gif|ico|txt|xml))$",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600"
-        }
-      ]
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ]
 }
