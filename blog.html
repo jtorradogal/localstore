@@ -111,7 +111,7 @@
                          class="featured-image"
                          onerror="this.src='/default-thumbnail.jpg'">
                     <div class="featured-content">
-                        <h2><a href="/post/${featuredPost.slug}">${featuredPost.title}</a></h2>
+                        <h2><a href="/post.html?slug=${featuredPost.slug}">${featuredPost.title}</a></h2>
                         <p class="excerpt">${featuredPost.excerpt}</p>
                         <div class="meta">
                             <span class="author">Por ${featuredPost.author}</span>
@@ -134,7 +134,7 @@
                              class="history-image"
                              onerror="this.src='/default-thumbnail.jpg'">
                         <div class="history-content">
-                            <h3><a href="/post/${post.slug}">${post.title}</a></h3>
+                            <h3><a href="/post.html?slug=${post.slug}">${post.title}</a></h3>
                             <p>${post.excerpt?.substring(0, 100)}...</p>
                             <div class="meta">
                                 <time>${formatDate(post.published_at)}</time>
