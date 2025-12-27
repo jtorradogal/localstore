@@ -1,7 +1,15 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/post/:slug",
+      "destination": "/post.html"
+    }
+  ],
+  "cleanUrls": false,
+  "trailingSlash": false
 }
