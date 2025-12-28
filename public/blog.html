@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="/css/blue_header_footer.css">
 
     <style>
+        /* Espaciado para header fijo */
+        body {
+            padding-top: 80px;
+        }
+        
         .blog-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -96,29 +101,30 @@
             color: #0070f3;
             text-decoration: underline;
         }
-
-        .header-object {
-            width: 100%;
-            height: auto;
-            border: none;
-        }
     </style>
 </head>
 
 <body>
 
-    <!-- HEADER -->
-    <div id="header-placeholder">
-        <!-- Fallback: object si fetch falla -->
-        <object type="text/html" data="header.html" class="header-object">
-            <!-- Mensaje si object también falla -->
-            <div style="text-align: center; padding: 1rem; background: #f5f5f5;">
-                <p>Cargando header...</p>
-            </div>
-        </object>
-    </div>
+    <!-- HEADER FUSIONADO -->
+    <header class="main-header">
+        <nav class="nav-container">
+            <!-- Logo -->
+            <a href="/" class="nav-logo">
+                <img src="/images/logo_icon_white.png" alt="LocalStore Logo">
+            </a>
 
-    <!-- CONTENIDO -->
+            <!-- Links -->
+            <ul class="nav-links">
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/anunciate.html">¡Anúnciate gratis!</a></li>
+                <li><a href="/about.html">Sobre LocalStore</a></li>
+                <li><a href="/apoya-el-proyecto.html">❤ Apoya el proyecto ❤</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- CONTENIDO DEL BLOG -->
     <main class="blog-container">
         <div class="blog-layout">
 
@@ -139,68 +145,39 @@
         </div>
     </main>
 
-    <!-- FOOTER -->
-    <div id="footer-placeholder">
-        <!-- Fallback: object si fetch falla -->
-        <object type="text/html" data="footer.html" class="header-object">
-            <div style="text-align: center; padding: 1rem; background: #f5f5f5;">
-                <p>Cargando footer...</p>
+    <!-- FOOTER FUSIONADO -->
+    <footer id="main-footer">
+        <div class="footer-container">
+            <!-- IZQUIERDA -->
+            <div class="footer-left">
+                <p class="footer-contact">Contacto: <a href="mailto:localstore@mail.com">localstore@mail.com</a></p>
             </div>
-        </object>
-    </div>
 
-    <!-- SCRIPTS MEJORADOS Y CORREGIDOS -->
+            <!-- DERECHA -->
+            <div class="footer-right">
+                <a href="https://instagram.com" target="_blank" class="footer-social">Instagram</a>
+                <a href="https://linkedin.com" target="_blank" class="footer-social">LinkedIn</a>
+            </div>
+        </div>
+
+        <div class="footer-disclaimer">
+            LocalStore — Todos los derechos reservados
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
     <script>
-        // Cargar header/footer inmediatamente
-        (function loadComponents() {
-            console.log('Cargando componentes del blog...');
-            
-            // HEADER
-            fetch("header.html")
-                .then(r => {
-                    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-                    return r.text();
-                })
-                .then(html => {
-                    console.log('Header cargado exitosamente');
-                    const placeholder = document.getElementById('header-placeholder');
-                    if (placeholder) {
-                        placeholder.innerHTML = html;
-                        // Corregir rutas de imágenes si es necesario
-                        setTimeout(() => {
-                            const imgs = placeholder.querySelectorAll('img');
-                            imgs.forEach(img => {
-                                const src = img.getAttribute('src');
-                                if (src && !src.startsWith('http') && !src.startsWith('/') && !src.startsWith('data:')) {
-                                    img.src = '/' + src;
-                                }
-                            });
-                        }, 50);
-                    }
-                })
-                .catch(err => {
-                    console.warn('Fetch header falló:', err.message);
-                });
+        // Script para header scroll (igual que en tus otras páginas)
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
 
-            // FOOTER
-            fetch("footer.html")
-                .then(r => {
-                    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-                    return r.text();
-                })
-                .then(html => {
-                    console.log('Footer cargado exitosamente');
-                    const placeholder = document.getElementById('footer-placeholder');
-                    if (placeholder) {
-                        placeholder.innerHTML = html;
-                    }
-                })
-                .catch(err => {
-                    console.warn('Fetch footer falló:', err.message);
-                });
-        })();
-
-        // Posts se cargan cuando el DOM esté listo
+        // Cargar posts cuando el DOM esté listo
         document.addEventListener('DOMContentLoaded', fetchPosts);
 
         async function fetchPosts() {
@@ -305,11 +282,6 @@
                 historyEl.innerHTML = '';
             }
         }
-
-        // Verificar que todo cargó correctamente
-        window.addEventListener('load', () => {
-            console.log('Página blog completamente cargada');
-        });
     </script>
 
 </body>
