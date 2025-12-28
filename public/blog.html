@@ -96,6 +96,16 @@
     </style>
 </head>
 <body>
+     <!-- Header -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch("/header.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("header-placeholder").innerHTML = html;
+      })
+      .catch(e => console.error("No se pudo cargar header:", e));
+  </script>
     <div class="blog-container">
         <div class="blog-layout">
             <div class="featured-section">
@@ -109,7 +119,15 @@
             </div>
         </div>
     </div>
-
+<script>
+    // Cargar footer.html dinámicamente
+    fetch("/footer.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+      })
+      .catch(err => console.error("No se pudo cargar el footer:", err));
+  </script>
     <script>
         async function fetchPosts() {
             try {
