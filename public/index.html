@@ -15,7 +15,7 @@
     crossorigin="anonymous"></script>
 
   <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
-  <link href="public/css/main.css" rel="stylesheet" />
+  <link href="css/main.css" rel="stylesheet" />
 
     <style>
     /* =================================================== */
@@ -208,7 +208,7 @@
 
     /* SECCIÓN 1 específica */
     .first-bg {
-      background-image: url("public/images/fondo_section1.jpg");
+      background-image: url("images/fondo_section1.jpg");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -326,7 +326,7 @@
     /* SECCIÓN 2 - GLASSBOX ANCHO Y TRANSPARENTE */
     /* =================================================== */
     .second-bg {
-      background-image: url("public/images/section2.jpg");
+      background-image: url("images/section2.jpg");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -551,7 +551,7 @@
     <!-- Header -->
   <div id="header-placeholder"></div>
   <script>
-    fetch("header.html")
+    fetch("/header.html")
       .then(r => r.text())
       .then(html => {
         document.getElementById("header-placeholder").innerHTML = html;
@@ -559,7 +559,7 @@
   </script>
     
     <div class="header-block">
-  <img src="public/images/full_logo_white.png" alt="Logo LocalStore" class="main-logo">
+  <img src="images/full_logo_white.png" alt="Logo LocalStore" class="main-logo">
   </div>
     <form>
       <fieldset>
@@ -597,7 +597,7 @@
   <div class="feature-container">
     <!-- Imagen con altura reducida -->
     <div class="feature-image-full">
-      <img src="public/images/section1.jpg" alt="Buscador de negocios locales" class="img-fill">
+      <img src="images/section1.jpg" alt="Buscador de negocios locales" class="img-fill">
     </div>
 
     <!-- Contenedor del texto -->
@@ -744,7 +744,7 @@ btnSearch.addEventListener('click', () => {
 
 <script>
   // Cargar footer.html dinámicamente
-  fetch("footer.html")
+  fetch("/footer.html")
     .then(res => res.text())
     .then(html => {
       document.getElementById("footer-placeholder").innerHTML = html;
