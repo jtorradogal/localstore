@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog</title>
+    <title>Blog - LocalStore</title>
 
     <!-- CSS común de header/footer azul -->
     <link rel="stylesheet" href="/css/blue_header_footer.css">
@@ -96,22 +96,27 @@
             color: #0070f3;
             text-decoration: underline;
         }
+
+        .header-object {
+            width: 100%;
+            height: auto;
+            border: none;
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- HEADER -->
-    <!-- Por: -->
-<object type="text/html" data="/header.html" class="header-object"></object>
-
-<style>
-.header-object {
-  width: 100%;
-  height: auto;
-  border: none;
-}
-</style>
+    <!-- HEADER - Versión mejorada con fallback -->
+    <div id="header-placeholder">
+        <!-- Fallback: object si fetch falla -->
+        <object type="text/html" data="header.html" class="header-object">
+            <!-- Mensaje si object también falla -->
+            <div style="text-align: center; padding: 1rem; background: #f5f5f5;">
+                <p>Cargando header...</p>
+            </div>
+        </object>
+    </div>
 
     <!-- CONTENIDO -->
     <main class="blog-container">
@@ -135,36 +140,80 @@
     </main>
 
     <!-- FOOTER -->
-    <div id="footer-placeholder"></div>
+    <div id="footer-placeholder">
+        <!-- Fallback: object si fetch falla -->
+        <object type="text/html" data="footer.html" class="header-object">
+            <div style="text-align: center; padding: 1rem; background: #f5f5f5;">
+                <p>Cargando footer...</p>
+            </div>
+        </object>
+    </div>
 
-    <!-- SCRIPTS -->
+    <!-- SCRIPTS MEJORADOS -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-
-            /* ---------- HEADER ---------- */
-            fetch('/header.html')
-                .then(r => r.text())
-                .then(html => {
-                    document.getElementById('header-placeholder').innerHTML = html;
+        // Cargar header/footer inmediatamente (no esperar DOMContentLoaded)
+        (function loadComponents() {
+            console.log('Cargando componentes del blog...');
+            
+            // HEADER - Usando la misma sintaxis que en tus otras páginas
+            fetch("header.html")
+                .then(r => {
+                    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                    return r.text();
                 })
-                .catch(err => console.error('No se pudo cargar el header:', err));
-
-            /* ---------- FOOTER ---------- */
-            fetch('/footer.html')
-                .then(r => r.text())
                 .then(html => {
-                    document.getElementById('footer-placeholder').innerHTML = html;
+                    console.log('Header cargado exitosamente');
+                    const placeholder = document.getElementById('header-placeholder');
+                    if (placeholder) {
+                        placeholder.innerHTML = html;
+                        // Asegurar que las imágenes se carguen correctamente
+                        setTimeout(() => {
+                            const imgs = placeholder.querySelectorAll('img');
+                            imgs.forEach(img => {
+                                if (img.src && !img.src.startsWith('http') && !img.src.startsWith('/')) {
+                                    img.src = '/' + img.src;
+                                }
+                            });
+                        }, 50);
+                    }
                 })
-                .catch(err => console.error('No se pudo cargar el footer:', err));
+                .catch(err => {
+                    console.warn('Fetch header falló, usando object:', err.message);
+                    // El object tag ya está como fallback
+                });
 
-            /* ---------- POSTS ---------- */
-            fetchPosts();
-        });
+            // FOOTER
+            fetch("footer.html")
+                .then(r => {
+                    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                    return r.text();
+                })
+                .then(html => {
+                    console.log('Footer cargado exitosamente');
+                    const placeholder = document.getElementById('footer-placeholder');
+                    if (placeholder) {
+                        placeholder.innerHTML = html;
+                    }
+                })
+                .catch(err => {
+                    console.warn('Fetch footer falló, usando object:', err.message);
+                    // El object tag ya está como fallback
+                });
+        })();
+
+        // Posts se cargan cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', fetchPosts);
 
         async function fetchPosts() {
+            console.log('Cargando posts del blog...');
             try {
                 const response = await fetch('/api/blog');
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+                
                 const result = await response.json();
+                console.log('Respuesta API:', result);
 
                 if (result.status === 'success' && Array.isArray(result.data) && result.data.length > 0) {
                     renderPosts(result.data);
@@ -178,6 +227,7 @@
         }
 
         function renderPosts(posts) {
+            console.log('Renderizando', posts.length, 'posts');
             const featuredPost = posts[0];
             const featuredEl = document.getElementById('featured-post');
 
@@ -186,7 +236,8 @@
                     <img
                         src="${featuredPost.thumbnail_url || '/default-thumbnail.jpg'}"
                         alt="${featuredPost.title}"
-                        class="featured-image">
+                        class="featured-image"
+                        onerror="this.src='/default-thumbnail.jpg'">
                     <div class="featured-content">
                         <h2>
                             <a href="/post.html?slug=${featuredPost.slug}">
@@ -216,7 +267,8 @@
                     <img
                         src="${post.thumbnail_url || '/default-thumbnail.jpg'}"
                         alt="${post.title}"
-                        class="history-image">
+                        class="history-image"
+                        onerror="this.src='/default-thumbnail.jpg'">
                     <div class="history-content">
                         <h3>
                             <a href="/post.html?slug=${post.slug}">
@@ -244,10 +296,23 @@
         }
 
         function showError(message) {
-            document.getElementById('featured-post').innerHTML =
-                `<div class="error">${message}</div>`;
-            document.getElementById('post-history').innerHTML = '';
+            const featuredEl = document.getElementById('featured-post');
+            const historyEl = document.getElementById('post-history');
+            
+            if (featuredEl) {
+                featuredEl.innerHTML = `<div class="error">${message}</div>`;
+            }
+            if (historyEl) {
+                historyEl.innerHTML = '';
+            }
         }
+
+        // Verificar que todo cargó correctamente
+        window.addEventListener('load', () => {
+            console.log('Página blog completamente cargada');
+            console.log('Header presente:', !!document.querySelector('header'));
+            console.log('Footer presente:', !!document.querySelector('footer'));
+        });
     </script>
 
 </body>
