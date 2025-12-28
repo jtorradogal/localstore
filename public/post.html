@@ -9,8 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
 
-    <!-- En post.html -->
-<script src="/js/marked.min.js"></script>
+ 
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -135,7 +134,7 @@
                     ` : ''}
                     
                     <div class="post-content">
-                        ${formatContent(post.content)}
+                        ${marked.parse(post.content)}
                     </div>
                     
                     <footer class="post-footer">
@@ -145,16 +144,7 @@
             `;
         }
         
-        function formatContent(content) {
-            // Si el contenido es markdown, podrías usar una librería como marked.js
-            // Por ahora, convertir saltos de línea a <br> y <p>
-            return content
-                .split('\n\n')
-                .map(paragraph => 
-                    paragraph.trim() ? `<p>${paragraph.replace(/\n/g, '<br>')}</p>` : ''
-                )
-                .join('');
-        }
+        
         
         function formatDate(dateString) {
             const date = new Date(dateString);
