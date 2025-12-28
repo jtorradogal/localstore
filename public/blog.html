@@ -107,7 +107,7 @@
 
 <body>
 
-    <!-- HEADER - Versión mejorada con fallback -->
+    <!-- HEADER -->
     <div id="header-placeholder">
         <!-- Fallback: object si fetch falla -->
         <object type="text/html" data="header.html" class="header-object">
@@ -149,13 +149,13 @@
         </object>
     </div>
 
-    <!-- SCRIPTS MEJORADOS -->
+    <!-- SCRIPTS MEJORADOS Y CORREGIDOS -->
     <script>
-        // Cargar header/footer inmediatamente (no esperar DOMContentLoaded)
+        // Cargar header/footer inmediatamente
         (function loadComponents() {
             console.log('Cargando componentes del blog...');
             
-            // HEADER - Usando la misma sintaxis que en tus otras páginas
+            // HEADER
             fetch("header.html")
                 .then(r => {
                     if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -166,20 +166,20 @@
                     const placeholder = document.getElementById('header-placeholder');
                     if (placeholder) {
                         placeholder.innerHTML = html;
-                        // Asegurar que las imágenes se carguen correctamente
+                        // Corregir rutas de imágenes si es necesario
                         setTimeout(() => {
                             const imgs = placeholder.querySelectorAll('img');
                             imgs.forEach(img => {
-                                if (img.src && !img.src.startsWith('http') && !img.src.startsWith('/')) {
-                                    img.src = '/' + img.src;
+                                const src = img.getAttribute('src');
+                                if (src && !src.startsWith('http') && !src.startsWith('/') && !src.startsWith('data:')) {
+                                    img.src = '/' + src;
                                 }
                             });
                         }, 50);
                     }
                 })
                 .catch(err => {
-                    console.warn('Fetch header falló, usando object:', err.message);
-                    // El object tag ya está como fallback
+                    console.warn('Fetch header falló:', err.message);
                 });
 
             // FOOTER
@@ -196,8 +196,7 @@
                     }
                 })
                 .catch(err => {
-                    console.warn('Fetch footer falló, usando object:', err.message);
-                    // El object tag ya está como fallback
+                    console.warn('Fetch footer falló:', err.message);
                 });
         })();
 
@@ -300,7 +299,7 @@
             const historyEl = document.getElementById('post-history');
             
             if (featuredEl) {
-                featuredEl.innerHTML = `<div class="error">${message}</div>`;
+                featuredEl.innerHTML = '<div class="error">' + message + '</div>';
             }
             if (historyEl) {
                 historyEl.innerHTML = '';
@@ -310,8 +309,6 @@
         // Verificar que todo cargó correctamente
         window.addEventListener('load', () => {
             console.log('Página blog completamente cargada');
-            console.log('Header presente:', !!document.querySelector('header'));
-            console.log('Footer presente:', !!document.querySelector('footer'));
         });
     </script>
 
