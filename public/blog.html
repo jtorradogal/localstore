@@ -86,11 +86,89 @@
             font-family: 'Poppins', Arial, sans-serif;
         }
 
-        /* Contenedor principal */
+        /* Contenedor principal con espacio para ads */
         .blog-container {
-            max-width: 1200px;
+            max-width: 1400px; /* Aumentado para espacio de ads */
             margin: 0 auto;
             padding: 0 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr 300px; /* Columnas para ads */
+            gap: 30px;
+        }
+
+        /* Columna izquierda (AdSense) */
+        .ad-column-left {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        /* Columna derecha (AdSense) */
+        .ad-column-right {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        /* Contenido central del blog */
+        .blog-content {
+            grid-column: 2; /* Columna central */
+        }
+
+        /* Contenedor de anuncios de AdSense */
+        .adsense-container {
+            width: 100%;
+            margin-bottom: 30px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            background: linear-gradient(180deg,#fbfdff,#f6f7fb);
+            border: 1px solid rgba(54, 92, 171, 0.06);
+            transition: var(--transition);
+        }
+
+        .adsense-container:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .adsense-placeholder {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #9aa3b2;
+            text-align: center;
+            font-size: 14px;
+            padding: 20px;
+        }
+
+        .adsense-placeholder.horizontal {
+            height: 90px;
+        }
+
+        .adsense-placeholder.vertical {
+            height: 600px;
+        }
+
+        .adsense-placeholder.square {
+            height: 250px;
+        }
+
+        .adsense-placeholder i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #365cab;
+            opacity: 0.7;
+        }
+
+        .adsense-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+            margin-top: 8px;
+            font-weight: 600;
         }
 
         /* Hero/Intro section */
@@ -432,14 +510,48 @@
         }
 
         /* Responsive */
+        @media (max-width: 1200px) {
+            .blog-container {
+                grid-template-columns: 250px 1fr 250px;
+                gap: 20px;
+            }
+            
+            .blog-hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .adsense-placeholder.vertical {
+                height: 500px;
+            }
+        }
+
         @media (max-width: 1024px) {
+            .blog-container {
+                grid-template-columns: 1fr; /* Una sola columna */
+            }
+            
+            .ad-column-left,
+            .ad-column-right {
+                display: none; /* Ocultar ads en tablets */
+            }
+            
+            .blog-content {
+                grid-column: 1;
+            }
+            
             .blog-layout {
                 grid-template-columns: 1fr;
                 gap: 40px;
             }
             
-            .blog-hero h1 {
-                font-size: 2.8rem;
+            /* Mostrar un solo ad horizontal en móvil/tablet */
+            .mobile-adsense {
+                display: block;
+                margin: 30px 0;
+            }
+            
+            .adsense-placeholder.horizontal {
+                height: 90px;
             }
         }
 
@@ -482,6 +594,10 @@
                 width: 100%;
                 height: 150px;
             }
+            
+            .mobile-adsense {
+                margin: 20px 0;
+            }
         }
 
         @media (max-width: 480px) {
@@ -502,6 +618,20 @@
             .blog-cta h2 {
                 font-size: 1.8rem;
             }
+            
+            .adsense-placeholder.horizontal {
+                height: 100px;
+            }
+            
+            .adsense-placeholder.square {
+                height: 250px;
+            }
+        }
+
+        /* Clase para ads móviles */
+        .mobile-adsense {
+            display: none; /* Oculto por defecto, visible en responsive */
+            width: 100%;
         }
     </style>
 </head>
@@ -526,51 +656,138 @@
         </nav>
     </header>
 
-    <!-- CONTENIDO DEL BLOG -->
+    <!-- CONTENIDO DEL BLOG CON ADSENSE -->
     <main class="blog-container">
         
-        <!-- Hero Section -->
-        <section class="blog-hero">
-            <div class="blog-hero-content">
-                <h1 style="color: #365cab;">Blog de LocalStore</h1>
-                <p>Descubre historias, consejos y noticias sobre comercio local, emprendimiento y desarrollo de negocios en tu comunidad.</p>
-                
-                <!-- ELIMINADO: blog-hero-stats -->
+        <!-- Columna izquierda (AdSense) -->
+        <aside class="ad-column-left">
+            <!-- AdSense vertical (300x600) -->
+            <div class="adsense-container">
+                <div class="adsense-placeholder vertical">
+                    <i class="fas fa-ad"></i>
+                    <div>Espacio para Google AdSense</div>
+                    <div class="adsense-label">300x600 - Lateral</div>
+                    <!-- Tu código AdSense iría aquí -->
+                    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+                         data-ad-slot="XXXXXXXXXX"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script> -->
+                </div>
             </div>
-        </section>
 
-        <!-- Layout principal -->
-        <div class="blog-layout">
+            <!-- AdSense cuadrado (250x250) -->
+            <div class="adsense-container">
+                <div class="adsense-placeholder square">
+                    <i class="fas fa-bullhorn"></i>
+                    <div>Anuncio Google AdSense</div>
+                    <div class="adsense-label">250x250 - Cuadrado</div>
+                </div>
+            </div>
+        </aside>
 
-            <!-- Post destacado -->
-            <section class="featured-section">
-                <h2 class="section-title">Post destacado</h2>
-                <div id="featured-post" class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Cargando post destacado…</p>
+        <!-- Contenido central del blog -->
+        <div class="blog-content">
+            
+            <!-- Hero Section -->
+            <section class="blog-hero">
+                <div class="blog-hero-content">
+                    <h1 style="color: #365cab;">Blog de LocalStore</h1>
+                    <p>Descubre historias, consejos y noticias sobre comercio local, emprendimiento y desarrollo de negocios en tu comunidad.</p>
+                    
+                    <!-- ELIMINADO: blog-hero-stats -->
                 </div>
             </section>
 
-            <!-- Posts anteriores -->
-            <aside class="history-section">
-                <h2 class="section-title">Posts recientes</h2>
-                <div id="post-history" class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Cargando historial…</p>
+            <!-- AdSense horizontal para móviles/tablets -->
+            <div class="mobile-adsense">
+                <div class="adsense-container">
+                    <div class="adsense-placeholder horizontal">
+                        <i class="fas fa-ad"></i>
+                        <div>Anuncio Google AdSense</div>
+                        <div class="adsense-label">728x90 - Horizontal</div>
+                    </div>
                 </div>
-            </aside>
+            </div>
+
+            <!-- Layout principal -->
+            <div class="blog-layout">
+
+                <!-- Post destacado -->
+                <section class="featured-section">
+                    <h2 class="section-title">Post destacado</h2>
+                    <div id="featured-post" class="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Cargando post destacado…</p>
+                    </div>
+                </section>
+
+                <!-- Posts anteriores -->
+                <aside class="history-section">
+                    <h2 class="section-title">Posts recientes</h2>
+                    <div id="post-history" class="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Cargando historial…</p>
+                    </div>
+                </aside>
+
+            </div>
+
+            <!-- AdSense horizontal adicional -->
+            <div class="adsense-container">
+                <div class="adsense-placeholder horizontal">
+                    <i class="fas fa-ad"></i>
+                    <div>Espacio para anuncio</div>
+                    <div class="adsense-label">728x90 - Horizontal</div>
+                </div>
+            </div>
+
+            <!-- CTA Section - AZUL CORPORATIVO -->
+            <section class="blog-cta" style="background: #365cab;">
+                <h2>¿Tienes una historia que contar?</h2>
+                <p>Comparte tu experiencia con otros emprendedores locales y forma parte de nuestra comunidad.</p>
+                <a href="/anunciate.html" class="cta-button">
+                    <i class="fas fa-plus-circle"></i>
+                    Publicar artículo
+                </a>
+            </section>
 
         </div>
 
-        <!-- CTA Section - AZUL CORPORATIVO -->
-        <section class="blog-cta" style="background: #365cab;">
-            <h2>¿Tienes una historia que contar?</h2>
-            <p>Comparte tu experiencia con otros emprendedores locales y forma parte de nuestra comunidad.</p>
-            <a href="/anunciate.html" class="cta-button">
-                <i class="fas fa-plus-circle"></i>
-                Publicar artículo
-            </a>
-        </section>
+        <!-- Columna derecha (AdSense) -->
+        <aside class="ad-column-right">
+            <!-- AdSense vertical (300x600) -->
+            <div class="adsense-container">
+                <div class="adsense-placeholder vertical">
+                    <i class="fas fa-ad"></i>
+                    <div>Espacio para Google AdSense</div>
+                    <div class="adsense-label">300x600 - Lateral</div>
+                </div>
+            </div>
+
+            <!-- AdSense cuadrado (250x250) -->
+            <div class="adsense-container">
+                <div class="adsense-placeholder square">
+                    <i class="fas fa-bullhorn"></i>
+                    <div>Anuncio Google AdSense</div>
+                    <div class="adsense-label">250x250 - Cuadrado</div>
+                </div>
+            </div>
+
+            <!-- AdSense vertical pequeño (120x600) -->
+            <div class="adsense-container">
+                <div class="adsense-placeholder vertical">
+                    <i class="fas fa-ad"></i>
+                    <div>Anuncio patrocinado</div>
+                    <div class="adsense-label">120x600 - Banners</div>
+                </div>
+            </div>
+        </aside>
 
     </main>
 
@@ -609,6 +826,29 @@
                 header.classList.remove('scrolled');
             }
         });
+
+        // Mostrar/ocultar ads según tamaño de pantalla
+        function handleAdDisplay() {
+            const mobileAds = document.querySelector('.mobile-adsense');
+            const leftColumn = document.querySelector('.ad-column-left');
+            const rightColumn = document.querySelector('.ad-column-right');
+            
+            if (window.innerWidth <= 1024) {
+                // En tablets y móviles
+                if (mobileAds) mobileAds.style.display = 'block';
+                if (leftColumn) leftColumn.style.display = 'none';
+                if (rightColumn) rightColumn.style.display = 'none';
+            } else {
+                // En desktop
+                if (mobileAds) mobileAds.style.display = 'none';
+                if (leftColumn) leftColumn.style.display = 'block';
+                if (rightColumn) rightColumn.style.display = 'block';
+            }
+        }
+
+        // Ejecutar al cargar y al redimensionar
+        window.addEventListener('load', handleAdDisplay);
+        window.addEventListener('resize', handleAdDisplay);
 
         // Cargar posts cuando el DOM esté listo
         document.addEventListener('DOMContentLoaded', fetchPosts);
@@ -756,9 +996,11 @@
         // Efecto parallax en hero section
         window.addEventListener('scroll', function() {
             const hero = document.querySelector('.blog-hero');
-            const scrolled = window.pageYOffset;
-            const rate = scrolled * 0.5;
-            hero.style.backgroundPosition = `center ${rate}px`;
+            if (hero) {
+                const scrolled = window.pageYOffset;
+                const rate = scrolled * 0.5;
+                hero.style.backgroundPosition = `center ${rate}px`;
+            }
         });
     </script>
 </body>
