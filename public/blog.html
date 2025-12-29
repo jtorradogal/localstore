@@ -8,30 +8,21 @@
     <!-- CSS común de header/footer azul -->
     <link rel="stylesheet" href="/css/blue_header_footer.css">
     
-    <!-- Google Fonts para tipografía moderna -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome para iconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Poppins como en tu ejemplo) -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap" rel="stylesheet">
 
     <style>
         /* Variables de diseño */
         :root {
-            --primary-color: #365cab;
-            --secondary-color: #4f46e5;
-            --accent-color: #f97316;
-            --light-color: #f8fafc;
-            --dark-color: #1e293b;
-            --gray-light: #e2e8f0;
-            --gray-medium: #94a3b8;
-            --gray-dark: #475569;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --transition: all 0.3s ease;
+            --accent: #365cab;
+            --muted: #6b7280;
+            --card-bg: #ffffff;
+            --surface: #fbfcfe;
+            --radius: 10px;
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-md: 0 8px 30px rgba(18, 24, 35, 0.06);
+            --shadow-lg: 0 12px 40px rgba(18, 24, 35, 0.08);
+            --transition: all 0.2s ease;
         }
 
         /* Reset y tipografía */
@@ -42,17 +33,19 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', Arial, sans-serif;
             line-height: 1.6;
-            color: var(--dark-color);
-            background-color: #ffffff;
+            color: #222;
+            background: #ffffff;
             padding-top: 80px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         h1, h2, h3, h4 {
-            font-family: 'Playfair Display', serif;
             font-weight: 700;
             line-height: 1.2;
+            color: #111;
         }
 
         a {
@@ -78,22 +71,9 @@
         .blog-hero {
             text-align: center;
             padding: 60px 20px;
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-            border-radius: var(--radius-lg);
             margin-bottom: 60px;
             position: relative;
             overflow: hidden;
-        }
-
-        .blog-hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(54, 92, 171, 0.1) 0%, transparent 70%);
-            z-index: 0;
         }
 
         .blog-hero-content {
@@ -102,45 +82,18 @@
         }
 
         .blog-hero h1 {
-            font-size: 3.5rem;
-            color: var(--primary-color);
+            font-size: 3rem;
+            color: #365cab;
             margin-bottom: 16px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            font-weight: 700;
         }
 
         .blog-hero p {
-            font-size: 1.25rem;
-            color: var(--gray-dark);
+            font-size: 1.1rem;
+            color: var(--muted);
             max-width: 700px;
-            margin: 0 auto 30px;
-        }
-
-        .blog-hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 30px;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--gray-medium);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            margin: 0 auto;
+            line-height: 1.7;
         }
 
         /* Layout del blog */
@@ -159,9 +112,10 @@
         .section-title {
             font-size: 1.8rem;
             margin-bottom: 30px;
-            color: var(--dark-color);
+            color: #111827;
             position: relative;
             padding-bottom: 10px;
+            font-weight: 700;
         }
 
         .section-title::after {
@@ -171,22 +125,22 @@
             left: 0;
             width: 60px;
             height: 3px;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            background: var(--accent);
             border-radius: 2px;
         }
 
         .featured-post {
             background: white;
-            border-radius: var(--radius-lg);
+            border-radius: calc(var(--radius) + 4px);
             overflow: hidden;
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-md);
             transition: var(--transition);
             height: 100%;
         }
 
         .featured-post:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
         }
 
         .featured-image-container {
@@ -203,16 +157,16 @@
         }
 
         .featured-post:hover .featured-image {
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
         .featured-badge {
             position: absolute;
             top: 20px;
             left: 20px;
-            background: var(--accent-color);
+            background: var(--accent);
             color: white;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
@@ -225,18 +179,19 @@
         }
 
         .featured-content h2 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 15px;
             line-height: 1.3;
+            color: #0f1720;
         }
 
         .featured-content h2 a:hover {
-            color: var(--primary-color);
+            color: var(--accent);
         }
 
         .featured-excerpt {
-            font-size: 1.1rem;
-            color: var(--gray-dark);
+            font-size: 1rem;
+            color: var(--muted);
             margin-bottom: 20px;
             line-height: 1.7;
         }
@@ -246,55 +201,54 @@
             align-items: center;
             justify-content: space-between;
             padding-top: 20px;
-            border-top: 1px solid var(--gray-light);
-        }
-
-        .author-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .author-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-color);
+            border-top: 1px solid rgba(17, 24, 39, 0.06);
         }
 
         .author-details h4 {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             margin-bottom: 4px;
-            color: var(--dark-color);
+            color: #0f1720;
+            font-weight: 600;
         }
 
         .post-date {
             font-size: 0.85rem;
-            color: var(--gray-medium);
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .post-date i {
+            font-size: 0.9rem;
         }
 
         .read-more {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: var(--primary-color);
+            background: var(--accent);
             color: white;
             padding: 10px 20px;
-            border-radius: var(--radius-sm);
+            border-radius: 8px;
             font-weight: 600;
+            font-size: 0.9rem;
             transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(54, 92, 171, 0.25);
         }
 
         .read-more:hover {
-            background: var(--secondary-color);
-            transform: translateX(5px);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(54, 92, 171, 0.35);
+            opacity: 0.95;
         }
 
         /* Sidebar/Posts anteriores */
         .history-section {
             background: white;
-            border-radius: var(--radius-lg);
+            border-radius: calc(var(--radius) + 4px);
             padding: 30px;
             box-shadow: var(--shadow-md);
             height: fit-content;
@@ -304,7 +258,7 @@
             display: flex;
             gap: 20px;
             padding: 20px 0;
-            border-bottom: 1px solid var(--gray-light);
+            border-bottom: 1px solid rgba(17, 24, 39, 0.04);
             transition: var(--transition);
         }
 
@@ -320,8 +274,9 @@
             flex-shrink: 0;
             width: 100px;
             height: 80px;
-            border-radius: var(--radius-sm);
+            border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
 
         .history-image {
@@ -340,25 +295,27 @@
         }
 
         .history-content h3 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             margin-bottom: 8px;
             line-height: 1.4;
+            color: #0f1720;
+            font-weight: 600;
         }
 
         .history-content h3 a:hover {
-            color: var(--primary-color);
+            color: var(--accent);
         }
 
         .history-excerpt {
             font-size: 0.9rem;
-            color: var(--gray-medium);
+            color: var(--muted);
             margin-bottom: 8px;
             line-height: 1.5;
         }
 
         .history-date {
             font-size: 0.8rem;
-            color: var(--gray-medium);
+            color: var(--muted);
             display: flex;
             align-items: center;
             gap: 5px;
@@ -371,10 +328,10 @@
         }
 
         .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid var(--gray-light);
-            border-top-color: var(--primary-color);
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(54, 92, 171, 0.1);
+            border-top-color: var(--accent);
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto 20px;
@@ -387,37 +344,41 @@
         .error {
             text-align: center;
             padding: 40px;
-            background: #fee;
-            border-radius: var(--radius-md);
-            border-left: 4px solid #d32f2f;
+            background: linear-gradient(180deg,#fbfdff,#f6f7fb);
+            border-radius: 12px;
+            border: 1px solid rgba(54, 92, 171, 0.06);
+            color: #9aa3b2;
         }
 
         .error-icon {
-            font-size: 3rem;
-            color: #d32f2f;
+            font-size: 2.5rem;
+            color: var(--accent);
             margin-bottom: 20px;
         }
 
-        /* CTA al final */
+        /* CTA al final - AZUL CORPORATIVO */
         .blog-cta {
             text-align: center;
             padding: 60px 40px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: #365cab;
             color: white;
-            border-radius: var(--radius-lg);
+            border-radius: calc(var(--radius) + 4px);
             margin-bottom: 80px;
+            box-shadow: var(--shadow-md);
         }
 
         .blog-cta h2 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin-bottom: 20px;
+            font-weight: 700;
         }
 
         .blog-cta p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             max-width: 700px;
             margin: 0 auto 30px;
             opacity: 0.9;
+            line-height: 1.6;
         }
 
         .cta-button {
@@ -425,17 +386,20 @@
             align-items: center;
             gap: 10px;
             background: white;
-            color: var(--primary-color);
-            padding: 15px 30px;
-            border-radius: var(--radius-sm);
+            color: #365cab;
+            padding: 14px 28px;
+            border-radius: 8px;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1rem;
             transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
         }
 
         .cta-button:hover {
             transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
 
         /* Responsive */
@@ -446,7 +410,7 @@
             }
             
             .blog-hero h1 {
-                font-size: 2.8rem;
+                font-size: 2.5rem;
             }
         }
 
@@ -460,12 +424,11 @@
             }
             
             .blog-hero h1 {
-                font-size: 2.2rem;
+                font-size: 2rem;
             }
             
-            .blog-hero-stats {
-                flex-direction: column;
-                gap: 20px;
+            .blog-hero p {
+                font-size: 1rem;
             }
             
             .featured-image-container {
@@ -477,7 +440,13 @@
             }
             
             .featured-content h2 {
-                font-size: 1.6rem;
+                font-size: 1.5rem;
+            }
+            
+            .featured-meta {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
             }
             
             .history-section {
@@ -492,18 +461,6 @@
                 width: 100%;
                 height: 150px;
             }
-        }
-
-        @media (max-width: 480px) {
-            .blog-hero h1 {
-                font-size: 1.8rem;
-            }
-            
-            .featured-meta {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }
             
             .blog-cta {
                 padding: 40px 20px;
@@ -512,13 +469,36 @@
             .blog-cta h2 {
                 font-size: 1.8rem;
             }
+            
+            .blog-cta p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .blog-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .blog-cta {
+                padding: 30px 15px;
+            }
+            
+            .blog-cta h2 {
+                font-size: 1.5rem;
+            }
+            
+            .cta-button {
+                padding: 12px 24px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- HEADER -->
+    <!-- HEADER FUSIONADO -->
     <header class="main-header">
         <nav class="nav-container">
             <!-- Logo -->
@@ -539,26 +519,11 @@
     <!-- CONTENIDO DEL BLOG -->
     <main class="blog-container">
         
-        <!-- Hero Section -->
+        <!-- Hero Section SIMPLIFICADA -->
         <section class="blog-hero">
             <div class="blog-hero-content">
-                <h1>Blog de LocalStore</h1>
+                <h1 style="color: #365cab;">Blog de LocalStore</h1>
                 <p>Descubre historias, consejos y noticias sobre comercio local, emprendimiento y desarrollo de negocios en tu comunidad.</p>
-                
-                <div class="blog-hero-stats">
-                    <div class="stat-item">
-                        <span class="stat-number" id="total-posts">0</span>
-                        <span class="stat-label">Artículos</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">+100</span>
-                        <span class="stat-label">Negocios</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">24/7</span>
-                        <span class="stat-label">Actualizado</span>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -585,19 +550,18 @@
 
         </div>
 
-        <!-- CTA Section -->
+        <!-- CTA Section - AZUL CORPORATIVO -->
         <section class="blog-cta">
             <h2>¿Tienes una historia que contar?</h2>
             <p>Comparte tu experiencia con otros emprendedores locales y forma parte de nuestra comunidad.</p>
             <a href="/anunciate.html" class="cta-button">
-                <i class="fas fa-plus-circle"></i>
                 Publicar artículo
             </a>
         </section>
 
     </main>
 
-    <!-- FOOTER -->
+    <!-- FOOTER FUSIONADO -->
     <footer id="main-footer">
         <div class="footer-container">
             <!-- IZQUIERDA -->
@@ -607,12 +571,8 @@
 
             <!-- DERECHA -->
             <div class="footer-right">
-                <a href="https://instagram.com" target="_blank" class="footer-social">
-                    <i class="fab fa-instagram"></i> Instagram
-                </a>
-                <a href="https://linkedin.com" target="_blank" class="footer-social">
-                    <i class="fab fa-linkedin"></i> LinkedIn
-                </a>
+                <a href="https://instagram.com" target="_blank" class="footer-social">Instagram</a>
+                <a href="https://linkedin.com" target="_blank" class="footer-social">LinkedIn</a>
             </div>
         </div>
 
@@ -623,13 +583,15 @@
 
     <!-- SCRIPTS -->
     <script>
-        // Script para header scroll
+        // Script para header scroll (igual que en tu ejemplo)
         window.addEventListener('scroll', function() {
             const header = document.querySelector('.main-header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
+            if (header) {
+                if (window.scrollY > 40) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
             }
         });
 
@@ -646,9 +608,6 @@
                 const result = await response.json();
 
                 if (result.status === 'success' && Array.isArray(result.data) && result.data.length > 0) {
-                    // Actualizar contador de posts
-                    document.getElementById('total-posts').textContent = result.data.length;
-                    
                     renderPosts(result.data);
                 } else {
                     showError('No hay posts disponibles en este momento');
@@ -681,19 +640,15 @@
                         </h2>
                         <p class="featured-excerpt">${featuredPost.excerpt || ''}</p>
                         <div class="featured-meta">
-                            <div class="author-info">
-                                <img src="/images/logo_icon_white.png" alt="Autor" class="author-avatar">
-                                <div class="author-details">
-                                    <h4>${featuredPost.author || 'LocalStore'}</h4>
-                                    <span class="post-date">
-                                        <i class="far fa-calendar"></i>
-                                        ${formatDate(featuredPost.published_at)}
-                                    </span>
-                                </div>
+                            <div class="author-details">
+                                <h4>${featuredPost.author || 'LocalStore'}</h4>
+                                <span class="post-date">
+                                    <i class="far fa-calendar"></i>
+                                    ${formatDate(featuredPost.published_at)}
+                                </span>
                             </div>
                             <a href="/post.html?slug=${featuredPost.slug}" class="read-more">
                                 Leer artículo
-                                <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
                     </div>
@@ -724,7 +679,7 @@
                             </a>
                         </h3>
                         <p class="history-excerpt">
-                            ${(post.excerpt || '').substring(0, 120)}…
+                            ${(post.excerpt || '').substring(0, 100)}…
                         </p>
                         <span class="history-date">
                             <i class="far fa-clock"></i>
@@ -768,7 +723,7 @@
                         </div>
                         <h3>Oops, algo salió mal</h3>
                         <p>${message}</p>
-                        <button onclick="location.reload()" style="margin-top: 15px; padding: 10px 20px; background: var(--primary-color); color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        <button onclick="location.reload()" style="margin-top: 15px; padding: 10px 20px; background: #365cab; color: white; border: none; border-radius: 8px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600;">
                             Reintentar
                         </button>
                     </div>
@@ -778,14 +733,6 @@
                 historyEl.innerHTML = '';
             }
         }
-
-        // Efecto parallax en hero section
-        window.addEventListener('scroll', function() {
-            const hero = document.querySelector('.blog-hero');
-            const scrolled = window.pageYOffset;
-            const rate = scrolled * 0.5;
-            hero.style.backgroundPosition = `center ${rate}px`;
-        });
     </script>
 </body>
 </html>
