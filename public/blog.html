@@ -7,106 +7,518 @@
 
     <!-- CSS común de header/footer azul -->
     <link rel="stylesheet" href="/css/blue_header_footer.css">
+    
+    <!-- Google Fonts para tipografía moderna -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* Espaciado para header fijo */
+        /* Variables de diseño */
+        :root {
+            --primary-color: #365cab;
+            --secondary-color: #4f46e5;
+            --accent-color: #f97316;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --gray-light: #e2e8f0;
+            --gray-medium: #94a3b8;
+            --gray-dark: #475569;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        /* Reset y tipografía */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #ffffff;
             padding-top: 80px;
         }
-        
-        .blog-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Contenedor principal */
+        .blog-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 0 20px;
         }
 
-        .featured-section {
-            grid-column: 1;
+        /* Hero/Intro section */
+        .blog-hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: var(--radius-lg);
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .history-section {
-            grid-column: 2;
+        .blog-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(54, 92, 171, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .blog-hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .blog-hero h1 {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .blog-hero p {
+            font-size: 1.25rem;
+            color: var(--gray-dark);
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .blog-hero-stats {
             display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray-medium);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Layout del blog */
+        .blog-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        /* Post destacado */
+        .featured-section {
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--dark-color);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
         }
 
         .featured-post {
+            background: white;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .featured-post:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        .featured-image-container {
             position: relative;
+            overflow: hidden;
+            height: 400px;
         }
 
         .featured-image {
             width: 100%;
-            height: 400px;
+            height: 100%;
             object-fit: cover;
-            border-radius: 8px;
+            transition: transform 0.5s ease;
+        }
+
+        .featured-post:hover .featured-image {
+            transform: scale(1.05);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--accent-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .featured-content {
+            padding: 30px;
+        }
+
+        .featured-content h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .featured-content h2 a:hover {
+            color: var(--primary-color);
+        }
+
+        .featured-excerpt {
+            font-size: 1.1rem;
+            color: var(--gray-dark);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .featured-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+        }
+
+        .author-details h4 {
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            color: var(--dark-color);
+        }
+
+        .post-date {
+            font-size: 0.85rem;
+            color: var(--gray-medium);
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .read-more:hover {
+            background: var(--secondary-color);
+            transform: translateX(5px);
+        }
+
+        /* Sidebar/Posts anteriores */
+        .history-section {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+            height: fit-content;
         }
 
         .history-post {
             display: flex;
-            gap: 1rem;
-            align-items: flex-start;
-            padding: 1rem 0;
-            border-bottom: 1px solid #eee;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--gray-light);
+            transition: var(--transition);
+        }
+
+        .history-post:last-child {
+            border-bottom: none;
+        }
+
+        .history-post:hover {
+            padding-left: 10px;
+        }
+
+        .history-image-container {
+            flex-shrink: 0;
+            width: 100px;
+            height: 80px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
         }
 
         .history-image {
-            width: 120px;
-            height: 80px;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            border-radius: 4px;
-            flex-shrink: 0;
+            transition: transform 0.3s ease;
         }
 
+        .history-post:hover .history-image {
+            transform: scale(1.1);
+        }
+
+        .history-content {
+            flex: 1;
+        }
+
+        .history-content h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .history-content h3 a:hover {
+            color: var(--primary-color);
+        }
+
+        .history-excerpt {
+            font-size: 0.9rem;
+            color: var(--gray-medium);
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .history-date {
+            font-size: 0.8rem;
+            color: var(--gray-medium);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Estado de carga y errores */
         .loading {
             text-align: center;
-            padding: 2rem;
-            color: #666;
+            padding: 60px 20px;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--gray-light);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         .error {
+            text-align: center;
+            padding: 40px;
+            background: #fee;
+            border-radius: var(--radius-md);
+            border-left: 4px solid #d32f2f;
+        }
+
+        .error-icon {
+            font-size: 3rem;
             color: #d32f2f;
-            padding: 1rem;
-            background: #ffebee;
-            border-radius: 4px;
+            margin-bottom: 20px;
         }
 
-        .excerpt {
-            color: #555;
-            line-height: 1.6;
-            margin: 1rem 0;
+        /* CTA al final */
+        .blog-cta {
+            text-align: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: var(--radius-lg);
+            margin-bottom: 80px;
         }
 
-        .meta {
-            color: #777;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
+        .blog-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
         }
 
-        .separator {
-            margin: 0 0.5rem;
+        .blog-cta p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
         }
 
-        .featured-content h2 a,
-        .history-content h3 a {
-            color: #333;
-            text-decoration: none;
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            color: var(--primary-color);
+            padding: 15px 30px;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: var(--transition);
         }
 
-        .featured-content h2 a:hover,
-        .history-content h3 a:hover {
-            color: #0070f3;
-            text-decoration: underline;
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .blog-layout {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .blog-hero h1 {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+            
+            .blog-hero {
+                padding: 40px 20px;
+            }
+            
+            .blog-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .blog-hero-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .featured-image-container {
+                height: 300px;
+            }
+            
+            .featured-content {
+                padding: 20px;
+            }
+            
+            .featured-content h2 {
+                font-size: 1.6rem;
+            }
+            
+            .history-section {
+                padding: 20px;
+            }
+            
+            .history-post {
+                flex-direction: column;
+            }
+            
+            .history-image-container {
+                width: 100%;
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .blog-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .featured-meta {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .blog-cta {
+                padding: 40px 20px;
+            }
+            
+            .blog-cta h2 {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- HEADER FUSIONADO -->
+    <!-- HEADER -->
     <header class="main-header">
         <nav class="nav-container">
             <!-- Logo -->
@@ -126,26 +538,66 @@
 
     <!-- CONTENIDO DEL BLOG -->
     <main class="blog-container">
+        
+        <!-- Hero Section -->
+        <section class="blog-hero">
+            <div class="blog-hero-content">
+                <h1>Blog de LocalStore</h1>
+                <p>Descubre historias, consejos y noticias sobre comercio local, emprendimiento y desarrollo de negocios en tu comunidad.</p>
+                
+                <div class="blog-hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-posts">0</span>
+                        <span class="stat-label">Artículos</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">+100</span>
+                        <span class="stat-label">Negocios</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Actualizado</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layout principal -->
         <div class="blog-layout">
 
+            <!-- Post destacado -->
             <section class="featured-section">
-                <h1>Post destacado</h1>
+                <h2 class="section-title">Post destacado</h2>
                 <div id="featured-post" class="loading">
-                    Cargando post destacado…
+                    <div class="loading-spinner"></div>
+                    <p>Cargando post destacado…</p>
                 </div>
             </section>
 
+            <!-- Posts anteriores -->
             <aside class="history-section">
-                <h2>Posts anteriores</h2>
+                <h2 class="section-title">Posts recientes</h2>
                 <div id="post-history" class="loading">
-                    Cargando historial…
+                    <div class="loading-spinner"></div>
+                    <p>Cargando historial…</p>
                 </div>
             </aside>
 
         </div>
+
+        <!-- CTA Section -->
+        <section class="blog-cta">
+            <h2>¿Tienes una historia que contar?</h2>
+            <p>Comparte tu experiencia con otros emprendedores locales y forma parte de nuestra comunidad.</p>
+            <a href="/anunciate.html" class="cta-button">
+                <i class="fas fa-plus-circle"></i>
+                Publicar artículo
+            </a>
+        </section>
+
     </main>
 
-    <!-- FOOTER FUSIONADO -->
+    <!-- FOOTER -->
     <footer id="main-footer">
         <div class="footer-container">
             <!-- IZQUIERDA -->
@@ -155,8 +607,12 @@
 
             <!-- DERECHA -->
             <div class="footer-right">
-                <a href="https://instagram.com" target="_blank" class="footer-social">Instagram</a>
-                <a href="https://linkedin.com" target="_blank" class="footer-social">LinkedIn</a>
+                <a href="https://instagram.com" target="_blank" class="footer-social">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+                <a href="https://linkedin.com" target="_blank" class="footer-social">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
             </div>
         </div>
 
@@ -167,7 +623,7 @@
 
     <!-- SCRIPTS -->
     <script>
-        // Script para header scroll (igual que en tus otras páginas)
+        // Script para header scroll
         window.addEventListener('scroll', function() {
             const header = document.querySelector('.main-header');
             if (window.scrollY > 50) {
@@ -181,50 +637,64 @@
         document.addEventListener('DOMContentLoaded', fetchPosts);
 
         async function fetchPosts() {
-            console.log('Cargando posts del blog...');
             try {
                 const response = await fetch('/api/blog');
                 if (!response.ok) {
-                    throw new Error(`API error: ${response.status}`);
+                    throw new Error(`Error API: ${response.status}`);
                 }
                 
                 const result = await response.json();
-                console.log('Respuesta API:', result);
 
                 if (result.status === 'success' && Array.isArray(result.data) && result.data.length > 0) {
+                    // Actualizar contador de posts
+                    document.getElementById('total-posts').textContent = result.data.length;
+                    
                     renderPosts(result.data);
                 } else {
-                    showError('No hay posts disponibles');
+                    showError('No hay posts disponibles en este momento');
                 }
             } catch (error) {
                 console.error('Error cargando posts:', error);
-                showError('Error cargando los posts');
+                showError('Error cargando los posts. Por favor, intenta más tarde.');
             }
         }
 
         function renderPosts(posts) {
-            console.log('Renderizando', posts.length, 'posts');
             const featuredPost = posts[0];
             const featuredEl = document.getElementById('featured-post');
 
             featuredEl.innerHTML = `
                 <article class="featured-post">
-                    <img
-                        src="${featuredPost.thumbnail_url || '/default-thumbnail.jpg'}"
-                        alt="${featuredPost.title}"
-                        class="featured-image"
-                        onerror="this.src='/default-thumbnail.jpg'">
+                    <div class="featured-image-container">
+                        <img
+                            src="${featuredPost.thumbnail_url || '/default-thumbnail.jpg'}"
+                            alt="${featuredPost.title}"
+                            class="featured-image"
+                            onerror="this.src='/default-thumbnail.jpg'">
+                        <span class="featured-badge">Destacado</span>
+                    </div>
                     <div class="featured-content">
                         <h2>
                             <a href="/post.html?slug=${featuredPost.slug}">
                                 ${featuredPost.title}
                             </a>
                         </h2>
-                        <p class="excerpt">${featuredPost.excerpt || ''}</p>
-                        <div class="meta">
-                            <span>Por ${featuredPost.author || 'LocalStore'}</span>
-                            <span class="separator">•</span>
-                            <time>${formatDate(featuredPost.published_at)}</time>
+                        <p class="featured-excerpt">${featuredPost.excerpt || ''}</p>
+                        <div class="featured-meta">
+                            <div class="author-info">
+                                <img src="/images/logo_icon_white.png" alt="Autor" class="author-avatar">
+                                <div class="author-details">
+                                    <h4>${featuredPost.author || 'LocalStore'}</h4>
+                                    <span class="post-date">
+                                        <i class="far fa-calendar"></i>
+                                        ${formatDate(featuredPost.published_at)}
+                                    </span>
+                                </div>
+                            </div>
+                            <a href="/post.html?slug=${featuredPost.slug}" class="read-more">
+                                Leer artículo
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
                 </article>
@@ -234,29 +704,32 @@
             const historyEl = document.getElementById('post-history');
 
             if (!historyPosts.length) {
-                historyEl.innerHTML = '<p>No hay posts anteriores</p>';
+                historyEl.innerHTML = '<p class="no-posts">No hay posts anteriores</p>';
                 return;
             }
 
             historyEl.innerHTML = historyPosts.map(post => `
                 <article class="history-post">
-                    <img
-                        src="${post.thumbnail_url || '/default-thumbnail.jpg'}"
-                        alt="${post.title}"
-                        class="history-image"
-                        onerror="this.src='/default-thumbnail.jpg'">
+                    <div class="history-image-container">
+                        <img
+                            src="${post.thumbnail_url || '/default-thumbnail.jpg'}"
+                            alt="${post.title}"
+                            class="history-image"
+                            onerror="this.src='/default-thumbnail.jpg'">
+                    </div>
                     <div class="history-content">
                         <h3>
                             <a href="/post.html?slug=${post.slug}">
                                 ${post.title}
                             </a>
                         </h3>
-                        <p class="excerpt">
-                            ${(post.excerpt || '').substring(0, 100)}…
+                        <p class="history-excerpt">
+                            ${(post.excerpt || '').substring(0, 120)}…
                         </p>
-                        <div class="meta">
-                            <time>${formatDate(post.published_at)}</time>
-                        </div>
+                        <span class="history-date">
+                            <i class="far fa-clock"></i>
+                            ${formatDate(post.published_at)}
+                        </span>
                     </div>
                 </article>
             `).join('');
@@ -264,11 +737,23 @@
 
         function formatDate(dateString) {
             const date = new Date(dateString);
-            return date.toLocaleDateString('es-ES', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) {
+                return 'Hoy';
+            } else if (diffDays === 1) {
+                return 'Ayer';
+            } else if (diffDays < 7) {
+                return `Hace ${diffDays} días`;
+            } else {
+                return date.toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+            }
         }
 
         function showError(message) {
@@ -276,12 +761,31 @@
             const historyEl = document.getElementById('post-history');
             
             if (featuredEl) {
-                featuredEl.innerHTML = '<div class="error">' + message + '</div>';
+                featuredEl.innerHTML = `
+                    <div class="error">
+                        <div class="error-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Oops, algo salió mal</h3>
+                        <p>${message}</p>
+                        <button onclick="location.reload()" style="margin-top: 15px; padding: 10px 20px; background: var(--primary-color); color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            Reintentar
+                        </button>
+                    </div>
+                `;
             }
             if (historyEl) {
                 historyEl.innerHTML = '';
             }
         }
+
+        // Efecto parallax en hero section
+        window.addEventListener('scroll', function() {
+            const hero = document.querySelector('.blog-hero');
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * 0.5;
+            hero.style.backgroundPosition = `center ${rate}px`;
+        });
     </script>
 </body>
 </html>
