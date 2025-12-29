@@ -1,79 +1,590 @@
-<!-- public/post.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
-    <!-- En post.html, dentro de <head> -->
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<!-- Opcional: Para resaltado de sintaxis -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
-
- 
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LocalStore - Post</title>
-    <link rel="stylesheet" href="/css/blog.css">
+    <title>Post - LocalStore</title>
+
+    <!-- CSS común de header/footer azul -->
+    <link rel="stylesheet" href="/css/blue_header_footer.css">
+    
+    <!-- Google Fonts (Poppins para header/footer, Inter y Playfair para contenido) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Marked para Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- Highlight.js para código -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+
     <style>
+        /* Variables de diseño */
+        :root {
+            --primary-color: #365cab;
+            --secondary-color: #4f46e5;
+            --accent-color: #f97316;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --gray-light: #e2e8f0;
+            --gray-medium: #94a3b8;
+            --gray-dark: #475569;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        /* Reset y tipografía */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #ffffff;
+            padding-top: 80px;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* HEADER Y FOOTER CON POPPINS (igual que blog.html) */
+        .main-header,
+        .main-header *,
+        #main-footer,
+        #main-footer * {
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        .nav-links li a {
+            font-family: 'Poppins', Arial, sans-serif;
+            font-weight: 500;
+        }
+
+        .footer-contact,
+        .footer-social,
+        .footer-disclaimer {
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        /* Contenedor principal */
         .post-container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 2rem 1rem;
+            padding: 0 20px;
         }
-        
+
+        /* Botón volver */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 40px;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            background: var(--light-color);
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            background: var(--gray-light);
+            transform: translateX(-3px);
+        }
+
+        /* Post principal */
+        .post-article {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 60px;
+        }
+
         .post-header {
-            margin-bottom: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 20px;
         }
-        
+
+        .post-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
+        }
+
+        .post-header h1 {
+            font-size: 2.8rem;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            color: var(--gray-medium);
+            font-size: 0.95rem;
+            flex-wrap: wrap;
+        }
+
+        .post-author {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .post-date {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .post-date i {
+            font-size: 0.9rem;
+        }
+
+        /* Imagen destacada */
+        .post-image-container {
+            position: relative;
+            margin: 40px 0;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            height: 500px;
+        }
+
         .post-image {
             width: 100%;
-            height: 400px;
+            height: 100%;
             object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 2rem;
+            transition: transform 0.5s ease;
         }
-        
+
+        .post-image:hover {
+            transform: scale(1.02);
+        }
+
+        /* Contenido del post */
         .post-content {
             font-size: 1.1rem;
             line-height: 1.8;
+            color: var(--dark-color);
         }
-        
-        .post-meta {
-            color: #666;
-            margin-bottom: 1rem;
+
+        /* Estilos para Markdown renderizado */
+        .post-content h1,
+        .post-content h2,
+        .post-content h3,
+        .post-content h4 {
+            font-family: 'Playfair Display', serif;
+            margin: 2rem 0 1rem;
+            color: var(--dark-color);
         }
-        
-        .back-link {
-            display: inline-block;
-            margin-bottom: 2rem;
-            color: #0070f3;
-            text-decoration: none;
+
+        .post-content h1 {
+            font-size: 2.2rem;
         }
-        
-        .loading, .error {
+
+        .post-content h2 {
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--gray-light);
+            padding-bottom: 0.5rem;
+        }
+
+        .post-content h3 {
+            font-size: 1.5rem;
+        }
+
+        .post-content h4 {
+            font-size: 1.2rem;
+        }
+
+        .post-content p {
+            margin: 1.5rem 0;
+            line-height: 1.8;
+        }
+
+        .post-content ul,
+        .post-content ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        .post-content li {
+            margin: 0.5rem 0;
+        }
+
+        .post-content blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem 1.5rem;
+            margin: 2rem 0;
+            background: var(--light-color);
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            font-style: italic;
+            color: var(--gray-dark);
+        }
+
+        .post-content code {
+            background: var(--gray-light);
+            padding: 0.2rem 0.4rem;
+            border-radius: var(--radius-sm);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--dark-color);
+        }
+
+        .post-content pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            margin: 2rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .post-content pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        .post-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            margin: 2rem auto;
+            display: block;
+            box-shadow: var(--shadow-md);
+        }
+
+        .post-content a {
+            color: var(--primary-color);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .post-content a:hover {
+            color: var(--secondary-color);
+        }
+
+        .post-content strong {
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .post-content em {
+            font-style: italic;
+        }
+
+        /* Footer del post */
+        .post-footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .post-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .post-tag {
+            background: var(--light-color);
+            color: var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .post-tag:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .share-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .share-button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Estado de carga y errores */
+        .loading {
             text-align: center;
-            padding: 4rem;
+            padding: 60px 20px;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--gray-light);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error {
+            text-align: center;
+            padding: 60px 40px;
+            background: #fee;
+            border-radius: var(--radius-lg);
+            border-left: 4px solid #d32f2f;
+            margin: 40px 0;
+        }
+
+        .error-icon {
+            font-size: 3rem;
+            color: #d32f2f;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .post-header h1 {
+                font-size: 2.4rem;
+            }
+            
+            .post-image-container {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+            
+            .post-container {
+                padding: 0 15px;
+            }
+            
+            .post-article {
+                padding: 25px;
+            }
+            
+            .post-header h1 {
+                font-size: 2rem;
+            }
+            
+            .post-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .post-image-container {
+                height: 300px;
+            }
+            
+            .post-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .post-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .post-content h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .post-header h1 {
+                font-size: 1.7rem;
+            }
+            
+            .post-article {
+                padding: 20px;
+            }
+            
+            .post-image-container {
+                height: 250px;
+            }
+            
+            .post-content h1 {
+                font-size: 1.5rem;
+            }
+            
+            .post-content h2 {
+                font-size: 1.3rem;
+            }
+            
+            .share-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .share-button {
+                flex: 1;
+                justify-content: center;
+            }
         }
     </style>
 </head>
-<body>
-    <div class="post-container">
-        <a href="/blog.html" class="back-link">← Volver al blog</a>
-        <div id="post-content">
-            <div class="loading">Cargando post...</div>
-        </div>
-    </div>
 
+<body>
+
+    <!-- HEADER CON POPPINS (igual que blog.html) -->
+    <header class="main-header">
+        <nav class="nav-container">
+            <!-- Logo -->
+            <a href="/" class="nav-logo">
+                <img src="/images/logo_icon_white.png" alt="LocalStore Logo">
+            </a>
+
+            <!-- Links -->
+            <ul class="nav-links">
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/anunciate.html">¡Anúnciate gratis!</a></li>
+                <li><a href="/about.html">Sobre LocalStore</a></li>
+                <li><a href="/apoya-el-proyecto.html">❤ Apoya el proyecto ❤</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- CONTENIDO DEL POST -->
+    <main class="post-container">
+        
+        <!-- Botón volver -->
+        <a href="/blog.html" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            Volver al blog
+        </a>
+
+        <!-- Contenido del post (se carga dinámicamente) -->
+        <div id="post-content" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Cargando post...</p>
+        </div>
+
+    </main>
+
+    <!-- FOOTER CON POPPINS (igual que blog.html) -->
+    <footer id="main-footer">
+        <div class="footer-container">
+            <!-- IZQUIERDA -->
+            <div class="footer-left">
+                <p class="footer-contact">Contacto: <a href="mailto:localstore@mail.com">localstore@mail.com</a></p>
+            </div>
+
+            <!-- DERECHA -->
+            <div class="footer-right">
+                <a href="https://instagram.com" target="_blank" class="footer-social">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+                <a href="https://linkedin.com" target="_blank" class="footer-social">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-disclaimer">
+            LocalStore — Todos los derechos reservados
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
     <script>
+        // Configurar marked
+        marked.setOptions({
+            breaks: true,
+            gfm: true,
+            headerIds: true,
+            smartypants: true,
+            highlight: function(code, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    return hljs.highlight(code, { language: lang }).value;
+                }
+                return code;
+            }
+        });
+
+        // Script para header scroll (igual que blog.html)
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
         // Obtener slug de la URL
         function getSlugFromURL() {
-            // Para URLs como: /post/te-damos-la-bienvenida-a-localstore
             const path = window.location.pathname;
             const parts = path.split('/');
             const slug = parts[parts.length - 1];
             
-            // Si estamos en post.html?slug=xxx, usar query param
             const urlParams = new URLSearchParams(window.location.search);
             const querySlug = urlParams.get('slug');
             
@@ -84,13 +595,11 @@
             const slug = getSlugFromURL();
             
             if (!slug || slug === 'post.html') {
-                document.getElementById('post-content').innerHTML = 
-                    '<div class="error">Post no encontrado</div>';
+                showError('Post no encontrado');
                 return;
             }
             
             try {
-                // OPCIÓN A: Usar tu API
                 const response = await fetch(`/api/blog?slug=${encodeURIComponent(slug)}`);
                 const result = await response.json();
                 
@@ -102,49 +611,78 @@
                 
             } catch (error) {
                 console.error('Error:', error);
-                showError('Error cargando el post');
+                showError('Error cargando el post. Por favor, intenta más tarde.');
             }
         }
         
         function renderPost(post) {
+            // Actualizar título de la página
             document.title = `${post.title} - LocalStore`;
             
             // Actualizar meta tags para SEO
             updateMetaTags(post);
             
+            // Renderizar contenido
             const postContent = document.getElementById('post-content');
+            const contentHTML = marked.parse(post.content || '');
+            
+            // Aplicar resaltado de sintaxis
+            setTimeout(() => {
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+            }, 100);
+            
             postContent.innerHTML = `
-                <article class="post">
+                <article class="post-article">
                     <header class="post-header">
                         <h1>${post.title}</h1>
                         <div class="post-meta">
-                            <span class="author">Por ${post.author}</span>
-                            <span class="separator">•</span>
-                            <time datetime="${post.published_at}">
+                            <span class="post-author">
+                                <i class="fas fa-user"></i>
+                                Por ${post.author || 'LocalStore'}
+                            </span>
+                            <span class="post-date">
+                                <i class="far fa-calendar"></i>
                                 ${formatDate(post.published_at)}
-                            </time>
+                            </span>
                         </div>
                     </header>
                     
                     ${post.thumbnail_url ? `
-                        <img src="${post.thumbnail_url}" 
-                             alt="${post.title}" 
-                             class="post-image"
-                             onerror="this.style.display='none'">
+                        <div class="post-image-container">
+                            <img src="${post.thumbnail_url}" 
+                                 alt="${post.title}" 
+                                 class="post-image"
+                                 onerror="this.style.display='none'">
+                        </div>
                     ` : ''}
                     
                     <div class="post-content">
-                        ${marked.parse(post.content)}
+                        ${contentHTML}
                     </div>
                     
                     <footer class="post-footer">
-                        <a href="/blog.html" class="back-link">← Volver al blog</a>
+                        <div class="post-tags">
+                            <!-- Etiquetas podrían añadirse en el futuro -->
+                            <!-- <span class="post-tag">Negocios</span>
+                            <span class="post-tag">Local</span>
+                            <span class="post-tag">Emprendimiento</span> -->
+                        </div>
+                        <div class="share-buttons">
+                            <button class="share-button" onclick="sharePost('${post.title}', '${window.location.href}')">
+                                <i class="fas fa-share-alt"></i>
+                                Compartir
+                            </button>
+                            <a href="/blog.html" class="share-button">
+                                <i class="fas fa-newspaper"></i>
+                                Ver blog
+                            </a>
+                        </div>
                     </footer>
                 </article>
             `;
         }
-        
-        
         
         function formatDate(dateString) {
             const date = new Date(dateString);
@@ -170,11 +708,15 @@
                 { property: 'og:title', content: post.title },
                 { property: 'og:description', content: post.excerpt || '' },
                 { property: 'og:type', content: 'article' },
-                { property: 'og:url', content: window.location.href }
+                { property: 'og:url', content: window.location.href },
+                { property: 'article:published_time', content: post.published_at },
+                { property: 'article:author', content: post.author || 'LocalStore' }
             ];
             
             if (post.thumbnail_url) {
                 ogTags.push({ property: 'og:image', content: post.thumbnail_url });
+                ogTags.push({ property: 'og:image:width', content: '1200' });
+                ogTags.push({ property: 'og:image:height', content: '630' });
             }
             
             ogTags.forEach(tag => {
@@ -188,9 +730,37 @@
             });
         }
         
+        function sharePost(title, url) {
+            const text = `${title} - LocalStore`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: text,
+                    url: url
+                });
+            } else {
+                // Fallback: copiar al portapapeles
+                navigator.clipboard.writeText(`${text}\n${url}`).then(() => {
+                    alert('Enlace copiado al portapapeles');
+                });
+            }
+        }
+        
         function showError(message) {
-            document.getElementById('post-content').innerHTML = 
-                `<div class="error">${message}</div>`;
+            const postContent = document.getElementById('post-content');
+            postContent.innerHTML = `
+                <div class="error">
+                    <div class="error-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>Oops, algo salió mal</h3>
+                    <p>${message}</p>
+                    <button onclick="location.href='/blog.html'" style="margin-top: 15px; padding: 10px 20px; background: var(--primary-color); color: white; border: none; border-radius: 5px; cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 600;">
+                        Volver al blog
+                    </button>
+                </div>
+            `;
         }
         
         // Iniciar cuando el DOM esté listo
