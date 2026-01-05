@@ -503,6 +503,60 @@
                 font-size: 1.8rem;
             }
         }
+
+/* Google AdSense horizontal banner */
+.adsense-horizontal {
+    width: 100%;
+    background: #f1f3f5;
+    border-top: 1px solid var(--gray-light);
+    border-bottom: 1px solid var(--gray-light);
+    margin: 80px 0;
+}
+
+.adsense-horizontal-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 120px;
+}
+
+/* Placeholder visual mientras no haya anuncio real */
+.adsense-placeholder {
+    width: 100%;
+    max-width: 970px;
+    height: 90px;
+    background: repeating-linear-gradient(
+        45deg,
+        #e5e7eb,
+        #e5e7eb 10px,
+        #f1f3f5 10px,
+        #f1f3f5 20px
+    );
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--gray-dark);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .adsense-placeholder {
+        height: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .adsense-placeholder {
+        height: 120px;
+    }
+}
+
     </style>
 </head>
 
@@ -560,10 +614,33 @@
                 </div>
             </aside>
 
+</div> <!-- cierre de .blog-layout -->
+
+<!-- GOOGLE ADSENSE HORIZONTAL -->
+<section class="adsense-horizontal">
+    <div class="adsense-horizontal-inner">
+
+        <!-- Placeholder (reemplazar por AdSense real cuando toque) -->
+        <div class="adsense-placeholder">
+            Espacio publicitario · Google AdSense
         </div>
 
-        <!-- CTA Section - AZUL CORPORATIVO -->
-        <section class="blog-cta" style="background: #365cab;">
+        <!-- 
+        ANUNCIO REAL (cuando lo actives)
+        <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-XXXXXXXXXXXX"
+            data-ad-slot="XXXXXXXXXX"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+        -->
+
+    </div>
+</section>
+
+<!-- CTA Section - AZUL CORPORATIVO -->
+<section class="blog-cta" style="background: #365cab;">
+
             <h2>¿Tienes una historia que contar?</h2>
             <p>Comparte tu experiencia con otros emprendedores locales y forma parte de nuestra comunidad.</p>
             <a href="/anunciate.html" class="cta-button">
