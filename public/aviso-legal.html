@@ -10,38 +10,107 @@
 
   <!-- CSS exclusivo para páginas legales -->
   <style>
-    /* Wrapper aislado para evitar colisiones */
+  /* Wrapper general (ya validado antes) */
+  .legal-page {
+    padding-top: 100px;
+    min-height: 100vh;
+  }
+
+  @media (max-width: 768px) {
     .legal-page {
-      padding-top: 100px; /* espacio seguro bajo header fijo */
-      min-height: 100vh;
+      padding-top: 85px;
     }
+  }
 
-    @media (max-width: 768px) {
-      .legal-page {
-        padding-top: 85px;
-      }
-    }
+  /* Contenedor principal */
+  .legal-content {
+    max-width: 900px;
+    margin: 0 auto 4rem auto;
+    padding: 0 1.5rem;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--dark-color);
+    text-align: left;
+  }
 
-    .legal-page main {
-      max-width: 900px;
-      margin: 0 auto 4rem auto;
-      padding: 0 1.5rem;
-      line-height: 1.7;
-    }
+  /* Headings */
+  .legal-content h1,
+  .legal-content h2,
+  .legal-content h3,
+  .legal-content h4 {
+    font-family: 'Playfair Display', serif;
+    margin: 2rem 0 1rem;
+    color: var(--dark-color);
+  }
 
-    .legal-page h1 {
-      margin-bottom: 1.5rem;
-    }
+  .legal-content h1 {
+    font-size: 2.2rem;
+  }
 
-    .legal-page h2 {
-      margin-top: 2.5rem;
-      margin-bottom: 0.75rem;
-    }
+  .legal-content h2 {
+    font-size: 1.8rem;
+    border-bottom: 2px solid var(--gray-light);
+    padding-bottom: 0.5rem;
+  }
 
-    .legal-page ul {
-      margin-left: 1.2rem;
-    }
-  </style>
+  .legal-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .legal-content h4 {
+    font-size: 1.2rem;
+  }
+
+  /* Texto */
+  .legal-content p {
+    margin: 1.5rem 0;
+    line-height: 1.8;
+  }
+
+  /* Listas */
+  .legal-content ul,
+  .legal-content ol {
+    margin: 1.5rem 0;
+    padding-left: 2rem;
+  }
+
+  .legal-content li {
+    margin: 0.5rem 0;
+  }
+
+  /* Citas (por si las usas en cookies o privacidad) */
+  .legal-content blockquote {
+    border-left: 4px solid var(--primary-color);
+    padding: 1rem 1.5rem;
+    margin: 2rem 0;
+    background: var(--light-color);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-style: italic;
+    color: var(--gray-dark);
+  }
+
+  /* Enlaces */
+  .legal-content a {
+    color: var(--primary-color);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .legal-content a:hover {
+    color: var(--secondary-color);
+  }
+
+  /* Énfasis */
+  .legal-content strong {
+    font-weight: 700;
+    color: var(--dark-color);
+  }
+
+  .legal-content em {
+    font-style: italic;
+  }
+</style>
+
 </head>
 
 <body>
@@ -59,7 +128,7 @@
 
   <!-- CONTENIDO LEGAL -->
   <div class="legal-page">
-    <main>
+    <main class="legal-content">
       <h1>Aviso Legal</h1>
 
       <p>
