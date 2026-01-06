@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Aviso Legal | LocalStore</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS global (header + footer) -->
+  <link rel="stylesheet" href="/css/blue_header_footer.css">
+
+  <!-- (Opcional) CSS mínimo para contenido legal -->
+  <style>
+    main {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+      line-height: 1.7;
+    }
+
+    h1 {
+      margin-bottom: 1.5rem;
+    }
+
+    h2 {
+      margin-top: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    ul {
+      margin-left: 1.2rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch("/header.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("header-placeholder").innerHTML = html;
+      })
+      .catch(e => console.error("No se pudo cargar header:", e));
+  </script>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main>
+    <h1>Aviso Legal</h1>
+
+    <p>
+      En cumplimiento con lo dispuesto en la Ley 34/2002, de 11 de julio,
+      de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSI-CE),
+      se informa a los usuarios de los siguientes datos:
+    </p>
+
+    <h2>Datos del titular</h2>
+    <ul>
+      <li><strong>Nombre del sitio web:</strong> LocalStore</li>
+      <li><strong>Correo electrónico de contacto:</strong> localstore@mail.com</li>
+    </ul>
+
+    <h2>Objeto del sitio web</h2>
+    <p>
+      El presente sitio web tiene como finalidad ofrecer información, contenidos
+      editoriales y recursos relacionados con el comercio local, así como la
+      difusión de artículos de interés general.
+    </p>
+
+    <h2>Responsabilidad</h2>
+    <p>
+      El titular no se hace responsable del mal uso que se realice de los contenidos
+      del sitio web, siendo exclusiva responsabilidad del usuario que accede o utiliza
+      dichos contenidos.
+    </p>
+
+    <p>
+      El titular se reserva el derecho a modificar, en cualquier momento y sin previo aviso,
+      la presentación, configuración y contenidos del sitio web.
+    </p>
+
+    <h2>Propiedad intelectual</h2>
+    <p>
+      Todos los contenidos del sitio web, incluyendo textos, imágenes, diseño gráfico
+      y código fuente, salvo que se indique lo contrario, son titularidad del responsable
+      del sitio o se dispone de los derechos necesarios para su uso.
+    </p>
+
+    <p>
+      Queda prohibida la reproducción total o parcial de los contenidos sin autorización
+      expresa del titular.
+    </p>
+  </main>
+
+  <!-- FOOTER -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch("/footer.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+      })
+      .catch(err => console.error("No se pudo cargar el footer:", err));
+  </script>
+
+</body>
+</html>
