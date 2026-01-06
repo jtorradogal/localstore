@@ -10,37 +10,69 @@
 
   <!-- CSS exclusivo para páginas legales -->
   <style>
-  /* Wrapper general (ya validado antes) */
+  /<style>
+  /* ============================= */
+  /* IMPORTS Y VARIABLES (CLON POST) */
+  /* ============================= */
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+
+  :root {
+    --primary-color: #365cab;
+    --secondary-color: #4f46e5;
+    --light-color: #f8fafc;
+    --dark-color: #1e293b;
+    --gray-light: #e2e8f0;
+    --gray-medium: #94a3b8;
+    --gray-dark: #475569;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+  }
+
+  /* ============================= */
+  /* BODY Y LAYOUT */
+  /* ============================= */
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--dark-color);
+    background: #ffffff;
+    line-height: 1.6;
+  }
+
   .legal-page {
-    padding-top: 100px;
+    padding-top: 90px; /* header fixed */
     min-height: 100vh;
   }
 
   @media (max-width: 768px) {
     .legal-page {
-      padding-top: 85px;
+      padding-top: 80px;
     }
   }
 
-  /* Contenedor principal */
+  /* ============================= */
+  /* CONTENIDO LEGAL (CLON POST) */
+  /* ============================= */
+
   .legal-content {
     max-width: 900px;
     margin: 0 auto 4rem auto;
     padding: 0 1.5rem;
     font-size: 1.1rem;
     line-height: 1.8;
-    color: var(--dark-color);
     text-align: left;
   }
 
-  /* Headings */
   .legal-content h1,
   .legal-content h2,
   .legal-content h3,
   .legal-content h4 {
     font-family: 'Playfair Display', serif;
+    font-weight: 700;
     margin: 2rem 0 1rem;
     color: var(--dark-color);
+    line-height: 1.2;
   }
 
   .legal-content h1 {
@@ -61,13 +93,11 @@
     font-size: 1.2rem;
   }
 
-  /* Texto */
   .legal-content p {
     margin: 1.5rem 0;
     line-height: 1.8;
   }
 
-  /* Listas */
   .legal-content ul,
   .legal-content ol {
     margin: 1.5rem 0;
@@ -78,18 +108,6 @@
     margin: 0.5rem 0;
   }
 
-  /* Citas (por si las usas en cookies o privacidad) */
-  .legal-content blockquote {
-    border-left: 4px solid var(--primary-color);
-    padding: 1rem 1.5rem;
-    margin: 2rem 0;
-    background: var(--light-color);
-    border-radius: 0 var(--radius-md) var(--radius-md) 0;
-    font-style: italic;
-    color: var(--gray-dark);
-  }
-
-  /* Enlaces */
   .legal-content a {
     color: var(--primary-color);
     text-decoration: underline;
@@ -100,7 +118,6 @@
     color: var(--secondary-color);
   }
 
-  /* Énfasis */
   .legal-content strong {
     font-weight: 700;
     color: var(--dark-color);
@@ -109,11 +126,23 @@
   .legal-content em {
     font-style: italic;
   }
+
+  .legal-content blockquote {
+    border-left: 4px solid var(--primary-color);
+    padding: 1rem 1.5rem;
+    margin: 2rem 0;
+    background: var(--light-color);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-style: italic;
+    color: var(--gray-dark);
+  }
+
 </style>
 
 </head>
 
-<body>
+<body class="legal-page">
+
 
   <!-- HEADER -->
   <div id="header-placeholder"></div>
