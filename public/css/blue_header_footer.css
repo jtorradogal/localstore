@@ -2,15 +2,7 @@
 /* COMPENSACIÓN HEADER FIXED */
 /* ========================================= */
 
-body {
-  padding-top: 90px; /* altura segura del header */
-}
 
-@media (max-width: 768px) {
-  body {
-    padding-top: 80px;
-  }
-}
 
 /* HEADER – estado inicial (color base #365cab) */
 .main-header {
