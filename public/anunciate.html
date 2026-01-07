@@ -55,12 +55,39 @@
         /* ---------- DISCLAIMER ---------- */
         /* AJUSTE PARA EL CONTENEDOR DISCLAIMER */
 /* ---------- DISCLAIMER ---------- */
+/* ---------- DISCLAIMER ---------- */
 #disclaimer {
   display: none;
   margin-top: 40px;
   background: #f8fafc;
   padding: 30px;
   border-radius: 12px;
+}
+
+/* ESTILO ESPECÍFICO PARA LA CASILLA DE ACEPTACIÓN */
+#disclaimer .accept-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  margin: 14px 0 0 0;
+  padding: 0;
+}
+
+#disclaimer .accept-label input[type="checkbox"] {
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+#disclaimer .accept-label span {
+  line-height: 1.5;
+  text-align: left;
+  flex: 1;
+}
+
+#disclaimer button {
+  margin-top: 15px;
+  width: 100%;
 }
  
         
@@ -666,28 +693,7 @@ body {
     }
 }
 
-/* CON ESTO */
-.accept-label {
-  display: flex;
-  align-items: flex-start; /* Mantenemos alineación superior */
-  gap: 10px;
-  width: 100%;
-  margin-top: 14px;
-  padding-left: 0; /* Asegura que no haya padding extra */
-}
 
-/* Asegúrate de que el checkbox tenga buen alineamiento vertical */
-.accept-label input[type="checkbox"] {
-  margin-top: 2px; /* Ajuste fino para mejor alineación */
-  flex-shrink: 0;
-}
-
-/* El texto debe ocupar el resto del espacio */
-.accept-label span {
-  line-height: 1.5;
-  text-align: left;
-  flex: 1;
-}
 
     </style>
 
@@ -738,13 +744,12 @@ body {
                 Al enviar este formulario, usted declara haber leído y comprendido la presente información y acepta expresamente el tratamiento de sus datos personales en los términos indicados.
             </p>
         </div>
-        <div style="margin-top: 14px; width: 100%;">
         <label class="accept-label">
-            <input type="checkbox" id="acceptCheck">
-            <span>Acepto el tratamiento de mis datos</span>
-        </label>
-        <button id="acceptBtn" disabled style="margin-top: 15px; width: 100%;">Continuar</button>
-    </div>
+        <input type="checkbox" id="acceptCheck">
+        <span>Acepto el tratamiento de mis datos</span>
+    </label>
+    
+    <button id="acceptBtn" disabled>Continuar</button>
     </div>
     
     <!-- FORM -->
