@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+      <!-- CSS común de header/footer azul -->
+  <link rel="stylesheet" href="/css/blue_header_footer.css">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Resultados</title>
@@ -441,16 +443,18 @@ document.addEventListener("DOMContentLoaded", () => {
 </main>
 
 
-  <div id="footer-placeholder"></div>
-  <script>
-    // Cargar footer.html dinámicamente
-    fetch("footer.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("footer-placeholder").innerHTML = html;
-      })
-      .catch(err => console.error("No se pudo cargar el footer:", err));
-  </script>
+
+  <<div id="footer-placeholder"></div>
+
+<script>
+  // Cargar footer.html dinámicamente
+  fetch("/footer.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(err => console.error("No se pudo cargar el footer:", err));
+</script>
 
   <script>
     document.addEventListener("scroll", () => {
