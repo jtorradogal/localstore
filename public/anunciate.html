@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSS común de header/footer azul -->
+    <link rel="stylesheet" href="/css/blue_header_footer.css">
     <title>Anúnciate</title>
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
     <style>
@@ -661,6 +663,24 @@ body {
         left: 60px;
     }
 }
+
+        .accept-label {
+  display: flex;
+  align-items: flex-start;   /* 🔑 Alineación superior */
+  justify-content: flex-start;
+  gap: 10px;
+  text-align: left;
+}
+
+.accept-label input[type="checkbox"] {
+  margin-top: 4px;           /* Ajuste fino visual */
+  flex-shrink: 0;
+}
+
+.accept-label span {
+  line-height: 1.5;
+}
+
     </style>
 
 </head>
@@ -710,7 +730,7 @@ body {
                 Al enviar este formulario, usted declara haber leído y comprendido la presente información y acepta expresamente el tratamiento de sus datos personales en los términos indicados.
             </p>
         </div>
-        <label style="margin-top:14px;display:flex;gap:10px;">
+        <label class="accept-label" style="margin-top:14px;display:flex;gap:10px;">
             <input type="checkbox" id="acceptCheck">
             <span>Acepto el tratamiento de mis datos</span>
         </label>
@@ -826,15 +846,17 @@ body {
     </div>
 <div id="footer-placeholder"></div>
 
-  <script>
-    // Cargar footer.html dinámicamente
-    fetch("footer.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("footer-placeholder").innerHTML = html;
-      })
-      .catch(err => console.error("No se pudo cargar el footer:", err));
-  </script>
+  <<div id="footer-placeholder"></div>
+
+<script>
+  // Cargar footer.html dinámicamente
+  fetch("/footer.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(err => console.error("No se pudo cargar el footer:", err));
+</script>
     <script>
         // Disclaimer logic
         const legalBox = document.getElementById("legalBox");
