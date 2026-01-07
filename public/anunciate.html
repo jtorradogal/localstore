@@ -54,16 +54,35 @@
         
         /* ---------- DISCLAIMER ---------- */
         /* AJUSTE PARA EL CONTENEDOR DISCLAIMER */
+/* ---------- DISCLAIMER ---------- */
 #disclaimer {
   display: none;
   margin-top: 40px;
   background: #f8fafc;
-  padding: 30px 20px; /* Reducido padding lateral para mejor alineación */
+  padding: 30px;
   border-radius: 12px;
+}
+  /* EN SU LUGAR, USA ESTO: */
+.accept-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   width: 100%;
+  margin-top: 14px;
+  padding-left: 0;
   box-sizing: border-box;
 }
-        #disclaimer label{display:flex;gap:10px;align-items:flex-start}
+
+.accept-label input[type="checkbox"] {
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.accept-label span {
+  line-height: 1.5;
+  text-align: left;
+  flex: 1;
+}      
         
         /* ---------- FORM ---------- */
         #formWrapper{display:none;margin-top:40px}
