@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Aviso Legal | LocalStore</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS global (header + footer) -->
+  <link rel="stylesheet" href="/css/blue_header_footer.css">
+
+  <!-- CSS exclusivo para páginas legales -->
+  <style>
+  /<style>
+  /* ============================= */
+  /* IMPORTS Y VARIABLES (CLON POST) */
+  /* ============================= */
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+
+  :root {
+    --primary-color: #365cab;
+    --secondary-color: #4f46e5;
+    --light-color: #f8fafc;
+    --dark-color: #1e293b;
+    --gray-light: #e2e8f0;
+    --gray-medium: #94a3b8;
+    --gray-dark: #475569;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+  }
+
+  /* ============================= */
+  /* BODY Y LAYOUT */
+  /* ============================= */
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--dark-color);
+    background: #ffffff;
+    line-height: 1.6;
+  }
+
+  .legal-page {
+    padding-top: 90px; /* header fixed */
+    min-height: 100vh;
+  }
+
+  @media (max-width: 768px) {
+    .legal-page {
+      padding-top: 80px;
+    }
+  }
+
+  /* ============================= */
+  /* CONTENIDO LEGAL (CLON POST) */
+  /* ============================= */
+
+  .legal-content {
+    max-width: 900px;
+    margin: 0 auto 4rem auto;
+    padding: 0 1.5rem;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    text-align: left;
+  }
+
+  .legal-content h1,
+  .legal-content h2,
+  .legal-content h3,
+  .legal-content h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    margin: 2rem 0 1rem;
+    color: var(--dark-color);
+    line-height: 1.2;
+  }
+
+  .legal-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .legal-content h2 {
+    font-size: 1.8rem;
+    border-bottom: 2px solid var(--gray-light);
+    padding-bottom: 0.5rem;
+  }
+
+  .legal-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .legal-content h4 {
+    font-size: 1.2rem;
+  }
+
+  .legal-content p {
+    margin: 1.5rem 0;
+    line-height: 1.8;
+  }
+
+  .legal-content ul,
+  .legal-content ol {
+    margin: 1.5rem 0;
+    padding-left: 2rem;
+  }
+
+  .legal-content li {
+    margin: 0.5rem 0;
+  }
+
+  .legal-content a {
+    color: var(--primary-color);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .legal-content a:hover {
+    color: var(--secondary-color);
+  }
+
+  .legal-content strong {
+    font-weight: 700;
+    color: var(--dark-color);
+  }
+
+  .legal-content em {
+    font-style: italic;
+  }
+
+  .legal-content blockquote {
+    border-left: 4px solid var(--primary-color);
+    padding: 1rem 1.5rem;
+    margin: 2rem 0;
+    background: var(--light-color);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-style: italic;
+    color: var(--gray-dark);
+  }
+
+</style>
+
+</head>
+
+<body class="legal-page">
+
+
+  <!-- HEADER -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch("/header.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("header-placeholder").innerHTML = html;
+      })
+      .catch(e => console.error("No se pudo cargar header:", e));
+  </script>
+
+  <!-- CONTENIDO LEGAL -->
+  <div class="legal-page">
+    <main class="legal-content">
+      <h1>Política de Cookies</h1>
+
+<p>Este sitio web utiliza cookies propias y de terceros para mejorar la experiencia del usuario y analizar el tráfico.</p>
+
+<h2>¿Qué son las cookies?</h2>
+<p>Las cookies son pequeños archivos de texto que se almacenan en el navegador del usuario cuando visita un sitio web.</p>
+
+<h2>Cookies utilizadas</h2>
+<ul>
+  <li><strong>Cookies técnicas:</strong> necesarias para el correcto funcionamiento del sitio.</li>
+  <li><strong>Cookies de análisis:</strong> permiten obtener estadísticas de uso y navegación.</li>
+  <li><strong>Cookies publicitarias:</strong> utilizadas por servicios como Google AdSense para mostrar anuncios relevantes.</li>
+</ul>
+
+<h2>Cookies de terceros</h2>
+<p>Este sitio web puede utilizar servicios de terceros como Google, que pueden instalar cookies con fines estadísticos o publicitarios.</p>
+
+<p>Puede consultar la política de privacidad de Google en:  
+<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">https://policies.google.com/privacy</a></p>
+
+<h2>Gestión de cookies</h2>
+<p>El usuario puede configurar su navegador para bloquear o eliminar las cookies. El uso continuado del sitio implica la aceptación de esta política.</p>
+
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch("/footer.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+      })
+      .catch(err => console.error("No se pudo cargar el footer:", err));
+  </script>
+
+</body>
+</html>
