@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Aviso Legal | LocalStore</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS global (header + footer) -->
+  <link rel="stylesheet" href="/css/blue_header_footer.css">
+
+  <!-- CSS exclusivo para páginas legales -->
+  <style>
+  /* Wrapper general (ya validado antes) */
+  .legal-page {
+    padding-top: 100px;
+    min-height: 100vh;
+  }
+
+  @media (max-width: 768px) {
+    .legal-page {
+      padding-top: 85px;
+    }
+  }
+
+  /* Contenedor principal */
+  .legal-content {
+    max-width: 900px;
+    margin: 0 auto 4rem auto;
+    padding: 0 1.5rem;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--dark-color);
+    text-align: left;
+  }
+
+  /* Headings */
+  .legal-content h1,
+  .legal-content h2,
+  .legal-content h3,
+  .legal-content h4 {
+    font-family: 'Playfair Display', serif;
+    margin: 2rem 0 1rem;
+    color: var(--dark-color);
+  }
+
+  .legal-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .legal-content h2 {
+    font-size: 1.8rem;
+    border-bottom: 2px solid var(--gray-light);
+    padding-bottom: 0.5rem;
+  }
+
+  .legal-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .legal-content h4 {
+    font-size: 1.2rem;
+  }
+
+  /* Texto */
+  .legal-content p {
+    margin: 1.5rem 0;
+    line-height: 1.8;
+  }
+
+  /* Listas */
+  .legal-content ul,
+  .legal-content ol {
+    margin: 1.5rem 0;
+    padding-left: 2rem;
+  }
+
+  .legal-content li {
+    margin: 0.5rem 0;
+  }
+
+  /* Citas (por si las usas en cookies o privacidad) */
+  .legal-content blockquote {
+    border-left: 4px solid var(--primary-color);
+    padding: 1rem 1.5rem;
+    margin: 2rem 0;
+    background: var(--light-color);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-style: italic;
+    color: var(--gray-dark);
+  }
+
+  /* Enlaces */
+  .legal-content a {
+    color: var(--primary-color);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .legal-content a:hover {
+    color: var(--secondary-color);
+  }
+
+  /* Énfasis */
+  .legal-content strong {
+    font-weight: 700;
+    color: var(--dark-color);
+  }
+
+  .legal-content em {
+    font-style: italic;
+  }
+</style>
+
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch("/header.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("header-placeholder").innerHTML = html;
+      })
+      .catch(e => console.error("No se pudo cargar header:", e));
+  </script>
+
+  <!-- CONTENIDO LEGAL -->
+  <div class="legal-page">
+    <main class="legal-content">
+      <h1>Política de Privacidad</h1>
+
+<p>En LocalStore nos comprometemos a proteger la privacidad de los usuarios y a tratar sus datos personales de conformidad con la normativa vigente.</p>
+
+<h2>Datos que se recopilan</h2>
+<p>Este sitio web no recopila datos personales de los usuarios de forma directa, salvo aquellos que se faciliten voluntariamente a través del correo electrónico de contacto.</p>
+
+<h2>Finalidad del tratamiento</h2>
+<p>Los datos personales que el usuario facilite serán utilizados únicamente para responder a consultas o comunicaciones iniciadas por el propio usuario.</p>
+
+<h2>Legitimación</h2>
+<p>La base legal para el tratamiento de los datos es el consentimiento del interesado al contactar de forma voluntaria.</p>
+
+<h2>Conservación de los datos</h2>
+<p>Los datos se conservarán únicamente durante el tiempo necesario para atender la solicitud correspondiente.</p>
+
+<h2>Derechos del usuario</h2>
+<p>El usuario puede ejercer sus derechos de acceso, rectificación, supresión y oposición enviando un correo electrónico a <strong>localstore@mail.com</strong>.</p>
+
+<h2>Cesión de datos</h2>
+<p>No se cederán datos personales a terceros, salvo obligación legal.</p>
+
+
+  <!-- FOOTER -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch("/footer.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
+      })
+      .catch(err => console.error("No se pudo cargar el footer:", err));
+  </script>
+
+</body>
+</html>
