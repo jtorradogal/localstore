@@ -651,30 +651,18 @@
         </section>
 
     </main>
+<div id="footer-placeholder"></div>
 
-    <!-- FOOTER CON POPPINS -->
-    <footer id="main-footer">
-        <div class="footer-container">
-            <!-- IZQUIERDA -->
-            <div class="footer-left">
-                <p class="footer-contact">Contacto: <a href="mailto:localstore@mail.com">localstore@mail.com</a></p>
-            </div>
-
-            <!-- DERECHA -->
-            <div class="footer-right">
-                <a href="https://instagram.com" target="_blank" class="footer-social">
-                    <i class="fab fa-instagram"></i> Instagram
-                </a>
-                <a href="https://linkedin.com" target="_blank" class="footer-social">
-                    <i class="fab fa-linkedin"></i> LinkedIn
-                </a>
-            </div>
-        </div>
-
-        <div class="footer-disclaimer">
-            LocalStore — Todos los derechos reservados
-        </div>
-    </footer>
+<script>
+  // Cargar footer.html dinámicamente
+  fetch("/footer.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("footer-placeholder").innerHTML = html;
+    })
+    .catch(err => console.error("No se pudo cargar el footer:", err));
+</script>
+    
 
     <!-- SCRIPTS -->
     <script>
