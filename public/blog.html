@@ -13,6 +13,7 @@
     
     <!-- Font Awesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <style>
         /* Variables de diseño */
@@ -719,7 +720,8 @@
                                 ${featuredPost.title}
                             </a>
                         </h2>
-                        <p class="featured-excerpt">${featuredPost.excerpt || ''}</p>
+                        <p class="featured-excerpt">${featuredPost.excerpt ? marked.parseInline(featuredPost.excerpt) : ''}</p>
+
                         <div class="featured-meta">
                             <div class="author-info">
                                 <!-- ELIMINADO: avatar circular -->
@@ -749,30 +751,28 @@
             }
 
             historyEl.innerHTML = historyPosts.map(post => `
-                <article class="history-post">
-                    <div class="history-image-container">
-                        <img
-                            src="${post.thumbnail_url || '/default-thumbnail.jpg'}"
-                            alt="${post.title}"
-                            class="history-image"
-                            onerror="this.src='/default-thumbnail.jpg'">
-                    </div>
-                    <div class="history-content">
-                        <h3>
-                            <a href="/post.html?slug=${post.slug}">
-                                ${post.title}
-                            </a>
-                        </h3>
-                        <p class="history-excerpt">
-                            ${(post.excerpt || '').substring(0, 120)}…
-                        </p>
-                        <span class="history-date">
-                            <i class="far fa-clock"></i>
-                            ${formatDate(post.published_at)}
-                        </span>
-                    </div>
-                </article>
-            `).join('');
+    <article class="history-post">
+        <div class="history-image-container">
+            <img
+                src="${post.thumbnail_url || '/default-thumbnail.jpg'}"
+                alt="${post.title}"
+                class="history-image"
+                onerror="this.src='/default-thumbnail.jpg'">
+        </div>
+        <div class="history-content">
+            <h3>
+                <a href="/post.html?slug=${post.slug}">
+                    ${marked.parseInline(post.title)}
+                </a>
+            </h3>
+            <span class="history-date">
+                <i class="far fa-clock"></i>
+                ${formatDate(post.published_at)}
+            </span>
+        </div>
+    </article>
+`).join('');
+
         }
 
         function formatDate(dateString) {
